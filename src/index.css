@@ -1,0 +1,93 @@
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300&family=Phudu:wght@300&display=swap');
+
+:root {
+  font-family: 'Merriweather', serif;
+  line-height: 1.5;
+  font-weight: 600;
+  font-size: large;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #602b70;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  text-align: center;
+  min-height: 100vh;
+}
+
+h1 {
+  font-size: 4em;
+  line-height: 1.3;
+}
+
+button {
+  border: 2px solid transparent;
+  border-radius: 12px;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-family: inherit;
+  font-weight: 200;
+  color: #000000;
+  background-color: #aaaaaa;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+
+button:hover {
+  border-color: #008015;
+}
+
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+
+.form {
+  text-align: center;
+}
+label {
+  /* block to occupy the full width */
+  display: block;
+  margin-bottom: 5px;
+}
+
+/* added two inputs: text and email */
+input[type="text"],
+input[type="password"] {
+  color: #ffffff;
+  background-color: rgb(192, 97, 230);
+  width: 50%;
+  padding: 10px;
+  align-items: center;
+}
+
+/* focus: change in formatting when input field is active */
+input[type="text"]:focus {
+  background: rgb(255, 255, 255);
+  color: #000000;
+}
+
+/* submit button and formatting */
+input[type="submit"] {
+  background-color: #00c53b;
+  color: #000000;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  align-items: center;
+}
+
+.register {
+  color: #ffffff;
+}
