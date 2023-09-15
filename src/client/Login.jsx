@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 
 const Login = () => {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
 
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
+  const handleUsernameChange = (e) => {
+    setUsername(e.target.value);
   };
 
   const handlePasswordChange = (e) => {
@@ -15,7 +15,7 @@ const Login = () => {
 
   const login = async() => {
     try {
-        const response = await fetch('http://localhost:3000/api/users/login', {
+        const response = await fetch('http://localhost:5432/api/users/login', {
             method: 'POST',
             headers: {
                 'Content-Type' : 'application/json'
@@ -30,7 +30,7 @@ const Login = () => {
         if(!response.ok) {
           throw(result)
         }
-        setEmail('');
+        setUsername('');
         setPassword('');
     } catch (err) {
         console.error(`${err.name}: ${err.message}`);
@@ -47,10 +47,10 @@ const Login = () => {
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor='email'>Email:</label>
+          <label htmlFor='username'>Username:</label>
           <input
-            type='email'
-            id='email'
+            type='text'
+            id='username'
             value={email}
             onChange={handleEmailChange}
             required
@@ -66,6 +66,9 @@ const Login = () => {
             required
           />
         </div>
+        <Link className='register' to='/register'>
+          Don't have an account, make it here.
+        </Link>
         <button type='submit'>Login</button>
       </form>
       <p>{message}</p>

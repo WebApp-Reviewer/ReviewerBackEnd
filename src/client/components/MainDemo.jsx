@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Homepage from './Homepage';
-import Login from './Login';
+import LogIn from './Login';
 import AdminLogIn from './AdminLogin';
 
 function MainDemo() {
@@ -12,7 +12,7 @@ function MainDemo() {
       <Routes>
         {/* Guest Routes */}
         <Route path="/" element={<Homepage />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<LogIn />} />
         <Route path="/adminLogin" element={<AdminLogIn />} />
       </Routes>
     </div>
