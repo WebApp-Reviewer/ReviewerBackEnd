@@ -1,6 +1,8 @@
 const db = require('./client');
 const { createUser } = require('./users');
 
+//database name: parent
+
 const users = [
   {
     name: 'Emily Johnson',

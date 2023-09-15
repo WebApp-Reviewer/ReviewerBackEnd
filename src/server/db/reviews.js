@@ -1,6 +1,6 @@
 const client = require('./client');
 
-//databse functions
+//database functions
 async function getAllReviews() {
     try {
         const {rows} = await client.query(`
