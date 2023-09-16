@@ -1,5 +1,8 @@
 const db = require('./client');
 const { createUser } = require('./users');
+const { createReview } = require ('./reviews');
+const { createAdmin } = require ('./admin');
+const { createWebsite } = require ('./websites');
 
 //database name: parent
 
@@ -32,7 +35,7 @@ const users = [
   // Add more user objects as needed
 ];  
 
-const admin = [
+const admins = [
   {
     id: 1,
     name: 'WebAppAdmin',
@@ -155,7 +158,7 @@ const createTables = async () => {
 
         await db.query(`
         CREATE TABLE websites(
-            id SERIAL PRIMARY KEY
+            id SERIAL PRIMARY KEY,
             name VARCHAR(255) NOT NULL,
             url VARCHAR(225) UNIQUE NOT NULL,
             description VARCHAR(225) NOT NULL,
@@ -193,7 +196,7 @@ const insertUsers = async () => {
 
 const insertAdmin = async () => {
   try {
-    for (const admin of admin) {
+    for (const admin of admins) {
       await createAdmin({name: admin.name, email: admin.email, password: admin.password, secretKey: admin.secretKey});
     }
     console.log('Seed data inserted successfully.');
@@ -204,8 +207,8 @@ const insertAdmin = async () => {
 
 const insertWebsites = async () => {
   try {
-    for (const websites of websites) {
-      await createWebsite({name: website.name, url: wesbite.url, description: website.description, image: website.image});
+    for (const website of websites) {
+      await createWebsite({name: website.name, url: website.url, description: website.description, image: website.image});
     }
     console.log('Seed data inserted successfully.');
   } catch (error) {
@@ -215,7 +218,7 @@ const insertWebsites = async () => {
 
 const insertReviews = async () => {
   try {
-    for (const reviews of reviews) {
+    for (const review of reviews) {
       await createReview({name: review.name, content: review.content, rating: review.rating, date: review.date});
     }
     console.log('Seed data inserted successfully.');
