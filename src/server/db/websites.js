@@ -72,10 +72,24 @@ async function updateWebsite({id, ...fields}) {
     }
 }
 
+async function deleteWebsiteById(id) {
+    try {
+        const {rows: [websites]} = await db.query(`
+        DELETE FROM websites
+        WHERE id = $1
+        RETURNING *;
+        `, [id]);
+        return websites;
+    } catch (error) {
+        throw error;
+    }
+}
+
 module.exports = {
     getAllWebsites,
     getWebsiteById,
     getWebsiteByName,
     createWebsite,
     updateWebsite,
+    deleteWebsiteById,
 }

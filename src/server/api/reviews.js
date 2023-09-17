@@ -1,4 +1,5 @@
-const express = require('express')
+const express = require('express');
+const { createReview } = require ('./reviews');
 const reviewsRouter = express.Router();
 
 const {
@@ -70,5 +71,18 @@ reviewsRouter.post('/', requireUser, requiredNotSent({requiredParams: ['name', '
       next(error);
     }
 });
+
+async function deleteReviewById(id) {
+  try {
+      const {rows: [reviews]} = await db.query(`
+      DELETE FROM reviews
+      WHERE id = $1
+      RETURNING *;
+      `, [id]);
+      return reviews;
+  } catch (error) {
+      throw error;
+  }
+}
 
 module.exports = reviewsRouter;
