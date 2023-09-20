@@ -5,8 +5,9 @@ const { requireUser, requiredNotSent } = require('./utils')
 const {
     getAllWebsites,
     getWebsiteById,
-    getWebsiteByName,
-    createWebsite
+    //getWebsiteByName,
+    createWebsite,
+    deleteWebsiteById
 } = require('../db');
 
 
@@ -24,7 +25,7 @@ websitesRouter.get('/', async(req, res, next) => {
 
 websitesRouter.get('/:id', async(req, res, next) => {
     try {
-        const website = await getWebsiteById();
+        const website = await getWebsiteById(req.params.id);
 
         res.send({
             website
@@ -34,7 +35,7 @@ websitesRouter.get('/:id', async(req, res, next) => {
     }
 })
 
-websitesRouter.get('/name', async(req, res, next) => {
+/*websitesRouter.get('/name', async(req, res, next) => {
     try {
         const website = await getWebsiteByName();
 
@@ -44,7 +45,7 @@ websitesRouter.get('/name', async(req, res, next) => {
     } catch (error) {
         next(error)
     }
-})
+})*/
 
 websitesRouter.post('/', requireUser, requiredNotSent({requiredParams: ['name', 'description', 'url', 'image']}), async (req, res, next) => {
     try {
@@ -69,6 +70,30 @@ websitesRouter.post('/', requireUser, requiredNotSent({requiredParams: ['name', 
     } catch (error) {
       next(error);
     }
+});
+
+websitesRouter.delete('/:websiteId', requireUser, async (req, res, next) => {
+  try {
+    const {websiteId} = req.params;
+    const websiteToUpdate = await getWebsiteById(websiteId);
+    if(!websiteToUpdate) {
+      next({
+        name: 'NotFound',
+        message: `No website by ID ${websiteId}`
+      })
+    } else if(req.user.id !== websiteToUpdate.creatorId) {
+      res.status(403);
+      next({
+        name: "WrongUserError",
+        message: "You must be the same user who created this website to perform this action"
+      });
+    } else {
+      const deletedWebsite = await deleteWebsiteById(websiteId)
+      res.send({success: true, ...deletedWebsite});
+    }
+  } catch (error) {
+    next(error);
+  }
 });
 
 module.exports = websitesRouter;

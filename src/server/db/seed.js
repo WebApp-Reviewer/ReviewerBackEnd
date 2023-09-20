@@ -73,11 +73,11 @@ async function createInitialUsers() {
   try {
 
     const usersToCreate = [
-      { name: 'Emily Johnson', email: 'emily@example.com', password: 'securepass' },
-      { name: 'Liu Wei', email: 'liu@example.com', password: 'strongpass' },
-      { name: 'Isabella Garcia', email: 'bella@example.com', password: 'pass1234' },
-      { name: 'Mohammed Ahmed', email: 'mohammed@example.com', password: 'mysecretpassword'},
-      { name: 'John Smith', email: 'john@example.com', password: 'password123'}
+      { name: "Emily Johnson", email: "emily@example.com", password: "securepass" },
+      { name: "Liu Wei", email: "liu@example.com", password: "strongpass" },
+      { name: "Isabella Garcia", email: "bella@example.com", password: "pass1234" },
+      { name: "Mohammed Ahmed", email: "mohammed@example.com", password: "mysecretpassword" },
+      { name: "John Smith", email: "john@example.com", password: "password123" }
     ]
     const users = await Promise.all(usersToCreate.map(createUser));
 
@@ -95,7 +95,7 @@ async function createInitialAdmin() {
   try {
 
     const adminToCreate = [
-      { id: 1, name: 'WebAppAdmin', email: 'webadmin@example.com', password: 'adminpassword123', secretKey: 'NoPublicAccess!' },
+      { name: "WebAppAdmin", email: "webadmin@example.com", password: "adminpassword123", secretKey: "NoPublicAccess!" },
     ]
     const admin = await Promise.all(adminToCreate.map(createAdmin));
 

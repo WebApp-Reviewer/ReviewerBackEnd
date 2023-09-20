@@ -5,7 +5,7 @@ const { requireUser, requiredNotSent } = require('./utils')
 const {
     getAllReviews,
     getReviewById,
-    getReviewByName,
+    //getReviewByName,
     createReview,
     deleteReviewById
 } = require('../db');
@@ -25,7 +25,7 @@ reviewsRouter.get('/', async(req, res, next) => {
 
 reviewsRouter.get('/:id', async(req, res, next) => {
     try {
-        const review = await getReviewById();
+        const review = await getReviewById(req.params.id);
 
         res.send({
             review
@@ -35,7 +35,7 @@ reviewsRouter.get('/:id', async(req, res, next) => {
     }
 })
 
-reviewsRouter.get('/name', async(req, res, next) => {
+/*reviewsRouter.get('/name', async(req, res, next) => {
     try {
         const review = await getReviewByName();
 
@@ -45,7 +45,7 @@ reviewsRouter.get('/name', async(req, res, next) => {
     } catch (error) {
         next(error)
     }
-})
+})*/
 
 reviewsRouter.post('/', requireUser, requiredNotSent({requiredParams: ['name', 'description', 'url', 'image']}), async (req, res, next) => {
     try {

@@ -53,7 +53,10 @@ const getAdminByEmail = async(email) => {
         WHERE email=$1;`, [ email ]);
 
         if(!admin) {
-            return;
+            throw {
+                name: "AdminNotFoundError",
+                message: "An Admin with that email does not exist."
+            }
         }
         return admin;
     } catch (err) {

@@ -24,7 +24,7 @@ async function getWebsiteById(id) {
     }
 }
 
-async function getWebsiteByName(name) {
+/*async function getWebsiteByName(name) {
     try {
         const {rows: [website]} = await db.query(`
         SELECT * FROM websites
@@ -34,7 +34,7 @@ async function getWebsiteByName(name) {
     } catch (error) {
         throw error;
     }
-}
+}*/
 
 //select and return an array of all websites
 async function createWebsite({ name, url, description, image }) {
@@ -88,7 +88,7 @@ async function deleteWebsiteById(id) {
 module.exports = {
     getAllWebsites,
     getWebsiteById,
-    getWebsiteByName,
+    //getWebsiteByName,
     createWebsite,
     updateWebsite,
     deleteWebsiteById,

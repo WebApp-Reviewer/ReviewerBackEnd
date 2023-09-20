@@ -39,10 +39,14 @@ const getUserByEmail = async(email) => {
         const { rows: [ user ] } = await db.query(`
         SELECT * 
         FROM users
-        WHERE email=$1;`, [ email ]);
+        WHERE email=$1
+        `, [ email ]);
 
         if(!user) {
-            return;
+            throw {
+                name: "UserNotFoundError",
+                message: "A user with that email does not exist."
+            }
         }
         return user;
     } catch (err) {
@@ -76,6 +80,7 @@ async function getAllUsers() {
         throw error;
     }
 }
+
 
 module.exports = {
     createUser,

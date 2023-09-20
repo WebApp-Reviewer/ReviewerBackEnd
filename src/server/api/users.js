@@ -3,7 +3,6 @@ const usersRouter = express.Router();
 
 const {
     createUser,
-    getUser,
     getUserByEmail,
     getAllUsers
 } = require('../db');
@@ -32,8 +31,8 @@ usersRouter.post('/login', async(req, res, next) => {
         });
     }
     try {
-        const user = await getUser({email, password});
-        if(user) {
+        const user = await getUserByEmail({email, password});
+        if(user && user.password === password) {
             const token = jwt.sign({
                 id: user.id,
                 email
@@ -87,8 +86,8 @@ usersRouter.post('/register', async(req, res, next) => {
             message: 'Sign up successful!',
             token
         });
-    } catch({name, message}) {
-        next({name, message})
+    } catch(error) {
+        next(error)
     }
 })
 

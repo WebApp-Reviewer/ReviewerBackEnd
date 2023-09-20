@@ -24,7 +24,7 @@ async function getReviewById(id) {
     }
 }
 
-async function getReviewByName(name) {
+/*async function getReviewByName(name) {
     try {
         const {rows: [review]} = await client.query(`
         SELECT * FROM reviews
@@ -34,7 +34,7 @@ async function getReviewByName(name) {
     } catch (error) {
         throw error;
     }
-}
+}*/
 
 async function createReview({ websiteId, userId, name, content, rating, date }) {
     try {
@@ -73,25 +73,21 @@ async function updateReview({id, ...fields}){
 
 async function deleteReviewById(id) {
     try {
-      await client.query(`
-          DELETE FROM reviews
-          WHERE "reviewId" = $1;
-      `, [id]);
-      const {rows: [reviews]} = await client.query(`
-          DELETE FROM reviews 
-          WHERE id = $1
-          RETURNING *
-      `, [id]);
-      return reviews;
+        const {rows: [reviews]} = await db.query(`
+        DELETE FROM reviews
+        WHERE id = $1
+        RETURNING *;
+        `, [id]);
+        return reviews;
     } catch (error) {
-      throw error;
+        throw error;
     }
-  }
+}
 
 module.exports = {
     getAllReviews,
     getReviewById,
-    getReviewByName,
+    //getReviewByName,
     createReview,
     updateReview,
     deleteReviewById

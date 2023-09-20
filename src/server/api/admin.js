@@ -3,7 +3,7 @@ const adminRouter = express.Router();
 
 const {
     createAdmin,
-    getAdmin,
+    //getAdmin,
     getAdminByEmail,
     getAllAdmin
 } = require('../db');
@@ -31,7 +31,7 @@ adminRouter.post('/login', async(req, res, next) => {
         });
     }
     try {
-        const admin = await getAdmin({email, password});
+        const admin = await getAdminByEmail({email, password});
         if(admin) {
             const token = jwt.sign({
                 id: admin.id,
