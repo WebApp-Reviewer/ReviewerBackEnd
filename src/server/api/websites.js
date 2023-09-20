@@ -1,23 +1,26 @@
 const express = require('express')
 const websitesRouter = express.Router();
+const { requireUser, requiredNotSent } = require('./utils')
 
 const {
     getAllWebsites,
     getWebsiteById,
     getWebsiteByName,
-    createWebsite
+    createWebsite,
 } = require('../db');
 
 const jwt = require('jsonwebtoken')
 
 websitesRouter.get('/', async(req, res, next) => {
     try {
+      console.log('inside/websites')
         const websites = await getAllWebsites();
-
+        console.log('websites: ', websites)
         res.send({
             websites
         });
     } catch (error) {
+      console.log(error)
         next(error)
     }
 })
@@ -45,7 +48,7 @@ websitesRouter.get('/name', async(req, res, next) => {
         next(error)
     }
 })
-
+/*
 websitesRouter.post('/', requireUser, requiredNotSent({requiredParams: ['name', 'description', 'url', 'image']}), async (req, res, next) => {
     try {
       const {name, description, url, image} = req.body;
@@ -70,5 +73,5 @@ websitesRouter.post('/', requireUser, requiredNotSent({requiredParams: ['name', 
       next(error);
     }
 });
-
+*/
 module.exports = websitesRouter;
