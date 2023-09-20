@@ -9,7 +9,6 @@ const {
     createWebsite
 } = require('../db');
 
-const jwt = require('jsonwebtoken')
 
 websitesRouter.get('/', async(req, res, next) => {
     try {

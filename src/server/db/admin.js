@@ -17,6 +17,17 @@ const createAdmin = async({ name='first last', email, password }) => {
     }
 }
 
+async function getAllAdmin() {
+    try {
+        const {rows} = await db.query(`
+        SELECT * FROM admin;
+        `);
+        return rows;
+    } catch (error) {
+        throw error;
+    }
+}
+
 const getAdmin = async({email, password}) => {
     if(!email || !password) {
         return;
@@ -55,4 +66,5 @@ module.exports = {
     createAdmin,
     getAdmin,
     getAdminByEmail,
+    getAllAdmin
 };

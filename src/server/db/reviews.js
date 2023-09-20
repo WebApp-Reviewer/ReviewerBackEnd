@@ -71,10 +71,28 @@ async function updateReview({id, ...fields}){
     }
 }
 
+async function deleteReviewById(id) {
+    try {
+      await client.query(`
+          DELETE FROM reviews
+          WHERE "reviewId" = $1;
+      `, [id]);
+      const {rows: [reviews]} = await client.query(`
+          DELETE FROM reviews 
+          WHERE id = $1
+          RETURNING *
+      `, [id]);
+      return reviews;
+    } catch (error) {
+      throw error;
+    }
+  }
+
 module.exports = {
     getAllReviews,
     getReviewById,
     getReviewByName,
     createReview,
     updateReview,
+    deleteReviewById
 }

@@ -5,7 +5,7 @@ const SALT_COUNT = 10;
 const createUser = async({ name='first last', email, password }) => {
     const hashedPassword = await bcrypt.hash(password, SALT_COUNT);
     try {
-        const { rows: [user ] } = await db.query(`
+        const { rows: [user] } = await db.query(`
         INSERT INTO users(name, email, password)
         VALUES($1, $2, $3)
         ON CONFLICT (email) DO NOTHING
@@ -66,10 +66,21 @@ const getUserById = async(id) => {
     }
 }
 
+async function getAllUsers() {
+    try {
+        const {rows} = await db.query(`
+        SELECT * FROM users;
+        `);
+        return rows;
+    } catch (error) {
+        throw error;
+    }
+}
 
 module.exports = {
     createUser,
     getUser,
     getUserByEmail,
     getUserById,
+    getAllUsers,
 };

@@ -4,20 +4,21 @@ const adminRouter = express.Router();
 const {
     createAdmin,
     getAdmin,
-    getAdminByEmail
+    getAdminByEmail,
+    getAllAdmin
 } = require('../db');
 
 const jwt = require('jsonwebtoken')
 
 adminRouter.get('/', async( req, res, next) => {
     try {
-        const admin = await createAdmin();
+        const admin = await getAllAdmin();
 
         res.send({
             admin
         });
-    } catch ({name, message}) {
-        next({name, message})
+    } catch (error) {
+        next(error)
     }
 });
 
