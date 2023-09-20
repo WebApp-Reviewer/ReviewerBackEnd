@@ -3,7 +3,7 @@
 }
 
 .homeHeader{
-    color: white;
+    color: rgb(0, 0, 0);
     font-size: 4rem;
     margin-top: 2rem;
     margin-bottom: 2rem;
@@ -11,7 +11,7 @@
 }
 
 .homeComment{
-    color: white;
+    color: rgb(10, 10, 10);
     font-size: 2rem;
     margin-bottom: 3rem;
     text-align: center;

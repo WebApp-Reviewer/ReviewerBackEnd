@@ -40,7 +40,7 @@ async function getWebsiteByName(name) {
 async function createWebsite({ name, url, description, image }) {
     try {
         const {rows: [website]} = await db.query(`
-        INSERT INTO websites(name, url, description, image) VALUES ($1, $2, $3, $4)
+        INSERT INTO websites (name, url, description, image) VALUES ($1, $2, $3, $4)
         ON CONFLICT (name) DO NOTHING
         RETURNING *
         `, [name, url, description, image]);
@@ -72,14 +72,14 @@ async function updateWebsite({id, ...fields}) {
     }
 }
 
-async function deleteWebsite(id) {
+async function deleteWebsiteById(id) {
     try {
-        const { rows: [website] } = await client.query(`
-          DELETE FROM websites
-          WHERE id=${ id }
-          RETURNING *;
+        const {rows: [websites]} = await db.query(`
+        DELETE FROM websites
+        WHERE id = $1
+        RETURNING *;
         `, [id]);
-        return website;
+        return websites;
     } catch (error) {
         throw error;
     }
@@ -91,5 +91,5 @@ module.exports = {
     getWebsiteByName,
     createWebsite,
     updateWebsite,
-    deleteWebsite,
+    deleteWebsiteById,
 }

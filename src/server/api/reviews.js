@@ -1,12 +1,12 @@
-const express = require('express')
+const express = require('express');
+const { createReview } = require ('./reviews');
 const reviewsRouter = express.Router();
 
 const {
     getAllReviews,
     getReviewById,
     getReviewByName,
-    createReview,
-    deleteReview
+    createReview
 } = require('../db');
 
 const jwt = require('jsonwebtoken')
@@ -72,14 +72,17 @@ reviewsRouter.post('/', requireUser, requiredNotSent({requiredParams: ['name', '
     }
 });
 
-reviewsRouter.delete('/:id', async (req, res, next) => {
+async function deleteReviewById(id) {
   try {
-      const websites = await deleteReview(req.params.id);
-      res.send(websites);
+      const {rows: [reviews]} = await db.query(`
+      DELETE FROM reviews
+      WHERE id = $1
+      RETURNING *;
+      `, [id]);
+      return reviews;
   } catch (error) {
-      next(error);
+      throw error;
   }
-});
-
+}
 
 module.exports = reviewsRouter;

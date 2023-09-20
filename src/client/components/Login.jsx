@@ -1,29 +1,52 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import "./login.css";
 
-export default function LogIn({ setLoggedIn, setUser }) {
+const LogIn = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
 
   const navigate = useNavigate();
 
-  async function handleSubmit(event) {
-    event.preventDefault();
-    console.log('handle submit');
+  const handleUsernameChange = (e) => {
+    setUsername(e.target.value);
+  };
 
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+  };
+
+  const login = async() => {
     try {
-      const token = await loginUser(username, password);
-      setLoggedIn(token);
-      setUser(token);
-      console.log('token', token);
-    } catch (error) {
-      setError(error);
+        const response = await fetch('http://localhost:5432/api/users/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type' : 'application/json'
+            }, 
+            body: JSON.stringify({
+                email,
+                password
+            })
+        });
+        const result = await response.json();
+        setMessage(result.message);
+        if(!response.ok) {
+          throw(result)
+        }
+        setUsername('');
+        setPassword('');
+    } catch (err) {
+        console.error(`${err.name}: ${err.message}`);
     }
-    navigate('/posts');
   }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    login();
+    navigate('/reviews');
+  };
 
   return (
     <div className='login'>
@@ -39,7 +62,7 @@ export default function LogIn({ setLoggedIn, setUser }) {
             required={true}
             minLength={5}
             value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={handleUsernameChange}
           />
         </label>
         <label className='loginInfo'>
@@ -52,7 +75,7 @@ export default function LogIn({ setLoggedIn, setUser }) {
             required={true}
             minLength={5}
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={handlePasswordChange}
           />
         </label>
         <Link className='register' to='/register'>
@@ -63,3 +86,5 @@ export default function LogIn({ setLoggedIn, setUser }) {
     </div>
   );
 }
+
+export default LogIn;

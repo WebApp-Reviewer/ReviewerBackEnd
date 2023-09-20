@@ -6,16 +6,13 @@ export default function Navigation({ loggedIn, setUser, setLoggedIn }) {
     <div className="navigation">
       {loggedIn ? (
         <>
-          <Link className="navigation-links" to="/posts">
+          <Link className="navigation-links" to="/reviews">
             Postings
           </Link>
           <Link className="navigation-links" to="/profile">
             Personal Profile
           </Link>
-          <Link className="navigation-links" to="/messages">
-            Mail
-          </Link>
-          <Link className="navigation-links" to="/newpost">
+          <Link className="navigation-links" to="/postReview">
             Create a Post
           </Link>
           <Link className="navigation-links" to="/search">
@@ -35,6 +32,9 @@ export default function Navigation({ loggedIn, setUser, setLoggedIn }) {
         </>
       ) : (
         <>
+          <Link className="navigation-links" to="/">
+            Home
+          </Link>
           <Link className="navigation-links" to="/login">
             Login
           </Link>

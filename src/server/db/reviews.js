@@ -1,7 +1,6 @@
 const client = require('./client');
 
 //database functions
-
 async function getAllReviews() {
     try {
         const {rows} = await client.query(`
@@ -37,13 +36,13 @@ async function getReviewByName(name) {
     }
 }
 
-async function createReview({ name, content, rating }) {
+async function createReview({ websiteId, userId, name, content, rating, date }) {
     try {
         const {rows: [review]} = await client.query(`
-        INSERT INTO reviews(name, content, rating) VALUES ($1, $2, $3)
+        INSERT INTO reviews(websiteId, userId, name, content, rating, date) VALUES ($1, $2, $3, $4, $5, $6)
         ON CONFLICT (name) DO NOTHING
         RETURNING *
-        `, [name, content, rating]);
+        `, [websiteId, userId, name, content, rating, date]);
         return review;
     } catch (error) {
         throw error;
@@ -72,24 +71,10 @@ async function updateReview({id, ...fields}){
     }
 }
 
-async function deleteReview(id) {
-    try {
-        const { rows: [review] } = await client.query(`
-          DELETE FROM reviews
-          WHERE id=${ id }
-          RETURNING *;
-        `, [id]);
-        return review;
-    } catch (error) {
-        throw error;
-    }
-}
-
 module.exports = {
     getAllReviews,
     getReviewById,
     getReviewByName,
     createReview,
     updateReview,
-    deleteReview,
 }

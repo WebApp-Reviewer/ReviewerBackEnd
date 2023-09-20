@@ -5,8 +5,7 @@ const {
     getAllWebsites,
     getWebsiteById,
     getWebsiteByName,
-    createWebsite,
-    deleteWebsite
+    createWebsite
 } = require('../db');
 
 const jwt = require('jsonwebtoken')
@@ -70,15 +69,6 @@ websitesRouter.post('/', requireUser, requiredNotSent({requiredParams: ['name', 
     } catch (error) {
       next(error);
     }
-});
-
-websitesRouter.delete('/:id', async (req, res, next) => {
-  try {
-      const websites = await deleteWebsite(req.params.id);
-      res.send(websites);
-  } catch (error) {
-      next(error);
-  }
 });
 
 module.exports = websitesRouter;

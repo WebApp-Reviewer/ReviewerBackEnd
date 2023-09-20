@@ -1,4 +1,4 @@
-const db = require('./client')
+const db = require('./client');
 const bcrypt = require('bcrypt');
 const SALT_COUNT = 10;
 
@@ -10,6 +10,7 @@ const createAdmin = async({ name='first last', email, password }) => {
         VALUES($1, $2, $3)
         ON CONFLICT (email) DO NOTHING
         RETURNING *`, [name, email, hashedPassword]);
+
         return admin;
     } catch (err) {
         throw err;

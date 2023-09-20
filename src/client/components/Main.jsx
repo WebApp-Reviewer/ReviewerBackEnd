@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Homepage from './Homepage';
 import Signup from './Signup';
-import Login from './Login';
+import LogIn from './Login';
 import Sites from './Sites';
 import Reviews from './Reviews';
 import ItemDetail from './ItemDetail';
@@ -23,7 +23,7 @@ function Main() {
         {/* Guest Routes */}
         <Route path="/" element={<Homepage />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<LogIn />} />
         <Route path="/sites" element={<Sites />} />
         <Route path="/reviews" element={<Reviews />} />
         <Route path="/item/:itemId" element={<ItemDetail />} />
