@@ -72,7 +72,7 @@ async function updateWebsite({id, ...fields}) {
     }
 }
 
-async function deleteWebsiteById(id) {
+async function deleteWebsite(id) {
     try {
         const {rows: [websites]} = await db.query(`
         DELETE FROM websites
@@ -91,5 +91,5 @@ module.exports = {
     getWebsiteByName,
     createWebsite,
     updateWebsite,
-    deleteWebsiteById,
+    deleteWebsite
 }

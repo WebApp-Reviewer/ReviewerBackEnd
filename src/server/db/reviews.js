@@ -36,13 +36,13 @@ async function getReviewByName(name) {
     }
 }
 
-async function createReview({ websiteId, userId, name, content, rating, date }) {
+async function createReview({ name, content, rating, date }) {
     try {
         const {rows: [review]} = await client.query(`
-        INSERT INTO reviews(websiteId, userId, name, content, rating, date) VALUES ($1, $2, $3, $4, $5, $6)
+        INSERT INTO reviews(name, content, rating, date) VALUES ($1, $2, $3, $4)
         ON CONFLICT (name) DO NOTHING
         RETURNING *
-        `, [websiteId, userId, name, content, rating, date]);
+        `, [ name, content, rating, date]);
         return review;
     } catch (error) {
         throw error;
@@ -71,7 +71,7 @@ async function updateReview({id, ...fields}){
     }
 }
 
-async function deleteReviewById(id) {
+async function deleteReview(id) {
     try {
         const {rows: [reviews]} = await db.query(`
         DELETE FROM reviews
@@ -90,5 +90,5 @@ module.exports = {
     getReviewByName,
     createReview,
     updateReview,
-    deleteReviewById
+    deleteReview
 }

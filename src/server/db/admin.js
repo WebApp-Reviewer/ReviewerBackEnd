@@ -2,14 +2,14 @@ const db = require('./client');
 const bcrypt = require('bcrypt');
 const SALT_COUNT = 10;
 
-const createAdmin = async({ name='first last', email, password }) => {
+const createAdmin = async({ name='first last', username, password }) => {
     const hashedPassword = await bcrypt.hash(password, SALT_COUNT);
     try {
-        const { rows: [admin ] } = await db.query(`
-        INSERT INTO admin(name, email, password)
+        const { rows: [admin] } = await db.query(`
+        INSERT INTO admin(name, username, password)
         VALUES($1, $2, $3)
-        ON CONFLICT (email) DO NOTHING
-        RETURNING *`, [name, email, hashedPassword]);
+        ON CONFLICT (username) DO NOTHING
+        RETURNING *`, [name, username, hashedPassword]);
 
         return admin;
     } catch (err) {
@@ -28,12 +28,12 @@ async function getAllAdmin() {
     }
 }
 
-const getAdmin = async({email, password}) => {
-    if(!email || !password) {
+const getAdmin = async({username, password}) => {
+    if(!username || !password) {
         return;
     }
     try {
-        const admin = await getAdminByEmail(email);
+        const admin = await getAdminByUsername(username);
         if(!admin) return;
         const hashedPassword = admin.password;
         const passwordsMatch = await bcrypt.compare(password, hashedPassword);
@@ -45,17 +45,17 @@ const getAdmin = async({email, password}) => {
     }
 }
 
-const getAdminByEmail = async(email) => {
+const getAdminByUsername = async(username) => {
     try {
         const { rows: [ admin ] } = await db.query(`
         SELECT * 
         FROM admin
-        WHERE email=$1;`, [ email ]);
+        WHERE username=$1;`, [ email ]);
 
         if(!admin) {
             throw {
                 name: "AdminNotFoundError",
-                message: "An Admin with that email does not exist."
+                message: "An Admin with that username does not exist."
             }
         }
         return admin;
@@ -68,6 +68,6 @@ const getAdminByEmail = async(email) => {
 module.exports = {
     createAdmin,
     getAdmin,
-    getAdminByEmail,
+    getAdminByUsername,
     getAllAdmin
 };

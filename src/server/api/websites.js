@@ -54,7 +54,7 @@ websitesRouter.post('/', requireUser, requiredNotSent({requiredParams: ['name', 
       if(existingWebsite) {
         next({
           name: 'NotFound',
-          message: `An website with name ${name} already exists`
+          message: `A website with name ${name} already exists`
         });
       } else {
         const createdWebsite = await createWebsite({name, description, url, image});
@@ -74,8 +74,7 @@ websitesRouter.post('/', requireUser, requiredNotSent({requiredParams: ['name', 
 
 websitesRouter.delete('/:websiteId', requireUser, async (req, res, next) => {
   try {
-    const {websiteId} = req.params;
-    const websiteToUpdate = await getWebsiteById(websiteId);
+    const websiteToUpdate = await getWebsiteById(req.params.websiteId);
     if(!websiteToUpdate) {
       next({
         name: 'NotFound',

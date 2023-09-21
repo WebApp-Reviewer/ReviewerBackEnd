@@ -22,23 +22,23 @@ adminRouter.get('/', async( req, res, next) => {
 });
 
 adminRouter.post('/login', async(req, res, next) => {
-    const { email, password } = req.body;
+    const { username, password } = req.body;
 
-    if(!email || !password) {
+    if(!username || !password) {
         next({
             name: 'MissingCredentialsError',
-            message: 'Please supply both an email and password'
+            message: 'Please supply both an username and password'
         });
     }
     try {
-        const admin = await getAdmin({email, password});
+        const admin = await getAdmin({username, password});
         if(!admin) {
             next({
                 name: 'IncorrectCredentialsError',
                 message: 'Username or password is incorrect',
             })
         } else {
-            const token = jwt.sign({id: admin.id, email: admin.email}, JWT_SECRET, { expiresIn: '1w'});
+            const token = jwt.sign({id: admin.id, username: admin.username}, JWT_SECRET, { expiresIn: '1w'});
             res.send({ admin, message: "You're logged in!", token});
         }
     } catch(err) {

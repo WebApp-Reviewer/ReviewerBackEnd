@@ -23,23 +23,23 @@ usersRouter.get('/', async( req, res, next) => {
 });
 
 usersRouter.post('/login', async(req, res, next) => {
-    const { email, password } = req.body;
+    const { username, password } = req.body;
 
-    if(!email || !password) {
+    if(!username || !password) {
         next({
             name: 'MissingCredentialsError',
-            message: 'Please supply both an email and password'
+            message: 'Please supply both an username and password'
         });
     }
     try {
-        const user = await getUser({email, password});
+        const user = await getUser({username, password});
         if(!user) {
             next({
                 name: 'IncorrectCredentialsError',
                 message: 'Username or password is incorrect',
             })
         } else {
-            const token = jwt.sign({id: user.id, email: user.email}, JWT_SECRET, { expiresIn: '1w'});
+            const token = jwt.sign({id: user.id, username: user.username}, JWT_SECRET, { expiresIn: '1w'});
             res.send({ user, message: "You're logged in!", token});
         }
     } catch(err) {
@@ -51,13 +51,13 @@ usersRouter.post('/login', async(req, res, next) => {
 // POST /api/users/register
 usersRouter.post('/register', async (req, res, next) => {
     try {
-      const {email, password} = req.body;
-      const queriedUser = await getUser(email);
+      const {username, password} = req.body;
+      const queriedUser = await getUser(username);
       if (queriedUser) {
         res.status(401);
         next({
           name: 'UserExistsError',
-          message: 'A user by that email already exists'
+          message: 'A user by that username already exists'
         });
       } else if (password.length < 8) {
         res.status(401);
@@ -67,7 +67,7 @@ usersRouter.post('/register', async (req, res, next) => {
         });
       } else {
         const user = await createUser({
-            email,
+            username,
             password
         });
         if (!user) {
@@ -76,7 +76,7 @@ usersRouter.post('/register', async (req, res, next) => {
             message: 'There was a problem registering you. Please try again.',
           });
         } else {
-          const token = jwt.sign({id: user.id, email: user.email}, JWT_SECRET, { expiresIn: '1w' });
+          const token = jwt.sign({id: user.id, username: user.username}, JWT_SECRET, { expiresIn: '1w' });
           res.send({ user, message: "You're signed up!", token });
         }
       }

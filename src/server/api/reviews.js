@@ -7,7 +7,7 @@ const {
     getReviewById,
     getReviewByName,
     createReview,
-    deleteReviewById
+    deleteReview
 } = require('../db');
 
 
@@ -54,7 +54,7 @@ reviewsRouter.post('/', requireUser, requiredNotSent({requiredParams: ['name', '
       if(existingReview) {
         next({
           name: 'NotFound',
-          message: `An review with name ${name} already exists`
+          message: `A review with name ${name} already exists`
         });
       } else {
         const createdReview = await createReview({name, content, rating, date});
@@ -74,21 +74,20 @@ reviewsRouter.post('/', requireUser, requiredNotSent({requiredParams: ['name', '
 
 reviewsRouter.delete('/:reviewId', requireUser, async (req, res, next) => {
   try {
-    const {reviewId} = req.params;
-    const reviewToUpdate = await getReviewById(reviewId);
+    const reviewToUpdate = await getReviewById(req.params.reviewId);
     if(!reviewToUpdate) {
       next({
         name: 'NotFound',
         message: `No review by ID ${reviewId}`
       })
-    } else if(req.user.id !== reviewToUpdate.creatorId) {
+    } else if(req.user.id !== reviewToUpdate.authorId) {
       res.status(403);
       next({
         name: "WrongUserError",
-        message: "You must be the same user who created this routine to perform this action"
+        message: "You must be the same user who created this review to perform this action"
       });
     } else {
-      const deletedReview = await deleteReviewById(reviewId)
+      const deletedReview = await deleteReview(reviewId)
       res.send({success: true, ...deletedReview});
     }
   } catch (error) {
