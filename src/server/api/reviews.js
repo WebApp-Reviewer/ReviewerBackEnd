@@ -5,7 +5,7 @@ const { requireUser, requiredNotSent } = require('./utils')
 const {
     getAllReviews,
     getReviewById,
-    //getReviewByName,
+    getReviewByName,
     createReview,
     deleteReviewById
 } = require('../db');
@@ -35,7 +35,7 @@ reviewsRouter.get('/:id', async(req, res, next) => {
     }
 })
 
-/*reviewsRouter.get('/name', async(req, res, next) => {
+reviewsRouter.get('/name', async(req, res, next) => {
     try {
         const review = await getReviewByName();
 
@@ -45,11 +45,11 @@ reviewsRouter.get('/:id', async(req, res, next) => {
     } catch (error) {
         next(error)
     }
-})*/
+})
 
-reviewsRouter.post('/', requireUser, requiredNotSent({requiredParams: ['name', 'description', 'url', 'image']}), async (req, res, next) => {
+reviewsRouter.post('/', requireUser, requiredNotSent({requiredParams: ['name', 'content', 'rating', 'date']}), async (req, res, next) => {
     try {
-      const {name, description, url, image} = req.body;
+      const {name, content, rating, date} = req.body;
       const existingReview = await getReviewByName(name);
       if(existingReview) {
         next({
@@ -57,7 +57,7 @@ reviewsRouter.post('/', requireUser, requiredNotSent({requiredParams: ['name', '
           message: `An review with name ${name} already exists`
         });
       } else {
-        const createdReview = await createReview({name, description, url, image});
+        const createdReview = await createReview({name, content, rating, date});
         if(createdReview) {
           res.send(createdReview);
         } else {

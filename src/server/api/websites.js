@@ -5,7 +5,7 @@ const { requireUser, requiredNotSent } = require('./utils')
 const {
     getAllWebsites,
     getWebsiteById,
-    //getWebsiteByName,
+    getWebsiteByName,
     createWebsite,
     deleteWebsiteById
 } = require('../db');
@@ -35,7 +35,7 @@ websitesRouter.get('/:id', async(req, res, next) => {
     }
 })
 
-/*websitesRouter.get('/name', async(req, res, next) => {
+websitesRouter.get('/name', async(req, res, next) => {
     try {
         const website = await getWebsiteByName();
 
@@ -45,7 +45,7 @@ websitesRouter.get('/:id', async(req, res, next) => {
     } catch (error) {
         next(error)
     }
-})*/
+})
 
 websitesRouter.post('/', requireUser, requiredNotSent({requiredParams: ['name', 'description', 'url', 'image']}), async (req, res, next) => {
     try {
@@ -81,11 +81,11 @@ websitesRouter.delete('/:websiteId', requireUser, async (req, res, next) => {
         name: 'NotFound',
         message: `No website by ID ${websiteId}`
       })
-    } else if(req.user.id !== websiteToUpdate.creatorId) {
+    } else if(!admin) {
       res.status(403);
       next({
         name: "WrongUserError",
-        message: "You must be the same user who created this website to perform this action"
+        message: "You must be the admin to perform this action"
       });
     } else {
       const deletedWebsite = await deleteWebsiteById(websiteId)
