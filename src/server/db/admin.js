@@ -2,21 +2,6 @@ const db = require('./client');
 const bcrypt = require('bcrypt');
 const SALT_COUNT = 10;
 
-const createAdmin = async({ name='first last', email, password }) => {
-    const hashedPassword = await bcrypt.hash(password, SALT_COUNT);
-    try {
-        const { rows: [admin ] } = await db.query(`
-        INSERT INTO admin(name, email, password)
-        VALUES($1, $2, $3)
-        ON CONFLICT (email) DO NOTHING
-        RETURNING *`, [name, email, hashedPassword]);
-
-        return admin;
-    } catch (err) {
-        throw err;
-    }
-}
-
 async function getAllAdmin() {
     try {
         const {rows} = await db.query(`

@@ -1,13 +1,13 @@
 const express = require('express')
 const usersRouter = express.Router();
+const jwt = require('jsonwebtoken');
+const { JWT_SECRET = 'secretpass123' } = process.env;
 
 const {
     createUser,
-    getUserByEmail,
-    getAllUsers
+    getUser,
+    getAllUsers,
 } = require('../db');
-
-const jwt = require('jsonwebtoken')
 
 usersRouter.get('/', async( req, res, next) => {
     try {
@@ -24,6 +24,7 @@ usersRouter.get('/', async( req, res, next) => {
 
 usersRouter.post('/login', async(req, res, next) => {
     const { email, password } = req.body;
+
     if(!email || !password) {
         next({
             name: 'MissingCredentialsError',
@@ -31,63 +32,56 @@ usersRouter.post('/login', async(req, res, next) => {
         });
     }
     try {
-        const user = await getUserByEmail({email, password});
-        if(user && user.password === password) {
-            const token = jwt.sign({
-                id: user.id,
-                email
-            }, process.env.JWT_SECRET, {
-                expiresIn: '1w'
-            });
-
-            res.send({
-                message: 'Login successful!',
-                token
-            });
-        }
-        else {
+        const user = await getUser({email, password});
+        if(!user) {
             next({
                 name: 'IncorrectCredentialsError',
-                message: 'Username or password is incorrect'
-            });
+                message: 'Username or password is incorrect',
+            })
+        } else {
+            const token = jwt.sign({id: user.id, email: user.email}, JWT_SECRET, { expiresIn: '1w'});
+            res.send({ user, message: "You're logged in!", token});
         }
     } catch(err) {
         next(err);
     }
 });
 
-usersRouter.post('/register', async(req, res, next) => {
-    const { name, email, password } = req.body;
-
+  
+// POST /api/users/register
+usersRouter.post('/register', async (req, res, next) => {
     try {
-        const _user = await getUserByEmail(email);
-
-        if(_user) {
-            next({
-                name: 'UserExistsError',
-                message: 'A user with that email already exists'
-            });
-        }
-
+      const {email, password} = req.body;
+      const queriedUser = await getUser(email);
+      if (queriedUser) {
+        res.status(401);
+        next({
+          name: 'UserExistsError',
+          message: 'A user by that email already exists'
+        });
+      } else if (password.length < 8) {
+        res.status(401);
+        next({
+          name: 'PasswordLengthError',
+          message: 'Password Too Short!'
+        });
+      } else {
         const user = await createUser({
-            name,
             email,
             password
         });
-
-        const token = jwt.sign({
-            id: user.id,
-            email
-        }, process.env.JWT_SECRET, {
-            expiresIn: '1w'
-        });
-
-        res.send({
-            message: 'Sign up successful!',
-            token
-        });
-    } catch(error) {
-        next(error)
+        if (!user) {
+          next({
+            name: 'UserCreationError',
+            message: 'There was a problem registering you. Please try again.',
+          });
+        } else {
+          const token = jwt.sign({id: user.id, email: user.email}, JWT_SECRET, { expiresIn: '1w' });
+          res.send({ user, message: "You're signed up!", token });
+        }
+      }
+    } catch (error) {
+      next(error)
     }
 })
 

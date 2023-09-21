@@ -1,14 +1,13 @@
-const express = require('express')
+const express = require('express');
 const adminRouter = express.Router();
+const jwt = require('jsonwebtoken');
+const { JWT_SECRET = 'secretpass123' } = process.env;
 
 const {
-    createAdmin,
-    //getAdmin,
-    getAdminByEmail,
+    getAdmin,
     getAllAdmin
 } = require('../db');
 
-const jwt = require('jsonwebtoken')
 
 adminRouter.get('/', async( req, res, next) => {
     try {
@@ -24,6 +23,7 @@ adminRouter.get('/', async( req, res, next) => {
 
 adminRouter.post('/login', async(req, res, next) => {
     const { email, password } = req.body;
+
     if(!email || !password) {
         next({
             name: 'MissingCredentialsError',
@@ -31,64 +31,19 @@ adminRouter.post('/login', async(req, res, next) => {
         });
     }
     try {
-        const admin = await getAdminByEmail({email, password});
-        if(admin) {
-            const token = jwt.sign({
-                id: admin.id,
-                email
-            }, process.env.JWT_SECRET, {
-                expiresIn: '1w'
-            });
-
-            res.send({
-                message: 'Login successful!',
-                token
-            });
-        }
-        else {
+        const admin = await getAdmin({email, password});
+        if(!admin) {
             next({
                 name: 'IncorrectCredentialsError',
-                message: 'Username or password is incorrect'
-            });
+                message: 'Username or password is incorrect',
+            })
+        } else {
+            const token = jwt.sign({id: admin.id, email: admin.email}, JWT_SECRET, { expiresIn: '1w'});
+            res.send({ admin, message: "You're logged in!", token});
         }
     } catch(err) {
         next(err);
     }
 });
-
-adminRouter.post('/register', async(req, res, next) => {
-    const { name, email, password } = req.body;
-
-    try {
-        const _admin = await getAdminByEmail(email);
-
-        if(_admin) {
-            next({
-                name: 'AdminExistsError',
-                message: 'A admin with that email already exists'
-            });
-        }
-
-        const admin = await createAdmin({
-            name,
-            email,
-            password
-        });
-
-        const token = jwt.sign({
-            id: admin.id,
-            email
-        }, process.env.JWT_SECRET, {
-            expiresIn: '1w'
-        });
-
-        res.send({
-            message: 'Sign up successful!',
-            token
-        });
-    } catch({name, message}) {
-        next({name, message})
-    }
-})
 
 module.exports = adminRouter;

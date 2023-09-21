@@ -9,8 +9,8 @@ const createUser = async({ name='first last', email, password }) => {
         INSERT INTO users(name, email, password)
         VALUES($1, $2, $3)
         ON CONFLICT (email) DO NOTHING
-        RETURNING *`, [name, email, hashedPassword]);
-
+        RETURNING name, email
+        `, [name, email, hashedPassword]);
         return user;
     } catch (err) {
         throw err;
