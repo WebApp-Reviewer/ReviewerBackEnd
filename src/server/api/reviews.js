@@ -6,10 +6,10 @@ const {
     getAllReviews,
     getReviewById,
     getReviewByName,
-    createReview
+    createReview,
+    deleteReview
 } = require('../db');
 
-const jwt = require('jsonwebtoken')
 
 reviewsRouter.get('/', async(req, res, next) => {
     try {
@@ -19,47 +19,45 @@ reviewsRouter.get('/', async(req, res, next) => {
             reviews
         });
     } catch (error) {
-      console.log(error)
         next(error)
     }
 })
 
 reviewsRouter.get('/:id', async(req, res, next) => {
     try {
-        const reviews = await getReviewById();
+        const review = await getReviewById(req.params.id);
 
         res.send({
-            reviews
+            review
         });
     } catch (error) {
-      console.log(error)
         next(error)
     }
 })
 
 reviewsRouter.get('/name', async(req, res, next) => {
     try {
-        const reviews = await getReviewByName();
+        const review = await getReviewByName();
 
         res.send({
-            reviews
+            review
         });
     } catch (error) {
         next(error)
     }
 })
 
-reviewsRouter.post('/', requireUser, requiredNotSent({requiredParams: ['name', 'description', 'url', 'image']}), async (req, res, next) => {
+reviewsRouter.post('/', requireUser, requiredNotSent({requiredParams: ['name', 'content', 'rating', 'date']}), async (req, res, next) => {
     try {
-      const {name, description, url, image} = req.body;
+      const {name, content, rating, date} = req.body;
       const existingReview = await getReviewByName(name);
       if(existingReview) {
         next({
           name: 'NotFound',
-          message: `An review with name ${name} already exists`
+          message: `A review with name ${name} already exists`
         });
       } else {
-        const createdReview = await createReview({name, description, url, image});
+        const createdReview = await createReview({name, content, rating, date});
         if(createdReview) {
           res.send(createdReview);
         } else {
@@ -74,17 +72,27 @@ reviewsRouter.post('/', requireUser, requiredNotSent({requiredParams: ['name', '
     }
 });
 
-async function deleteReviewById(id) {
+reviewsRouter.delete('/:reviewId', requireUser, async (req, res, next) => {
   try {
-      const {rows: [reviews]} = await db.query(`
-      DELETE FROM reviews
-      WHERE id = $1
-      RETURNING *;
-      `, [id]);
-      return reviews;
+    const reviewToUpdate = await getReviewById(req.params.reviewId);
+    if(!reviewToUpdate) {
+      next({
+        name: 'NotFound',
+        message: `No review by ID ${reviewId}`
+      })
+    } else if(req.user.id !== reviewToUpdate.authorId) {
+      res.status(403);
+      next({
+        name: "WrongUserError",
+        message: "You must be the same user who created this review to perform this action"
+      });
+    } else {
+      const deletedReview = await deleteReview(reviewId)
+      res.send({success: true, ...deletedReview});
+    }
   } catch (error) {
-      throw error;
+    next(error);
   }
-}
+});
 
 module.exports = reviewsRouter;
