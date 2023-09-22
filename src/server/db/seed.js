@@ -1,7 +1,7 @@
 const db = require('./client');
 const { createUser } = require('./');
 const { createAdmin } = require('./admin');
-const { createWebsite } = require('./websites');
+const { createWebsite } = require('./website');
 const { createReview } =  require('./reviews');
 const { getAllUsers } = require('./users')
 

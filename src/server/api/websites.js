@@ -1,4 +1,4 @@
-const db = require('./client');
+const db = require('../db/client');
 
 //database functions 
 async function getAllWebsites() {

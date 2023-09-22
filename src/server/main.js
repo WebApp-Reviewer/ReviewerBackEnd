@@ -9,7 +9,7 @@ app.use(bodyParser.json());
 
 app.use(express.static('public'))
 
-const db = require('./db/client')
+const db = require('./server/db/client')
 db.connect()
 
 const apiRouter = require('./api');
