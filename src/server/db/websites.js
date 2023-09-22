@@ -37,13 +37,13 @@ async function getWebsiteByName(name) {
 }
 
 //select and return an array of all websites
-async function createWebsite({ name, url, description, image }) {
+async function createWebsite({ authorid, name, url, description, image }) {
     try {
         const {rows: [website]} = await db.query(`
-        INSERT INTO websites (name, url, description, image) VALUES ($1, $2, $3, $4)
+        INSERT INTO websites (authorid, name, url, description, image) VALUES ($1, $2, $3, $4, $5)
         ON CONFLICT (name) DO NOTHING
         RETURNING *
-        `, [name, url, description, image]);
+        `, [authorid, name, url, description, image]);
         return website;
     } catch (error) {
         throw error;
