@@ -7,7 +7,7 @@ const {
     getWebsiteById,
     getWebsiteByName,
     createWebsite,
-    deleteWebsiteById
+    deleteWebsite
 } = require('../db');
 
 
@@ -57,7 +57,7 @@ websitesRouter.post('/', requireUser, requiredNotSent({requiredParams: ['name', 
           message: `A website with name ${name} already exists`
         });
       } else {
-        const createdWebsite = await createWebsite({name, description, url, image});
+        const createdWebsite = await createWebsite({authorid: req.user.id, name, description, url, image});
         if(createdWebsite) {
           res.send(createdWebsite);
         } else {
@@ -68,6 +68,7 @@ websitesRouter.post('/', requireUser, requiredNotSent({requiredParams: ['name', 
         }
       }
     } catch (error) {
+      console.log("create website", error);
       next(error);
     }
 });
@@ -80,17 +81,18 @@ websitesRouter.delete('/:websiteId', requireUser, async (req, res, next) => {
         name: 'NotFound',
         message: `No website by ID ${websiteId}`
       })
-    } else if(!admin) {
+    } else if(req.user.id !== websiteToUpdate.authorid) {
       res.status(403);
       next({
         name: "WrongUserError",
-        message: "You must be the admin to perform this action"
+        message: "You must be the user who created this post to perform this action"
       });
     } else {
-      const deletedWebsite = await deleteWebsiteById(websiteId)
+      const deletedWebsite = await deleteWebsite(req.params.websiteId)
       res.send({success: true, ...deletedWebsite});
     }
   } catch (error) {
+    console.log("delete website", error);
     next(error);
   }
 });

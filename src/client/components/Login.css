@@ -60,28 +60,42 @@
   
   .loginButton {
     margin-top: 2vb;
-    width: 30%;
-    height: 5vh;
+    width: 40%;
+    height: 3em;
     background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.5s;
+    border-radius: 0.25em;
     color: black;
     text-align: center;
-    align-content: center;
+    cursor: pointer;
   }
-  
+
+.loginButton:hover{
+  transform: scale(1.25);
+}
+
+text{
+  position: relative;
+  bottom: -2em;
+}
+
 .register {
   background-color: transparent;
   color: white;
 }
   
 .hide {
-  display: none;
+  position: absolute;
   transform: scale(0);
 }
 
 .loginPopup {
   position: absolute;
-  height: 50%;
-  width: 50%;
+  height: 70%;
+  width: 70%;
   display: flex;
   flex-direction: column;
   align-items: center;

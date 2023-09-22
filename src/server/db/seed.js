@@ -45,6 +45,7 @@ const createTables = async () => {
       await db.query(`
       CREATE TABLE websites(
           id SERIAL PRIMARY KEY,
+          authorid INTEGER REFERENCES users(id),
           name VARCHAR(255) UNIQUE NOT NULL,
           url VARCHAR(225) NOT NULL,
           description VARCHAR(225) NOT NULL,
@@ -55,7 +56,7 @@ const createTables = async () => {
       await db.query(`
       CREATE TABLE reviews(
           id SERIAL PRIMARY KEY,
-          "authorId" INTEGER REFERENCES users(id),
+          authorid INTEGER REFERENCES users(id),
           name VARCHAR(225) UNIQUE NOT NULL,
           content VARCHAR(225) NOT NULL,
           rating INTEGER NOT NULL,
@@ -79,7 +80,7 @@ async function createInitialUsers() {
       { name: "Mohammed Ahmed", username: "mohammed", password: "mysecretpassword" },
       { name: "John Smith", username: "john", password: "password123" }
     ]
-    const users = await Promise.all(usersToCreate.map(user => createUser(user)));
+    const users = await Promise.all(usersToCreate.map(createUser));
 
     console.log('Users created:');
     console.log(users);
@@ -110,13 +111,14 @@ async function createInitialAdmin() {
 
 async function createInitialWebsites() {
   console.log('Starting to create websites...');
+  const [emily, liu, bella, john] = await getAllUsers();
+  
   try {
-
     const websitesToCreate = [
-      { name: 'Netflix', url: 'https://www.netflix.com/', description: 'Streaming platform to watch movies and shows online.', image: 'https://yt3.googleusercontent.com/ytc/AOPolaSbaST1JBNd9phht_n7tFN-VHx0FlvKPHeSDnmu4Q=s900-c-k-c0x00ffffff-no-rj' },
-      { name: 'Discord', url: 'https://discord.com/', description: 'Your place to talk and hangout.', image: 'https://play-lh.googleusercontent.com/0oO5sAneb9lJP6l8c6DH4aj6f85qNpplQVHmPmbbBxAukDnlO7DarDW0b-kEIHa8SQ' },
-      { name: 'Twitter', url: 'https://discord.com/', description: 'From breaking news and entertainment to sports and politics, get the full story with all the live commentary.', image: 'https://cdn-icons-png.flaticon.com/512/124/124021.png' },
-      { name: 'Slack', url: 'https://discord.com/', description: 'Work more easily with everyone.', image: 'https://yt3.googleusercontent.com/ytc/AOPolaTCsMhpgrJldSw0eABzVJ9JEc1pYyTST4CJ7JzN1Q=s900-c-k-c0x00ffffff-no-rj' },
+      { authorid: emily.id, name: 'Netflix', url: 'https://www.netflix.com/', description: 'Streaming platform to watch movies and shows online.', image: 'https://yt3.googleusercontent.com/ytc/AOPolaSbaST1JBNd9phht_n7tFN-VHx0FlvKPHeSDnmu4Q=s900-c-k-c0x00ffffff-no-rj' },
+      { authorid: liu.id, name: 'Discord', url: 'https://discord.com/', description: 'Your place to talk and hangout.', image: 'https://play-lh.googleusercontent.com/0oO5sAneb9lJP6l8c6DH4aj6f85qNpplQVHmPmbbBxAukDnlO7DarDW0b-kEIHa8SQ' },
+      { authorid: bella.id, name: 'Twitter', url: 'https://discord.com/', description: 'From breaking news and entertainment to sports and politics, get the full story with all the live commentary.', image: 'https://cdn-icons-png.flaticon.com/512/124/124021.png' },
+      { authorid: john.id, name: 'Slack', url: 'https://discord.com/', description: 'Work more easily with everyone.', image: 'https://yt3.googleusercontent.com/ytc/AOPolaTCsMhpgrJldSw0eABzVJ9JEc1pYyTST4CJ7JzN1Q=s900-c-k-c0x00ffffff-no-rj' },
     ]
     const websites = await Promise.all(websitesToCreate.map(createWebsite));
 
@@ -131,16 +133,18 @@ async function createInitialWebsites() {
 
 async function createInitialReviews() {
   console.log('Starting to create reviews...');
+  
   const [emily, liu, bella, john] = await getAllUsers();
+  console.log("authorId reviews", emily.id, liu.id, bella.id, john.id);
   try {
 
     const reviewsToCreate = [
-      { authorId: emily.id, name: 'Thorough review of Netflix', content: 'I love the clear layout of all the shows and movies. It is easy to navigate and find something to watch.', rating: 4, date: '2023-09-13' },
-      { authorId: liu.id, name: 'My thoughts on Discord', content: 'I like how I can play games with my friends with the option to live stream while on call.', rating: 4, date: '2023-04-20' },
-      { authorId: bella.id, name: 'How I feel about the new Twitter update', content: 'It took some time for me to get used to and I will still be calling it Twitter.', rating: 3, date: '2023-06-17' },
-      { authorId: john.id, name: 'Thoughts after using Slack', content: 'I thought it was pretty easy to use as a first time user. Love how more companies are using it as their communication platform.', rating: 4, date: '2023-08-25' },
+      { authorid: emily.id, name: 'Thorough review of Netflix', content: 'I love the clear layout of all the shows and movies. It is easy to navigate and find something to watch.', rating: 4, date: '2023-09-13' },
+      { authorid: liu.id, name: 'My thoughts on Discord', content: 'I like how I can play games with my friends with the option to live stream while on call.', rating: 4, date: '2023-04-20' },
+      { authorid: bella.id, name: 'How I feel about the new Twitter update', content: 'It took some time for me to get used to and I will still be calling it Twitter.', rating: 3, date: '2023-06-17' },
+      { authorid: john.id, name: 'Thoughts after using Slack', content: 'I thought it was pretty easy to use as a first time user. Love how more companies are using it as their communication platform.', rating: 4, date: '2023-08-25' },
     ]
-    const reviews = await Promise.all(reviewsToCreate.map(createReview));
+    const reviews = await Promise.all(reviewsToCreate.map(review => createReview(review)));
 
     console.log('Reviews created:');
     console.log(reviews);

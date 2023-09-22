@@ -43,7 +43,6 @@ usersRouter.post('/login', async(req, res, next) => {
             res.send({ user, message: "You're logged in!", token});
         }
     } catch(err) {
-      console.log(err)
         next(err);
     }
 });
