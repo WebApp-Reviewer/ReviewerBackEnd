@@ -7,6 +7,7 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [user, setUser] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [popupStyle, showPopup] = useState("hide");
 
   useEffect(() => {
     const token = localStorage.getItem('user token');

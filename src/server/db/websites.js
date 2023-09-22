@@ -91,5 +91,5 @@ module.exports = {
     getWebsiteByName,
     createWebsite,
     updateWebsite,
-    deleteWebsiteById,
+    deleteWebsiteById
 }

@@ -7,6 +7,12 @@ const LogIn = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
+  const [popupStyle, showPopup] = useState("hide");
+
+  const popup = () => {
+    showPopup("loginPopup")
+    setTimeout(() => showPopup("hide"), 3000)
+  }
 
   const navigate = useNavigate();
 
@@ -20,13 +26,13 @@ const LogIn = () => {
 
   const login = async() => {
     try {
-        const response = await fetch('http://localhost:5432/api/users/login', {
+        const response = await fetch('http://localhost:3000/api/users/login', {
             method: 'POST',
             headers: {
                 'Content-Type' : 'application/json'
             }, 
             body: JSON.stringify({
-                email,
+                username,
                 password
             })
         });
@@ -37,18 +43,21 @@ const LogIn = () => {
         }
         setUsername('');
         setPassword('');
-    } catch (err) {
-        console.error(`${err.name}: ${err.message}`);
-    }
+        return result;
+      } catch (error) {
+        console.log(error);
+        setError(error);
+      }
+      navigate('/reviews');
   }
 
   const handleSubmit = (e) => {
     e.preventDefault();
     login();
-    navigate('/reviews');
   };
 
   return (
+    <>
     <div className='login'>
       <h1 className='header'>Sign in</h1>
       <form className='loginBox' onSubmit={handleSubmit}>
@@ -81,9 +90,14 @@ const LogIn = () => {
         <Link className='register' to='/register'>
           Don't have an account, make it here.
         </Link>
-        <button className='loginButton'>Login</button>
+        <button className='loginButton' onClick={popup}>Login</button>
+        <div className={popupStyle}>
+          <h3>Login Failed</h3>
+          <p>Username or Password are incorrect</p>
+        </div>
       </form>
     </div>
+    </>
   );
 }
 

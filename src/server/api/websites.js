@@ -7,27 +7,25 @@ const {
     getWebsiteById,
     getWebsiteByName,
     createWebsite,
+    deleteWebsiteById
 } = require('../db');
 
-const jwt = require('jsonwebtoken')
 
 websitesRouter.get('/', async(req, res, next) => {
     try {
-      console.log('inside/websites')
         const websites = await getAllWebsites();
-        console.log('websites: ', websites)
+
         res.send({
             websites
         });
     } catch (error) {
-      console.log(error)
         next(error)
     }
 })
 
 websitesRouter.get('/:id', async(req, res, next) => {
     try {
-        const website = await getWebsiteById();
+        const website = await getWebsiteById(req.params.id);
 
         res.send({
             website
@@ -48,7 +46,7 @@ websitesRouter.get('/name', async(req, res, next) => {
         next(error)
     }
 })
-/*
+
 websitesRouter.post('/', requireUser, requiredNotSent({requiredParams: ['name', 'description', 'url', 'image']}), async (req, res, next) => {
     try {
       const {name, description, url, image} = req.body;
@@ -56,7 +54,7 @@ websitesRouter.post('/', requireUser, requiredNotSent({requiredParams: ['name', 
       if(existingWebsite) {
         next({
           name: 'NotFound',
-          message: `An website with name ${name} already exists`
+          message: `A website with name ${name} already exists`
         });
       } else {
         const createdWebsite = await createWebsite({name, description, url, image});
@@ -73,5 +71,28 @@ websitesRouter.post('/', requireUser, requiredNotSent({requiredParams: ['name', 
       next(error);
     }
 });
-*/
+
+websitesRouter.delete('/:websiteId', requireUser, async (req, res, next) => {
+  try {
+    const websiteToUpdate = await getWebsiteById(req.params.websiteId);
+    if(!websiteToUpdate) {
+      next({
+        name: 'NotFound',
+        message: `No website by ID ${websiteId}`
+      })
+    } else if(!admin) {
+      res.status(403);
+      next({
+        name: "WrongUserError",
+        message: "You must be the admin to perform this action"
+      });
+    } else {
+      const deletedWebsite = await deleteWebsiteById(websiteId)
+      res.send({success: true, ...deletedWebsite});
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = websitesRouter;
