@@ -1,16 +1,50 @@
-import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-import Login from './components/Login';
+// import './App.css';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import Root from "./routes/Root.jsx";
+import HomePage from './routes/HomePage.jsx'; 
+import WebsiteListings from "./routes/WebsiteListings.jsx"; 
+// import Profile from "./routes/Profile.jsx"; 
+import Register from "./routes/Register.jsx"; 
+import Login from "./routes/Login.jsx"; 
+import SingleWebsite from './components/SingleWebsite.jsx';
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Root />,
+    children: [
+      {
+        path: "HomePage",
+        element: <HomePage />,
+      },
+      {
+        path: "WebsiteListings", // Updated path
+        element: <WebsiteListings />,
+      },
+      {
+        path: "websites/:id", // Updated path
+        element: <SingleWebsite />,
+      },
+      // {
+      //   path: "Profile",
+      //   element: <Profile />,
+      // }, 
+      {
+        path: "Register",
+        element: <Register />,
+      },
+      {
+        path: "Login",
+        element: <Login />,
+      },
+    ],
+  },
+]);
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
-    <div className='App'>
-        <h1>Boilerplate</h1>
-        <img id='comp-img' src='./computer.png'></img>
-        <p>Replace the starter code in this template with something cool</p>
-        <Login />
+    <div className="App">
+      <RouterProvider router={router} />
     </div>
   );
 }
