@@ -1,30 +1,52 @@
-import { useState, useEffect } from 'react';
-import MainDemo from './components/MainDemo';
-import Navigation from './components/navbar';
-import './App.css';
+// import './App.css';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import Root from "./routes/Root.jsx";
+import HomePage from './routes/HomePage.jsx'; 
+import WebsiteListings from "./routes/WebsiteListings.jsx"; 
+// import Profile from "./routes/Profile.jsx"; 
+import Register from "./routes/Register.jsx"; 
+import Login from "./routes/Login.jsx"; 
+import SingleWebsite from './components/SingleWebsite.jsx';
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Root />,
+    children: [
+      {
+        path: "HomePage",
+        element: <HomePage />,
+      },
+      {
+        path: "WebsiteListings", // Updated path
+        element: <WebsiteListings />,
+      },
+      {
+        path: "websites/:id", // Updated path
+        element: <SingleWebsite />,
+      },
+      // {
+      //   path: "Profile",
+      //   element: <Profile />,
+      // }, 
+      {
+        path: "Register",
+        element: <Register />,
+      },
+      {
+        path: "Login",
+        element: <Login />,
+      },
+    ],
+  },
+]);
 
 function App() {
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [user, setUser] = useState('');
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const token = localStorage.getItem('user token');
-    //This will ask for the token to be retrieved
-    if (token) {
-      setLoggedIn(true); //Once the token is returned it will log you in
-      const username = localStorage.getItem('username'); //This one will find your username in the system
-      setUser(username); //This will set your username once found and verified
-    }
-    setIsLoading(false);
-  }, [user])
-
   return (
-    <div className="appStyle">
-      <Navigation loggedIn={loggedIn} setLoggedIn={setLoggedIn} setUser={setUser} />
-      <MainDemo isLoading={isLoading} user={user} setUser={setUser} loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
+    <div className="App">
+      <RouterProvider router={router} />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

@@ -50,7 +50,7 @@ const getAdminByUsername = async(username) => {
         const { rows: [ admin ] } = await db.query(`
         SELECT * 
         FROM admin
-        WHERE username=$1;`, [ email ]);
+        WHERE username=$1;`, [ username ]);
 
         if(!admin) {
             throw {
