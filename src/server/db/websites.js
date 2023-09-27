@@ -1,4 +1,5 @@
 const db = require('./client');
+const util = require('./utils');
 
 //database functions 
 async function getAllWebsites() {
@@ -50,27 +51,32 @@ async function createWebsite({ authorid, name, url, description, image }) {
     }
 }
 
-async function updateWebsite({id, ...fields}) {
+//FIX UPDATE
+async function updateWebsite({websiteId, ...fields}) {
+    
     try {
-        const toUpdate = {}
-        for (let column in fields) {
-            if (fields[column] !== undefined) toUpdate[column] =fields[column];
-        }
-        let website;
-        if (util.dbFields(toUpdate).insert.length > 0) {
-            const {rows} = await db.query(`
+      const toUpdate = {};
+      for(let column in fields) {
+        if(fields[column] !== undefined) {
+            toUpdate[column] = fields[column];  
+        } 
+      }
+      let website;
+      if (util.dbFields(fields).insert.length > 0) {
+        const {rows} = await db.query(`
             UPDATE websites
             SET ${ util.dbFields(toUpdate).insert }
-            WHERE id=${ id }
+            WHERE id=${ websiteId }
             RETURNING *;
-            `, Object.values(toUpdate));
-            website = rows[0];
-        }
+        `, Object.values(toUpdate));
+        website = rows[0];
         return website;
+      }
     } catch (error) {
-        throw error;
+      console.log("fields", fields);
+      throw error;
     }
-}
+  }
 
 async function deleteWebsite(id) {
     try {

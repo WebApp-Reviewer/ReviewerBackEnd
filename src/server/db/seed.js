@@ -38,7 +38,7 @@ const createTables = async () => {
           name VARCHAR(255) UNIQUE NOT NULL,
           username VARCHAR(255) UNIQUE NOT NULL,
           password VARCHAR(255) NOT NULL,
-          secretKey VARCHAR(255)
+          secret VARCHAR(255) UNIQUE
       );
       `)
 
@@ -96,10 +96,10 @@ async function createInitialAdmin() {
   try {
 
     const adminToCreate = [
-      { name: "WebAppAdmin", username: "webadmin", password: "adminpassword123", secretKey: "NoPublicAccess!" },
+      { name: "WebAppAdmin", username: "webadmin", password: "adminpassword123", secret: "NoPublicAccess" },
     ]
-    const admin = await Promise.all(adminToCreate.map(createAdmin));
-
+    const admin = await Promise.all(adminToCreate.map(admin => createAdmin(admin)));
+    
     console.log('Admin created:');
     console.log(admin);
     console.log('Finished creating admin!');
