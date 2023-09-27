@@ -7,7 +7,8 @@ const {
     getWebsiteById,
     getWebsiteByName,
     createWebsite,
-    deleteWebsite
+    deleteWebsite,
+    updateWebsite,
 } = require('../db');
 
 
@@ -72,6 +73,40 @@ websitesRouter.post('/', requireUser, requiredNotSent({requiredParams: ['name', 
       next(error);
     }
 });
+
+websitesRouter.patch('/:websiteId', requireUser, requiredNotSent({requiredParams: ['name', 'description', 'url', 'image'], atLeastOne: true}), async (req, res, next) => {
+  try {
+    const {name, description, url, image} = req.body;
+    const {websiteId} = req.params;
+    const websiteToUpdate = await getWebsiteById(websiteId);
+    if(!websiteToUpdate) {
+      next({
+        name: 'NotFound',
+        message: `No website by ID ${websiteId}`
+      })
+    } else if(req.user.id !== websiteToUpdate.authorid) {
+      res.status(403);
+      next({
+        name: "WrongUserError",
+        message: "You must be the same user who created this website to perform this action"
+      });
+    } else {
+      const updatedWebsite = await updateWebsite({websiteId, authorid: req.user.id, name, description, url, image});
+      if(updatedWebsite) {
+        res.send(updatedWebsite);
+      } else {
+        next({
+          name: 'FailedToUpdate',
+          message: 'There was an error updating your website'
+        })
+      }
+    }
+  } catch (error) {
+    console.log("updating website error", error);
+    next(error);
+  }
+});
+
 
 websitesRouter.delete('/:websiteId', requireUser, async (req, res, next) => {
   try {

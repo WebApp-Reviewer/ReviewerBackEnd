@@ -1,4 +1,5 @@
 const client = require('./client');
+const util = require('./utils');
 
 //database functions
 async function getAllReviews() {
@@ -49,18 +50,20 @@ async function createReview({ authorid, name, content, rating, date }) {
     }
 }
 
-async function updateReview({id, ...fields}){
+async function updateReview({reviewId, ...fields}){
     try {
       const toUpdate = {}
       for(let column in fields) {
-        if(fields[column] !== undefined) toUpdate[column] = fields[column];
+        if(fields[column] !== undefined) {
+            toUpdate[column] = fields[column];   
+        }
       }
       let review;
       if (util.dbFields(toUpdate).insert.length > 0) {
         const {rows} = await client.query(`
           UPDATE reviews
           SET ${ util.dbFields(toUpdate).insert }
-          WHERE id=${ id }
+          WHERE id=${ reviewId }
           RETURNING *;
         `, Object.values(toUpdate));
         review = rows[0];
