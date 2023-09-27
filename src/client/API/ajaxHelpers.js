@@ -11,33 +11,50 @@ if (currentToken !== null) {
 }
 
 export async function fetchAllUsers() {
-    const response = await fetch(`${BASE_URL}/users`);
-    const result = await response.json();
-    return result.data.users;
+    try {
+       const response = await fetch(`${BASE_URL}/users`);
+       const users = await response.json();
+       return users;
+    } catch (error) {
+        console.error('Trouble fetching users!', error);
+    }
+} 
+
+
+export async function registerUser(username, password) {
+    const sendData = {
+        user: {username: username, password: password},
+    };
+
+    try {
+        const response = await fetch(`${BASE_URL}/users/register`, {
+            method: 'POST',
+            headers: getHeaders(),
+            body: JSON.stringify(sendData)
+        });
+        const result = await response.json();
+        const token = result.data.token;
+        localStorage.setItem('user-token', token);
+        localStorage.setItem('username', username);
+        return result;
+    } catch (error) {
+        console.error('Could not register', error);
+    }
+
 }
 
-export async function registerUser(user) {
-    const response = await fetch(`${BASE_URL}/users/register`, {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(user)
-    })
-    const result = await response.json();
-    return result;
-}
+export async function userLogin(username, password) {
+    const sendData = {
+        user: {username: username, password: password}
+    };
 
-export async function userLogin(user) {
-    const response = await fetch(`${BASE_URL}/users/login`, {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(user)
-    })
-    const result = await response.json();
-    return result;
+    try {
+        const response = await fetch(`${BASE_URL}/users/register`, {
+            method: 'POST',
+            headers: getHeaders(),
+            body: JSON.stringify(sendData)
+        });
+    }
 }
 
 export async function featchAllWebsites() {
