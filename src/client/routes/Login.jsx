@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState,} from "react";
 import { userLogin } from "../ajaxHelper";
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext, Link } from "react-router-dom";
 
 const Login = () => {
     const [username, setUsername] = useState('');
@@ -52,10 +52,10 @@ const Login = () => {
                         {passwordErrorMessage && <p>{passwordErrorMessage}</p>}
                         <button type="submit" className="submitButton">Log In</button>
                     </form>
+                    <Link to="/AdminLogin" className="adminLink">Click here for admin login</Link>
                 </>
             )}
         </div>
     );
 };
-//<Link to="/adminLogin" className="linkStyle">Click here for admin login</Link>
 export default Login;

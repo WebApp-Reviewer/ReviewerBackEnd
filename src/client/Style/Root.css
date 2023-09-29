@@ -32,7 +32,7 @@ nav{
     justify-content: space-between;
     align-items: center;
     background-color: #1b2430;
-    padding: 15px 30%;
+    padding: 15px 25%;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.06);
 }
 
@@ -66,6 +66,12 @@ nav{
 }
 
 .linkStyle:hover {
-  filter: invert(1) hue-rotate(150.4deg) brightness(0.9);
+  filter: invert(3) hue-rotate(150.4deg) brightness(0.9);
   transition-duration: 0.5s;
+}
+
+.adminLink{
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: black;
 }

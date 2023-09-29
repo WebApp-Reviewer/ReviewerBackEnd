@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Outlet, Link } from "react-router-dom";
-import { featchAllWebsites } from "../ajaxHelper";
+import { fetchAllWebsites } from "../ajaxHelper";
 import '../Style/Root.css'
 
 export default function Root() {
@@ -19,7 +19,7 @@ export default function Root() {
 
     useEffect(() => {
         if (!localStorage.getItem('websites')) {
-            featchAllWebsites()
+            fetchAllWebsites()
                 .then(websites => {
                     localStorage.setItem('websites', JSON.stringify(websites));
                 });
@@ -34,6 +34,7 @@ export default function Root() {
                 <div className="navbar">
                     <Link to="Homepage" className="linkStyle">Home</Link>
                     <Link to="Websiteslist" className="linkStyle">Websites</Link>
+                    <Link to="Reviews" className="linkStyle">Reviews</Link>
                     {token ? <Link to="profile" className="linkStyle">Profile</Link> : null}
                     {!token && (
                         <>

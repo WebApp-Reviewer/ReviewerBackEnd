@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { userLogin } from "../ajaxHelper";
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext, Link } from "react-router-dom";
 
-const adminLogin = () => {
+const AdminLogin = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [secretkey, setSecretKey] = useState('');
@@ -63,10 +63,11 @@ const adminLogin = () => {
                         {passwordErrorMessage && <p>{passwordErrorMessage}</p>}
                         <button type="submit" className="submitButton">Log In</button>
                     </form>
+                    <Link to="/Login" className="adminLink">Click here to return to login</Link>
                 </>
             )}
         </div>
     );
 };
 
-export default adminLogin;
+export default AdminLogin;

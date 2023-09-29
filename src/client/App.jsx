@@ -7,7 +7,8 @@ import WebsiteListings from "./routes/WebsiteListings.jsx";
 import Register from "./routes/Register.jsx"; 
 import Login from "./routes/Login.jsx"; 
 import SingleWebsite from './components/SingleWebsite.jsx';
-import adminLogin from './routes/adminLogin.jsx';
+import AdminLogin from './routes/adminLogin.jsx';
+import ReviewList from './routes/Reviews.jsx';
 
 const router = createBrowserRouter([
   {
@@ -39,8 +40,12 @@ const router = createBrowserRouter([
         element: <Login />,
       },
       {
-        path: "adminLogin",
-        element: <adminLogin />,
+        path: "Reviews",
+        element: <ReviewList />,
+      },
+      {
+        path: "AdminLogin",
+        element: <AdminLogin />,
       },
     ],
   },
