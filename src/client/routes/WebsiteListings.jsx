@@ -4,7 +4,7 @@ import WebsitesList from "../components/WebsitesList";
 const WebsiteListings = () => {
     return (
         <div>
-            <h2> Welcome to the Website List</h2>\
+            <h2> Welcome to the Website List</h2>
             <WebsitesList/>
         </div>
     );

@@ -7,6 +7,7 @@ const {
     createUser,
     getUser,
     getAllUsers,
+    getUserById,
 } = require('../db');
 
 usersRouter.get('/', async( req, res, next) => {
@@ -83,6 +84,17 @@ usersRouter.post('/register', async (req, res, next) => {
     } catch (error) {
       next(error)
     }
+})
+
+//Get User ID
+usersRouter.get('/:id', async(req, res, next) => {
+  try {
+    const user = await getUserById(req.params.id);
+    res.send({user});
+  } catch(error) {
+    console.log(error)
+    next(error)
+  }
 })
 
 module.exports = usersRouter;

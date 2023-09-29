@@ -32,8 +32,7 @@ export default function Root() {
                 <h2 className="webName">Website Reviewer</h2>
                 <nav className="headerLink">
                 <div className="navbar">
-                    <Link to="Homepage" className="linkStyle">Home</Link>
-                    <Link to="Websiteslist" className="linkStyle">Websites</Link>
+                    <Link to="WebsiteListings" className="linkStyle">Homepage</Link>
                     <Link to="Reviews" className="linkStyle">Reviews</Link>
                     {token ? <Link to="profile" className="linkStyle">Profile</Link> : null}
                     {!token && (

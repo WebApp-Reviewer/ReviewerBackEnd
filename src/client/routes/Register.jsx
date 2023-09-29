@@ -1,4 +1,4 @@
-
+import '../Style/Login.css'
 import { useState } from 'react';
 import { registerUser } from '../ajaxHelper';
 import { useOutletContext } from 'react-router-dom';

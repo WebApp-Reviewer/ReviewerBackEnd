@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost3000/api";
+const BASE_URL = "http://localhost:3000/api";
 
 
 function getHeaders() {
@@ -20,6 +20,19 @@ export async function fetchAllUsers() {
         console.error('Trouble fetching users!', error);
     }
 } 
+
+export async function fetchMyData() {
+  try {
+      const response = await fetch(`${BASE_URL}/users/:id`, {
+          headers: getHeaders(),
+      });
+      const result = await response.json();
+      console.log("my data", result);
+      return result;
+  } catch (error) {
+      console.error("Uh oh, trouble fetching your data", error);
+  }
+}
 
 export async function registerUser(username, password) {
     const sendData = {
@@ -49,7 +62,7 @@ export async function userLogin(username, password) {
     };
 
     try {
-        const response = await fetch(`${BASE_URL}/users/register`, {
+        const response = await fetch(`${BASE_URL}/users/login`, {
             method: 'POST',
             headers: getHeaders(),
             body: JSON.stringify(sendData)
@@ -62,6 +75,27 @@ export async function userLogin(username, password) {
     } catch (error) {
       console.error('Count not login', error);
     }
+}
+
+export async function adminLogin(username, password, secret) {
+  const sendData = {
+    admin: {username: username, password: password, secret: secret}
+  };
+
+  try {
+    const response = await fetch(`${BASE_URL}/admin/login`, {
+        method: 'POST',
+        headers: getHeaders(),
+        body: JSON.stringify(sendData)
+    });
+    const result = await response.json();
+    const token = result.data.token;
+    localStorage.setItem('admin-token', token);
+    localStorage.setItem('username', username);
+    return result;
+  } catch (error) {
+    console.error('Count not login', error);
+  }
 }
 
 export async function fetchAllWebsites() {
@@ -144,6 +178,7 @@ export async function fetchAllReviews() {
     const response = await fetch(`${BASE_URL}/reviews`, {
       headers: getHeaders(),
     });
+    console.log({response});
     const result = await response.json();
     return result;
   } catch (error) {
@@ -153,7 +188,7 @@ export async function fetchAllReviews() {
 
 export async function fetchSingleReview(reviewId) {
   try {
-    const response = await fetch(`${BASE_URL}/websites/${reviewId}`, {
+    const response = await fetch(`${BASE_URL}/reviews/${reviewId}`, {
       headers: getHeaders(),
     });
     const result = await response.json();
@@ -181,9 +216,9 @@ export async function createReview(name, content, rating, date) {
   }
 }
 
-export async function deleteWebsiteByReview(reviewId) {
+export async function deleteReview(reviewId) {
   try {
-      const response = await fetch (`$BASE_URL}/websites/${reviewId}`, {
+      const response = await fetch (`$BASE_URL}/reviews/${reviewId}`, {
           method: 'DELETE',
           headers: getHeaders(),
       });
@@ -200,7 +235,7 @@ export async function editReview(name, content, rating, date) {
   };
 
   try {
-    const response = await fetch(`${BASE_URL}/websites/${websiteId}`, {
+    const response = await fetch(`${BASE_URL}/reviews/${websiteId}`, {
       method: 'PATCH', 
       headers: getHeaders(),
       body: JSON.stringify(sendData),

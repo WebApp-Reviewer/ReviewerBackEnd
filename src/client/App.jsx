@@ -2,8 +2,8 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Root from "./routes/Root.jsx";
 import HomePage from './routes/HomePage.jsx'; 
-import WebsiteListings from "./routes/WebsiteListings.jsx"; 
-// import Profile from "./routes/Profile.jsx"; 
+import WebsiteListings from './routes/WebsiteListings.jsx';
+import Profile from './routes/Profile.jsx';
 import Register from "./routes/Register.jsx"; 
 import Login from "./routes/Login.jsx"; 
 import SingleWebsite from './components/SingleWebsite.jsx';
@@ -27,10 +27,10 @@ const router = createBrowserRouter([
         path: "websites/:id", // Updated path
         element: <SingleWebsite />,
       },
-      // {
-      //   path: "Profile",
-      //   element: <Profile />,
-      // }, 
+      {
+        path: "Profile",
+        element: <Profile />,
+      }, 
       {
         path: "Register",
         element: <Register />,

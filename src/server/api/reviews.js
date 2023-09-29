@@ -20,6 +20,7 @@ reviewsRouter.get('/', async(req, res, next) => {
             reviews
         });
     } catch (error) {
+      console.log(error)
         next(error)
     }
 })

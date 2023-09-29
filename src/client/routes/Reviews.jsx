@@ -5,7 +5,7 @@ const ReviewList = () => {
     return (
         <div>
         <h2>Testing if it appears</h2>
-            <Reviews/>
+            <Reviews />
         </div>
     );
 };
