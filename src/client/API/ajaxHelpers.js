@@ -21,6 +21,19 @@ export async function fetchAllUsers() {
     }
 } 
 
+export async function fetchMyData() {
+  try {
+      const response = await fetch(`${BASE_URL}/users/:id`, {
+          headers: getHeaders(),
+      });
+      const result = await response.json();
+      console.log("my data", result);
+      return result;
+  } catch (error) {
+      console.error("Uh oh, trouble fetching your data", error);
+  }
+}
+
 export async function registerUser(username, password) {
     const sendData = {
         user: {username: username, password: password},
@@ -62,6 +75,27 @@ export async function userLogin(username, password) {
     } catch (error) {
       console.error('Count not login', error);
     }
+}
+
+export async function adminLogin(username, password, secret) {
+  const sendData = {
+    admin: {username: username, password: password, secret: secret}
+  };
+
+  try {
+    const response = await fetch(`${BASE_URL}/admin/login`, {
+        method: 'POST',
+        headers: getHeaders(),
+        body: JSON.stringify(sendData)
+    });
+    const result = await response.json();
+    const token = result.data.token;
+    localStorage.setItem('admin-token', token);
+    localStorage.setItem('username', username);
+    return result;
+  } catch (error) {
+    console.error('Count not login', error);
+  }
 }
 
 export async function fetchAllWebsites() {

@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import Main from './components/Main'
-import NavBar from './components/NavBar'
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -21,10 +20,6 @@ function App() {
 
   return (
     <div>
-      <NavBar 
-      loggedIn={loggedIn}
-      setLoggedIn={setLoggedIn}
-      setUser={setUser} />
       <Main 
       isLoading={isLoading}
       user={user}

@@ -11,7 +11,7 @@ export default function Websites() {
                     <h1>{website.name}</h1>
                     <h2>{website.description}</h2>
                     <h2>{website.url}</h2>
-                    <h2>{webiste.image}</h2>
+                    <h2>{website.image}</h2>
                 </div>
             )
         })
