@@ -49,7 +49,7 @@ export async function userLogin(username, password) {
     };
 
     try {
-        const response = await fetch(`${BASE_URL}/users/register`, {
+        const response = await fetch(`${BASE_URL}/users/login`, {
             method: 'POST',
             headers: getHeaders(),
             body: JSON.stringify(sendData)
@@ -153,7 +153,7 @@ export async function fetchAllReviews() {
 
 export async function fetchSingleReview(reviewId) {
   try {
-    const response = await fetch(`${BASE_URL}/websites/${reviewId}`, {
+    const response = await fetch(`${BASE_URL}/reviews/${reviewId}`, {
       headers: getHeaders(),
     });
     const result = await response.json();
@@ -181,9 +181,9 @@ export async function createReview(name, content, rating, date) {
   }
 }
 
-export async function deleteWebsite(reviewId) {
+export async function deleteReview(reviewId) {
   try {
-      const response = await fetch (`$BASE_URL}/websites/${reviewId}`, {
+      const response = await fetch (`$BASE_URL}/reviews/${reviewId}`, {
           method: 'DELETE',
           headers: getHeaders(),
       });
@@ -200,7 +200,7 @@ export async function editReview(name, content, rating, date) {
   };
 
   try {
-    const response = await fetch(`${BASE_URL}/websites/${websiteId}`, {
+    const response = await fetch(`${BASE_URL}/reviews/${websiteId}`, {
       method: 'PATCH', 
       headers: getHeaders(),
       body: JSON.stringify(sendData),
