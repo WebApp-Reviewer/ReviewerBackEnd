@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react'
 import Main from './components/Main'
+import Navbar from './components/Navbar'
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
+  const [adminLoggedIn, setAdminLoggedIn] = useState(false);
   const [user, setUser] = useState('');
   const [isLoading, setIsLoading] = useState(true);
 
@@ -11,6 +13,8 @@ function App() {
     if (token) {
       //if token is present user is logged in
       setLoggedIn(true);
+      //if token is present admin is logged in
+      setAdminLoggedIn(true);
       //get user's username
       const username = localStorage.getItem('username');
       setUser(username);
@@ -20,12 +24,18 @@ function App() {
 
   return (
     <div>
+      <Navbar 
+      loggedIn={loggedIn} 
+      setLoggedIn={setLoggedIn}
+      setUser={setUser} />
       <Main 
       isLoading={isLoading}
       user={user}
       setUser={setUser}
       loggedIn={loggedIn}
-      setLoggedIn={setLoggedIn} />
+      setLoggedIn={setLoggedIn}
+      adminLoggedIn={adminLoggedIn}
+      setAdminLoggedIn={setAdminLoggedIn} />
     </div>
   );
 }

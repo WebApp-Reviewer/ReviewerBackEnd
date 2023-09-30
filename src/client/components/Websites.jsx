@@ -7,11 +7,11 @@ export default function Websites() {
     function renderAllWebsites() {
         return websites.map((website) => {
             return (
-                <div key={website.id}>
-                    <h1>{website.name}</h1>
-                    <h2>{website.description}</h2>
-                    <h2>{website.url}</h2>
-                    <h2>{website.image}</h2>
+                <div key={website?.id}>
+                    <h1>{website?.name}</h1>
+                    <h2>{website?.description}</h2>
+                    <h2>{website?.url}</h2>
+                    <h2>{website?.image}</h2>
                 </div>
             )
         })
@@ -20,7 +20,8 @@ export default function Websites() {
     useEffect(() => {
         async function allWebsitesHandler() {
             const result = await fetchAllWebsites();
-            setWebsites(result.data.websites);
+            setWebsites(result.websites);
+            console.log("websites", result.websites);
         } allWebsitesHandler();
     })
 
