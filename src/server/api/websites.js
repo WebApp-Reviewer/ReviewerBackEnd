@@ -58,7 +58,7 @@ websitesRouter.post('/', requireUser, requiredNotSent({requiredParams: ['name', 
           message: `A website with name ${name} already exists`
         });
       } else {
-        const createdWebsite = await createWebsite({authorid: req.user.id, name, description, url, image});
+        const createdWebsite = await createWebsite({name, description, url, image});
         if(createdWebsite) {
           res.send(createdWebsite);
         } else {
@@ -84,14 +84,8 @@ websitesRouter.patch('/:websiteId', requireUser, requiredNotSent({requiredParams
         name: 'NotFound',
         message: `No website by ID ${websiteId}`
       })
-    } else if(req.user.id !== websiteToUpdate.authorid) {
-      res.status(403);
-      next({
-        name: "WrongUserError",
-        message: "You must be the same user who created this website to perform this action"
-      });
     } else {
-      const updatedWebsite = await updateWebsite({websiteId, authorid: req.user.id, name, description, url, image});
+      const updatedWebsite = await updateWebsite({websiteId, name, description, url, image});
       if(updatedWebsite) {
         res.send(updatedWebsite);
       } else {
@@ -116,12 +110,6 @@ websitesRouter.delete('/:websiteId', requireUser, async (req, res, next) => {
         name: 'NotFound',
         message: `No website by ID ${websiteId}`
       })
-    } else if(req.user.id !== websiteToUpdate.authorid) {
-      res.status(403);
-      next({
-        name: "WrongUserError",
-        message: "You must be the user who created this post to perform this action"
-      });
     } else {
       const deletedWebsite = await deleteWebsite(req.params.websiteId)
       res.send({success: true, ...deletedWebsite});

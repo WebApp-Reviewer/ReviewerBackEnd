@@ -37,13 +37,13 @@ async function getReviewByName(name) {
     }
 }
 
-async function createReview({ authorid, name, content, rating, date }) {
+async function createReview({ name, content, rating, date }) {
     try {
         const {rows: [review]} = await client.query(`
-        INSERT INTO reviews(authorid, name, content, rating, date) VALUES ($1, $2, $3, $4, $5)
+        INSERT INTO reviews(name, content, rating, date) VALUES ($1, $2, $3, $4)
         ON CONFLICT (name) DO NOTHING
         RETURNING *
-        `, [ authorid, name, content, rating, date]);
+        `, [name, content, rating, date]);
         return review;
     } catch (error) {
         throw error;

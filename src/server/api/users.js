@@ -23,6 +23,16 @@ usersRouter.get('/', async( req, res, next) => {
     }
 });
 
+usersRouter.get('/:id', async(req, res, next) => {
+  try {
+    const user = await getUserById();
+    res.send({user});
+  } catch(error) {
+    console.log(error)
+    next(error)
+  }
+})
+
 usersRouter.post('/login', async(req, res, next) => {
     const { username, password } = req.body;
 
@@ -40,6 +50,7 @@ usersRouter.post('/login', async(req, res, next) => {
                 message: 'Username or password is incorrect',
             })
         } else {
+          //Maybe something is going awry on this line concerning the stored variables
             const token = jwt.sign({id: user.id, username: user.username}, JWT_SECRET, { expiresIn: '1w'});
             res.send({ user, message: "You're logged in!", token});
         }
@@ -48,6 +59,43 @@ usersRouter.post('/login', async(req, res, next) => {
     }
 });
 
+// usersRouter.post('/login', async (req, res, next) => {
+//   const { username, password } = req.body;
+
+//   // request must have both
+//   if (!username || !password) {
+//     next({
+//       name: "MissingCredentialsError",
+//       message: "Please supply both a username and password"
+//     });
+//   }
+
+//   try {
+//     const user = await getUserByUsername(username);
+
+//     if (user && user.password == password) {
+//       const token = jwt.sign({ 
+//         id: user.id, 
+//         username
+//       }, process.env.JWT_SECRET, {
+//         expiresIn: '1w'
+//       });
+
+//       res.send({ 
+//         message: "you're logged in!",
+//         token 
+//       });
+//     } else {
+//       next({ 
+//         name: 'IncorrectCredentialsError', 
+//         message: 'Username or password is incorrect'
+//       });
+//     }
+//   } catch(error) {
+//     console.log(error);
+//     next(error);
+//   }
+// });
   
 // POST /api/users/register
 usersRouter.post('/register', async (req, res, next) => {
@@ -84,17 +132,6 @@ usersRouter.post('/register', async (req, res, next) => {
     } catch (error) {
       next(error)
     }
-})
-
-//Get User ID
-usersRouter.get('/:id', async(req, res, next) => {
-  try {
-    const user = await getUserById(req.params.id);
-    res.send({user});
-  } catch(error) {
-    console.log(error)
-    next(error)
-  }
 })
 
 module.exports = usersRouter;

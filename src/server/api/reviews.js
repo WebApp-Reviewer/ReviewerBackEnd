@@ -20,7 +20,6 @@ reviewsRouter.get('/', async(req, res, next) => {
             reviews
         });
     } catch (error) {
-      console.log(error)
         next(error)
     }
 })
@@ -53,14 +52,14 @@ reviewsRouter.post('/', requireUser, requiredNotSent({requiredParams: ['name', '
     try {
       const {name, content, rating, date} = req.body;
       const {reviewId} = req.params;
-      const existingReview = await getReviewById(name);
+      const existingReview = await getReviewById(reviewId);
       if(existingReview) {
         next({
           name: 'NotFound',
-          message: `A review with name ${name} already exists`
+          message: `A review with Id ${reviewId} already exists`
         });
       } else {
-        const createdReview = await createReview({reviewId, authorid: req.user.id, name, content, rating, date});
+        const createdReview = await createReview({authorid: req.params.id, name, content, rating, date});
         if(createdReview) {
           res.send(createdReview);
         } else {
@@ -92,7 +91,7 @@ reviewsRouter.patch('/:reviewId', requireUser, requiredNotSent({requiredParams: 
         message: "You must be the same user who created this review to perform this action"
       });
     } else {
-      const updatedReview = await updateReview({reviewId, authorid: req.user.id, name, content, rating, date});
+      const updatedReview = await updateReview({reviewId, authorid: req.user.id, websiteid: req.website.id, name, content, rating, date});
       if(updatedReview) {
         res.send(updatedReview);
       } else {

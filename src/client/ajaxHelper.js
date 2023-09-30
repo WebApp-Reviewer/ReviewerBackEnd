@@ -68,7 +68,7 @@ export async function userLogin(username, password) {
             body: JSON.stringify(sendData)
         });
         const result = await response.json();
-        const token = result.data.token;
+        const token = result;
         localStorage.setItem('user-token', token);
         localStorage.setItem('username', username);
         return result;
@@ -143,7 +143,7 @@ export async function createWebsite(name, url, description, image) {
 // needs to also have an authorid param with websiteId
 export async function deleteWebsite(websiteId) {
     try {
-        const response = await fetch (`$BASE_URL}/websites/${websiteId}`, {
+        const response = await fetch (`${BASE_URL}/websites/${websiteId}`, {
             method: 'DELETE',
             headers: getHeaders(),
         });
@@ -178,7 +178,6 @@ export async function fetchAllReviews() {
     const response = await fetch(`${BASE_URL}/reviews`, {
       headers: getHeaders(),
     });
-    console.log({response});
     const result = await response.json();
     return result;
   } catch (error) {
@@ -200,7 +199,7 @@ export async function fetchSingleReview(reviewId) {
 
 export async function createReview(name, content, rating, date) {
   const sendData = {
-    website: {name: name, content: content, rating: rating, date: date}
+    review: {name: name, content: content, rating: rating, date: date}
   }
 
   try {
@@ -231,7 +230,7 @@ export async function deleteReview(reviewId) {
 
 export async function editReview(name, content, rating, date) {
   const sendData = {
-    website: {name: name, content: content, rating: rating, date: date},
+    review: {name: name, content: content, rating: rating, date: date},
   };
 
   try {

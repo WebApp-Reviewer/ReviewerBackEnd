@@ -75,6 +75,7 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { adminLogin } from '../ajaxHelper';
+import '../Style/Login.css'
 
 export default function AdminLogin({ setLoggedIn, setUser }) {
     const [username, setUsername] = useState('');
