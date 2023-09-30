@@ -12,7 +12,7 @@ const HomePage = () => {
             {isLoggedIn ? <ClientGreeting /> : <GuestGreeting />}
             
             {/* Pass the 'websites' prop to WebsitesList */}
-            <WebsitesList />
+            <WebsitesList websites={websites} />
         </section>
     );
 };

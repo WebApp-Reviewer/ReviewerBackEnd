@@ -16,125 +16,104 @@ export async function fetchAllUsers() {
     return result.data.users;
 }
 
-export async function registerUser(username, password) {
-    const sendData = {
-        user: {username: username, password: password},
-    };
-    
-    try {
-        const response = await fetch(`${BASE_URL}/users/register`, {
-            method: 'POST',
-            headers: getHeaders(),
-            body: JSON.stringify(sendData)
-        });
-        const result = await response.json();
-        const token = result.data.token;
-        localStorage.setItem('user-token', token);
-        localStorage.setItem('username', username);
-        return result;
-    } catch (error) {
-        console.error('Could not register', error);
-    }
+export async function registerUser(user) {
+    const response = await fetch(`${BASE_URL}/users/register`, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(user)
+    })
+    const result = await response.json();
+    return result;
 }
 
-export async function userLogin(username, password) {
-    const sendData = {
-        user: {username: username, password: password},
-    };
-
-    try {
-        const response = await fetch(`${BASE_URL}/users/login`, {
-            method: 'POST',
-            headers: getHeaders(),
-            body: JSON.stringify(sendData)
-        });
-        const result = await response.json();
-        const token = result.data.token;
-        localStorage.setItem('user-token', token);
-        localStorage.setItem('username', username);
-        return result;
-    } catch (error) {
-        console.error('Could not login', error)
-    }
+export async function userLogin(user) {
+    const response = await fetch(`${BASE_URL}/users/login`, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(user)
+    })
+    const result = await response.json();
+    return result;
 }
 
-export const fetchAllWebsites = async () => {
-    try {
-      const response = await fetch(`${BASE_URL}/websites`);
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.json();
-    } catch (error) {
-      throw error;
-    }
-  };
-
-  export const fetchSingleWebsite = async (id) => {
-    try {
-      const response = await fetch(`${BASE_URL}/${id}`);
-      if (!response.ok) {
-        throw new Error('Website not found');
-      }
-      return response.json();
-    } catch (error) {
-      throw error;
-    }
-  };
-
-export async function addWebsite(websiteData) {
-    const sendData = {
-        websiteData: websiteData,
-    };
-
-    try {
-        const response = await fetch(`${BASE_URL}/websites`, {
-            method: 'POST',
-            headers: getHeaders(),
-            body: JSON.stringify(sendData)
-        });
+export async function featchAllWebsites() {
+        const resposne = await fetch (`${BASE_URL}/websites`);
         const result = await response.json();
-        const token = result.data.token;
-        localStorage.setItem('user-token', token);
-        localStorage.setItem('username', username);
-        return result;
-    } catch (error) {
-        console.error('Could not add website', error);
+        return result.data.website;
     }
+
+export async function fetchSingleWebsite() {
+    const response = await fetch(`${BASE_URL}/websites/${websiteId}`)
+    const result = await response.json();
+    return result.data.websiteId
 }
 
-// needs to also have an authorid param with websiteId
-export async function deleteWebsite(websiteId) {
-    try {
-        const response = await fetch (`$BASE_URL}/websites/${websiteId}`, {
-            method: 'DELETE',
-            headers: getHeaders(),
-        });
+export async function addNewWebsite(website, token) {
+    const response = await fetch(`${BASE_URL}/websites`, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(website)
+    })
+    const result = await response.json();
+    return result.data.website
+}
 
-        if (!response.ok) {
-            throw new Error('Error deleting website');
+export async function deleteWebsite(website, websiteId, token) {
+    const response = await fetch(`${BASE_URL}/websites`, {
+        method: "DELETE",
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(website)
+    })
+    const result = await response.json();
+    return result.data.website
+}
+
+export async function editWebsite(websiteId, token, userId, updatedWebsite) {
+    try {
+        // Fetch the original website to check its owner
+        const originalResponse = await fetch(`${BASE_URL}/websites/${websiteId}`, {
+            method: "GET",
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        if (!originalResponse.ok) {
+            // Handle the case where the website does not exist or there's an error
+            throw new Error("Website not found or an error occurred.");
         }
-        return 'Website deleted successfully';
+        const originalWebsite = await originalResponse.json();
+        // Check if the user making the request is the owner of the website
+        if (originalWebsite.userId !== userId) {
+            throw new Error("You are not authorized to edit this website.");
+        }
+        // If the user is the owner, proceed with the update
+        const updateResponse = await fetch(`${BASE_URL}/websites/${websiteId}`, {
+            method: "PATCH",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(updatedWebsite)
+        });
+        if (!updateResponse.ok) {
+            // Handle the case where the update fails
+            throw new Error("Failed to update the website.");
+        }
+        const result = await updateResponse.json();
+        return result.data.website;
     } catch (error) {
-        console.error ('Could not delete website', error);
+        console.error("editWebsite", error);
+        throw error;
     }
 }
 
-// emily, I tried passing the authorId param here, I'm not sure if I structured it correctly but wanted to know your thoughts. 
-export async function editWebsite(websiteId, authorId, updatedWebsiteData) {
-    const sendData = {
-      websiteData: { websiteId, authorId, updatedWebsiteData },
-    };
-  
-    try {
-      const response = await fetch(`${BASE_URL}/websites/${websiteId}`, {
-        method: 'PATCH', 
-        headers: getHeaders(),
-        body: JSON.stringify(sendData),
-      });
-      const result = await response.json();
-      return result;
-    } catch (error) {
-      console.error('Could not edit website', error);
-    }
-  }
