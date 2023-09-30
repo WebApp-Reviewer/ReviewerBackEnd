@@ -3,10 +3,14 @@ import Home from './Home'
 import Search from './Search'
 import Login from './Login'
 import AdminLogin from './AdminLogin'
+import AdminWebsites from './AdminWebsites'
+import AdminUsers from './AdminUsers'
 import Websites from './Websites'
 import Reviews from './Reviews'
 import Profile from './Profile'
 import Register from './Register'
+import AdminCreateWebsite from './AdminCreateWebsite'
+import AdminEditWebsite from './AdminEditWebsite'
 
 export default function Main({ setLoggedIn, setUser, loggedIn, user, adminLoggedIn, setAdminLoggedIn }) {
     return (
@@ -16,9 +20,6 @@ export default function Main({ setLoggedIn, setUser, loggedIn, user, adminLogged
 
                 <Route path='/search' element={<Search />} />
 
-                <Route path='/admin/login' element={<AdminLogin
-                setAdminLoggedIn={setAdminLoggedIn} />} />
-                
                 <Route path='/users/login' element={<Login 
                 setLoggedIn={setLoggedIn}
                 setUser={setUser} />} />
@@ -34,6 +35,26 @@ export default function Main({ setLoggedIn, setUser, loggedIn, user, adminLogged
                 <Route path='/users/:id' element={<Profile 
                 loggedIn={loggedIn}
                 user={user} />} />
+                
+                <Route path='/admin/login' element={<AdminLogin
+                setAdminLoggedIn={setAdminLoggedIn}
+                setUser={setUser} />} />
+
+                <Route path='/admin/websites' element={<AdminWebsites
+                setAdminLoggedIn={setAdminLoggedIn}
+                setUser={setUser} />} />
+
+                <Route path='/admin/users' element={<AdminUsers
+                setAdminLoggedIn={setAdminLoggedIn}
+                setUser={setUser} />} />
+
+                <Route path='/admin/websites/create' element={<AdminCreateWebsite
+                setAdminLoggedIn={setAdminLoggedIn}
+                setUser={setUser} />} />
+
+                <Route path='/admin/websites/edit' element={<AdminEditWebsite
+                setAdminLoggedIn={setAdminLoggedIn}
+                setUser={setUser} />} />
             </Routes>
         </div>
     )

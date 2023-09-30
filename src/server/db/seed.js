@@ -11,6 +11,8 @@ const dropTables = async () => {
   try {
       await db.query(`
       DROP TABLE IF EXISTS reviews;
+      DROP TABLE IF EXISTS websites_tags;
+      DROP TABLE IF EXISTS tags;
       DROP TABLE IF EXISTS websites;
       DROP TABLE IF EXISTS admin;
       DROP TABLE IF EXISTS users;
@@ -49,6 +51,21 @@ const createTables = async () => {
           url VARCHAR(225) NOT NULL,
           description VARCHAR(225) NOT NULL,
           image VARCHAR(225) NOT NULL
+      );
+      `)
+
+      await db.query(`
+      CREATE TABLE tags (
+        id SERIAL PRIMARY KEY,
+        name varchar(255) UNIQUE NOT NULL
+      );
+      `)
+
+      await db.query(`
+      CREATE TABLE websites_tags (
+        websiteid INTEGER REFERENCES websites(id),
+        tagid INTEGER REFERENCES tags(id),
+        UNIQUE (websiteid, tagid)
       );
       `)
 
@@ -115,14 +132,14 @@ async function createInitialWebsites() {
   
   try {
     const websitesToCreate = [
-      { name: 'Netflix', url: 'https://www.netflix.com/', description: 'Streaming platform to watch movies and shows online.', image: 'https://yt3.googleusercontent.com/ytc/AOPolaSbaST1JBNd9phht_n7tFN-VHx0FlvKPHeSDnmu4Q=s900-c-k-c0x00ffffff-no-rj' },
-      { name: 'Discord', url: 'https://discord.com/', description: 'Your place to talk and hangout.', image: 'https://play-lh.googleusercontent.com/0oO5sAneb9lJP6l8c6DH4aj6f85qNpplQVHmPmbbBxAukDnlO7DarDW0b-kEIHa8SQ' },
-      { name: 'Twitter', url: 'https://discord.com/', description: 'From breaking news and entertainment to sports and politics, get the full story with all the live commentary.', image: 'https://cdn-icons-png.flaticon.com/512/124/124021.png' },
-      { name: 'Slack', url: 'https://discord.com/', description: 'Work more easily with everyone.', image: 'https://yt3.googleusercontent.com/ytc/AOPolaTCsMhpgrJldSw0eABzVJ9JEc1pYyTST4CJ7JzN1Q=s900-c-k-c0x00ffffff-no-rj' },
-      { name: 'Reddit', url: 'https://www.reddit.com/', description: 'Dive into anything.', image: 'https://pbs.twimg.com/profile_images/1684669052839473152/e_ATYqfK_400x400.jpg' },
-      { name: 'Mimo', url: 'https://mimo.org/', description: 'Learn to Code with Mimo.', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKJht4SZsUHqZOR_zW_XJJOosG474aIAMRDQ&usqp=CAU' },
-      { name: 'YouTube', url: 'https://youtube.com/', description: 'Share your videos with friends, family, and the world.', image: 'https://www.youtube.com/img/desktop/yt_1200.png' },
-      { name: 'ChatGPT', url: 'https://chat.openai.com/', description: 'AI-powered language model developed by OpenAI, capable of generating human-like text based on context and past conversations.', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/ChatGPT_logo.svg/800px-ChatGPT_logo.svg.png' },
+      { name: 'Netflix', url: 'https://www.netflix.com/', description: 'Streaming platform to watch movies and shows online.', image: 'https://yt3.googleusercontent.com/ytc/AOPolaSbaST1JBNd9phht_n7tFN-VHx0FlvKPHeSDnmu4Q=s900-c-k-c0x00ffffff-no-rj', tags: ["#entertainment", "#movies", "#tv"] },
+      { name: 'Discord', url: 'https://discord.com/', description: 'Your place to talk and hangout.', image: 'https://play-lh.googleusercontent.com/0oO5sAneb9lJP6l8c6DH4aj6f85qNpplQVHmPmbbBxAukDnlO7DarDW0b-kEIHa8SQ', tags: ["#communication", "#messaging", "social"] },
+      { name: 'Twitter', url: 'https://discord.com/', description: 'From breaking news and entertainment to sports and politics, get the full story with all the live commentary.', image: 'https://cdn-icons-png.flaticon.com/512/124/124021.png', tags: ["#entertainment", "#social", "#news"] },
+      { name: 'Slack', url: 'https://discord.com/', description: 'Work more easily with everyone.', image: 'https://yt3.googleusercontent.com/ytc/AOPolaTCsMhpgrJldSw0eABzVJ9JEc1pYyTST4CJ7JzN1Q=s900-c-k-c0x00ffffff-no-rj', tags: ["#communication", "#work", "#business"] },
+      { name: 'Reddit', url: 'https://www.reddit.com/', description: 'Dive into anything.', image: 'https://pbs.twimg.com/profile_images/1684669052839473152/e_ATYqfK_400x400.jpg', tags: ["#entertainment", "#social", "#information"] },
+      { name: 'Mimo', url: 'https://mimo.org/', description: 'Learn to Code with Mimo.', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKJht4SZsUHqZOR_zW_XJJOosG474aIAMRDQ&usqp=CAU', tags: ["#educational", "#webdevelopment", "#learn"] },
+      { name: 'YouTube', url: 'https://youtube.com/', description: 'Share your videos with friends, family, and the world.', image: 'https://www.youtube.com/img/desktop/yt_1200.png', tags: ["#entertainment", "#videos", "#watch"] },
+      { name: 'ChatGPT', url: 'https://chat.openai.com/', description: 'AI-powered language model developed by OpenAI, capable of generating human-like text based on context and past conversations.', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/ChatGPT_logo.svg/800px-ChatGPT_logo.svg.png', tags: ["#eduational", "#social", "#informational"] },
     ]
     const websites = await Promise.all(websitesToCreate.map(createWebsite));
 

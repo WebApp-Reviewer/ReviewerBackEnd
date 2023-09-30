@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-export default function Navbar({loggedIn, setUser, setLoggedIn, adminLoggedIn}) {
+export default function Navbar({loggedIn, setUser, setLoggedIn, adminLoggedIn, setAdminLoggedIn}) {
     return (
         <div>
             {loggedIn ? (
@@ -16,12 +16,25 @@ export default function Navbar({loggedIn, setUser, setLoggedIn, adminLoggedIn}) 
                     setLoggedIn('')
                 }}>Log Out</Link>
                 </>
-            ): (
+            ): adminLoggedIn ? (
                 <>
-                <Link className="navbar-link" to="/user/login">Login</Link>
+                {/*For admin login navbar*/}
+                <Link className="navbar-link" to="/admin/websites">Websites</Link>
+                <Link className="navbar-link" to="/admin/users">Users</Link>
+                <Link className="navbar-link" to="/admin/websites/create">Create Website</Link>
+                <Link className="navbar-link" to="/admin/websites/edit">Edit Website</Link>
+                <Link className="navbar-link" to="/search">Search</Link>
+                <Link className="navbar-link" to="/" onClick={() => {
+                    localStorage.removeItem('user token')
+                    setUser('')
+                    setAdminLoggedIn('')
+                }}>Log Out</Link>
+                </>
+            ) : (
+                <>
                 <Link className="navbar-link" to="/websites">Websites</Link>
                 <Link className="navbar-link" to="/reviews">Reviews</Link>
-                <Link className="navbar-link" to="/search">Search</Link>
+                <Link className="navbar-link" to="/login">Login</Link>
                 </>
             )}
         </div>
