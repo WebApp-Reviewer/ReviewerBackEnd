@@ -138,35 +138,35 @@ async function createWebsite({
     }
   }*/
   
-  async function getWebsiteById(websiteId) {
-    try {
-      const { rows: [ website ]  } = await db.query(`
-        SELECT *
-        FROM websites
-        WHERE id=$1;
-      `, [websiteId]);
+  // async function getWebsiteById(websiteId) {
+  //   try {
+  //     const { rows: [ website ]  } = await db.query(`
+  //       SELECT *
+  //       FROM websites
+  //       WHERE id=$1;
+  //     `, [websiteId]);
   
-      if (!website) {
-        throw {
-          name: "WebsiteNotFoundError",
-          message: "Could not find a website with that ID"
-        };
-      }
+  //     if (!website) {
+  //       throw {
+  //         name: "WebsiteNotFoundError",
+  //         message: "Could not find a website with that ID"
+  //       };
+  //     }
   
-      const { rows: tags } = await db.query(`
-        SELECT tags.*
-        FROM tags
-        JOIN websites_tags ON tags.id=websites_tags.tagid
-        WHERE websites_tags.websiteid=$1;
-      `, [websiteId])
+  //     const { rows: tags } = await db.query(`
+  //       SELECT tags.*
+  //       FROM tags
+  //       JOIN websites_tags ON tags.id=websites_tags.tagid
+  //       WHERE websites_tags.websiteid=$1;
+  //     `, [websiteId])
   
-      website.tags = tags;
+  //     website.tags = tags;
   
-      return website;
-    } catch (error) {
-      throw error;
-    }
-  }
+  //     return website;
+  //   } catch (error) {
+  //     throw error;
+  //   }
+  // }
   
   async function getWebsitesByTagName(tagName) {
     try {

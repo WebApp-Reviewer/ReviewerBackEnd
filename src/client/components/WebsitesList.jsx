@@ -57,35 +57,46 @@
 
 // export default WebsitesList;
 
-import { useState, useEffect } from "react"
+import React from "react";
+import { Link } from "react-router-dom";
 import { fetchAllWebsites } from "../ajaxHelper";
+import "../Style/WebsitesList.css";
 
 export default function WebsitesList() {
-    const [websites, setWebsites] = useState([]);
+    const [websites, setWebsites] = React.useState([]);
 
-    function renderAllWebsites() {
-        return websites.map((website) => {
-            return (
-                <div key={website?.id}>
-                    <h1>{website?.name}</h1>
-                    <h2>{website?.description}</h2>
-                    <h2>{website?.url}</h2>
-                    <h2>{website?.image}</h2>
-                </div>
-            )
-        })
-    }
-
-    useEffect(() => {
+    React.useEffect(() => {
         async function allWebsitesHandler() {
             const result = await fetchAllWebsites();
             setWebsites(result.websites);
-        } allWebsitesHandler();
-    })
+        }
+        allWebsitesHandler();
+    }, []);
 
     return (
         <div>
-            {renderAllWebsites()}
+            {websites.map((website) => (
+                <div key={website?.id} className="website-container">
+                    {/* Wrap the name and image with a Link */}
+                    <Link to={`/websites/${website?.id}`}>
+                        <h1 className="website-name">{website?.name}</h1>
+                        <img
+                            className="website-image"
+                            src={website?.image}
+                            alt={`Image for ${website?.name}`}
+                        />
+                    </Link>
+                    <h2 className="website-description">{website?.description}</h2>
+                    <a
+                        className="website-url"
+                        href={website?.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        {website?.url}
+                    </a>
+                </div>
+            ))}
         </div>
-    )
+    );
 }
