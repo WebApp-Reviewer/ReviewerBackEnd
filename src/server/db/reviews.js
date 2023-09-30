@@ -1,4 +1,5 @@
 const client = require('./client');
+const util = require('./utils');
 
 //database functions
 async function getAllReviews() {
@@ -36,31 +37,33 @@ async function getReviewByName(name) {
     }
 }
 
-async function createReview({ authorid, name, content, rating, date }) {
+async function createReview({ name, content, rating, date }) {
     try {
         const {rows: [review]} = await client.query(`
-        INSERT INTO reviews(authorid, name, content, rating, date) VALUES ($1, $2, $3, $4, $5)
+        INSERT INTO reviews(name, content, rating, date) VALUES ($1, $2, $3, $4)
         ON CONFLICT (name) DO NOTHING
         RETURNING *
-        `, [ authorid, name, content, rating, date]);
+        `, [name, content, rating, date]);
         return review;
     } catch (error) {
         throw error;
     }
 }
 
-async function updateReview({id, ...fields}){
+async function updateReview({reviewId, ...fields}){
     try {
       const toUpdate = {}
       for(let column in fields) {
-        if(fields[column] !== undefined) toUpdate[column] = fields[column];
+        if(fields[column] !== undefined) {
+            toUpdate[column] = fields[column];   
+        }
       }
       let review;
       if (util.dbFields(toUpdate).insert.length > 0) {
         const {rows} = await client.query(`
           UPDATE reviews
           SET ${ util.dbFields(toUpdate).insert }
-          WHERE id=${ id }
+          WHERE id=${ reviewId }
           RETURNING *;
         `, Object.values(toUpdate));
         review = rows[0];

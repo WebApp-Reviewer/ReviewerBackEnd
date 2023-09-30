@@ -7,7 +7,8 @@ const {
     getWebsiteById,
     getWebsiteByName,
     createWebsite,
-    deleteWebsite
+    deleteWebsite,
+    updateWebsite,
 } = require('../db');
 
 
@@ -57,7 +58,7 @@ websitesRouter.post('/', requireUser, requiredNotSent({requiredParams: ['name', 
           message: `A website with name ${name} already exists`
         });
       } else {
-        const createdWebsite = await createWebsite({authorid: req.user.id, name, description, url, image});
+        const createdWebsite = await createWebsite({name, description, url, image});
         if(createdWebsite) {
           res.send(createdWebsite);
         } else {
@@ -73,6 +74,34 @@ websitesRouter.post('/', requireUser, requiredNotSent({requiredParams: ['name', 
     }
 });
 
+websitesRouter.patch('/:websiteId', requireUser, requiredNotSent({requiredParams: ['name', 'description', 'url', 'image'], atLeastOne: true}), async (req, res, next) => {
+  try {
+    const {name, description, url, image} = req.body;
+    const {websiteId} = req.params;
+    const websiteToUpdate = await getWebsiteById(websiteId);
+    if(!websiteToUpdate) {
+      next({
+        name: 'NotFound',
+        message: `No website by ID ${websiteId}`
+      })
+    } else {
+      const updatedWebsite = await updateWebsite({websiteId, name, description, url, image});
+      if(updatedWebsite) {
+        res.send(updatedWebsite);
+      } else {
+        next({
+          name: 'FailedToUpdate',
+          message: 'There was an error updating your website'
+        })
+      }
+    }
+  } catch (error) {
+    console.log("updating website error", error);
+    next(error);
+  }
+});
+
+
 websitesRouter.delete('/:websiteId', requireUser, async (req, res, next) => {
   try {
     const websiteToUpdate = await getWebsiteById(req.params.websiteId);
@@ -81,12 +110,6 @@ websitesRouter.delete('/:websiteId', requireUser, async (req, res, next) => {
         name: 'NotFound',
         message: `No website by ID ${websiteId}`
       })
-    } else if(req.user.id !== websiteToUpdate.authorid) {
-      res.status(403);
-      next({
-        name: "WrongUserError",
-        message: "You must be the user who created this post to perform this action"
-      });
     } else {
       const deletedWebsite = await deleteWebsite(req.params.websiteId)
       res.send({success: true, ...deletedWebsite});

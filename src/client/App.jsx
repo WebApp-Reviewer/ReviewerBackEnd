@@ -1,50 +1,41 @@
-// import './App.css';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import Root from "./routes/Root.jsx";
-import HomePage from './routes/HomePage.jsx'; 
-import WebsiteListings from "./routes/WebsiteListings.jsx"; 
-// import Profile from "./routes/Profile.jsx"; 
-import Register from "./routes/Register.jsx"; 
-import Login from "./routes/Login.jsx"; 
-import SingleWebsite from './components/SingleWebsite.jsx';
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Root />,
-    children: [
-      {
-        path: "HomePage",
-        element: <HomePage />,
-      },
-      {
-        path: "WebsiteListings", // Updated path
-        element: <WebsiteListings />,
-      },
-      {
-        path: "websites/:id", // Updated path
-        element: <SingleWebsite />,
-      },
-      // {
-      //   path: "Profile",
-      //   element: <Profile />,
-      // }, 
-      {
-        path: "Register",
-        element: <Register />,
-      },
-      {
-        path: "Login",
-        element: <Login />,
-      },
-    ],
-  },
-]);
+import { useState, useEffect } from 'react'
+import Main from './components/Main'
+import Navbar from './components/Navbar'
 
 function App() {
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [adminLoggedIn, setAdminLoggedIn] = useState(false);
+  const [user, setUser] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const token = localStorage.getItem('user token');
+    if (token) {
+      //if token is present user is logged in
+      setLoggedIn(true);
+      //if token is present admin is logged in
+      setAdminLoggedIn(true);
+      //get user's username
+      const username = localStorage.getItem('username');
+      setUser(username);
+    }
+    setIsLoading(false);
+  }, [user])
+
   return (
-    <div className="App">
-      <RouterProvider router={router} />
+    <div>
+      <Navbar 
+      loggedIn={loggedIn} 
+      setLoggedIn={setLoggedIn}
+      setUser={setUser} />
+      <Main 
+      isLoading={isLoading}
+      user={user}
+      setUser={setUser}
+      loggedIn={loggedIn}
+      setLoggedIn={setLoggedIn}
+      adminLoggedIn={adminLoggedIn}
+      setAdminLoggedIn={setAdminLoggedIn} />
     </div>
   );
 }

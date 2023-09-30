@@ -7,6 +7,7 @@ const {
     createUser,
     getUser,
     getAllUsers,
+    getUserById,
 } = require('../db');
 
 usersRouter.get('/', async( req, res, next) => {
@@ -21,6 +22,16 @@ usersRouter.get('/', async( req, res, next) => {
         next(error)
     }
 });
+
+usersRouter.get('/:id', async(req, res, next) => {
+  try {
+    const user = await getUserById();
+    res.send({user});
+  } catch(error) {
+    console.log(error)
+    next(error)
+  }
+})
 
 usersRouter.post('/login', async(req, res, next) => {
     const { username, password } = req.body;
