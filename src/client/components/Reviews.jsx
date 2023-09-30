@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { fetchAllReviews, deleteReview } from "../API/ajaxHelpers";
+import { fetchAllReviews } from "../ajaxHelper";
 
 export default function Reviews() {
     const [reviews, setReviews] = useState([]);
@@ -12,7 +12,6 @@ export default function Reviews() {
                     <h3 className="review-content">{review?.content}</h3>
                     <h3 className="review-rating">{review?.rating}</h3>
                     <h3 className="review-date">{review?.date}</h3>
-                    <button className="review-button" onClick={() => handleDelete(review.id)}>Delete</button>
                 </div>
             )
         })
@@ -25,16 +24,6 @@ export default function Reviews() {
             setReviews(result.reviews);
         } allReviewsHandler();
     }, [])
-
-    async function handleDelete(reviewId) {
-        try {
-            await deleteReview(reviewId);
-            const updatedReviews = await fetchAllReviews();
-            setReviews(updatedReviews.reviews);
-        } catch (error) {
-            console.error(error);
-        }
-    }
 
     return (
         <div className="all-reviews">

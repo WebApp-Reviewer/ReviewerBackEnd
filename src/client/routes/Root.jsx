@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { Outlet, Link } from "react-router-dom";
-import { featchAllWebsites } from "../ajaxHelper";
+import { fetchAllWebsites } from "../ajaxHelper";
+import '../Style/Root.css'
+import WebWatchers from '../assets/webwatchers-logo.png'
 
 export default function Root() {
     const [token, setToken] = useState(localStorage.getItem('token'));
@@ -18,7 +20,7 @@ export default function Root() {
 
     useEffect(() => {
         if (!localStorage.getItem('websites')) {
-            featchAllWebsites()
+            fetchAllWebsites()
                 .then(websites => {
                     localStorage.setItem('websites', JSON.stringify(websites));
                 });
@@ -28,10 +30,14 @@ export default function Root() {
     return (
         <div>
             <header>
+                <div className='Logo'>
+                <Link to="/"><img src={WebWatchers} alt="Web Watchers Logo"/></Link>
+                </div>
                 <h2 className="webName">Website Reviewer</h2>
                 <nav className="headerLink">
-                    <Link to="Homepage" className="linkStyle">Home</Link>
-                    <Link to="Websiteslist" className="linkStyle">Websites</Link>
+                <div className="navbar">
+                    <Link to="WebsiteListings" className="linkStyle">Homepage</Link>
+                    <Link to="Reviews" className="linkStyle">Reviews</Link>
                     {token ? <Link to="profile" className="linkStyle">Profile</Link> : null}
                     {!token && (
                         <>
@@ -39,7 +45,8 @@ export default function Root() {
                             <Link to="Login" className="linkStyle">Login</Link>
                         </>
                     )}
-                    {token && <button onClick={logout} className="logoutButton">Log Out</button>}
+                    {token && <button onClick={logout} className="linkStyle">Log Out</button>}
+                </div>
                 </nav>
             </header>
             <main>

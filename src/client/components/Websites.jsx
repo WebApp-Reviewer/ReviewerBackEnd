@@ -19,11 +19,16 @@ export default function Websites() {
 
     useEffect(() => {
         async function allWebsitesHandler() {
-            const result = await fetchAllWebsites();
-            setWebsites(result.websites);
-            console.log("websites", result.websites);
-        } allWebsitesHandler();
-    })
+            try {
+                const result = await fetchAllWebsites();
+                setWebsites(result.websites);
+                console.log("websites", result.websites);
+            } catch (error) {
+                console.error("Error fetching websites:", error);
+            }
+        }
+        allWebsitesHandler();
+    }, []);
 
     return (
         <div>
