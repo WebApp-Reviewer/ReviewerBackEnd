@@ -20,7 +20,7 @@ export default function Main({ setLoggedIn, setUser, loggedIn, user, adminLogged
 
                 <Route path='/search' element={<Search />} />
 
-                <Route path='/users/login' element={<Login 
+                <Route path='/login' element={<Login 
                 setLoggedIn={setLoggedIn}
                 setUser={setUser} />} />
 

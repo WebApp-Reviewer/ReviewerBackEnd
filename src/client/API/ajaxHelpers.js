@@ -68,7 +68,7 @@ export async function userLogin(username, password) {
             body: JSON.stringify(sendData)
         });
         const result = await response.json();
-        const token = result.data.token;
+        const token = result.token;
         localStorage.setItem('user-token', token);
         localStorage.setItem('username', username);
         return result;
@@ -122,9 +122,9 @@ export async function fetchSingleWebsite(websiteId) {
   }
 };
 
-export async function createWebsite(name, url, description, image) {
+export async function createWebsite(name, url, description, image, tags) {
   const sendData = {
-    website: {name: name, url: url, description: description, image: image}
+    website: {name: name, url: url, description: description, image: image, tags: tags}
   }
 
   try {

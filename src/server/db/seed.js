@@ -47,6 +47,7 @@ const createTables = async () => {
       await db.query(`
       CREATE TABLE websites(
           id SERIAL PRIMARY KEY,
+          authorid INTEGER REFERENCES admin(id),
           name VARCHAR(255) UNIQUE NOT NULL,
           url VARCHAR(225) NOT NULL,
           description VARCHAR(225) NOT NULL,
