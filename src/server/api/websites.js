@@ -1,13 +1,13 @@
 const express = require('express')
 const websitesRouter = express.Router();
-const { requireUser, requiredNotSent } = require('./utils')
+const { requireUser, /*requiredNotSent*/ } = require('./utils')
 
 const {
     getAllWebsites,
     getWebsiteById,
     getWebsiteByName,
     createWebsite,
-    deleteWebsite,
+    //deleteWebsite,
     updateWebsite,
 } = require('../db');
 
