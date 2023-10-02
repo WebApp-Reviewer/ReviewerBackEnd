@@ -47,7 +47,6 @@ const createTables = async () => {
       await db.query(`
       CREATE TABLE websites(
           id SERIAL PRIMARY KEY,
-          authorid INTEGER REFERENCES admin(id),
           name VARCHAR(255) UNIQUE NOT NULL,
           url VARCHAR(225) NOT NULL,
           description VARCHAR(225) NOT NULL,
@@ -132,6 +131,7 @@ async function createInitialWebsites() {
   console.log('Starting to create websites...');
   
   try {
+
     const websitesToCreate = [
       { name: 'Netflix', url: 'https://www.netflix.com/', description: 'Streaming platform to watch movies and shows online.', image: 'https://yt3.googleusercontent.com/ytc/AOPolaSbaST1JBNd9phht_n7tFN-VHx0FlvKPHeSDnmu4Q=s900-c-k-c0x00ffffff-no-rj', tags: ["#entertainment", "#movies", "#tv"] },
       { name: 'Discord', url: 'https://discord.com/', description: 'Your place to talk and hangout.', image: 'https://play-lh.googleusercontent.com/0oO5sAneb9lJP6l8c6DH4aj6f85qNpplQVHmPmbbBxAukDnlO7DarDW0b-kEIHa8SQ', tags: ["#communication", "#messaging", "social"] },
@@ -142,7 +142,7 @@ async function createInitialWebsites() {
       { name: 'YouTube', url: 'https://youtube.com/', description: 'Share your videos with friends, family, and the world.', image: 'https://www.youtube.com/img/desktop/yt_1200.png', tags: ["#entertainment", "#videos", "#watch"] },
       { name: 'ChatGPT', url: 'https://chat.openai.com/', description: 'AI-powered language model developed by OpenAI, capable of generating human-like text based on context and past conversations.', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/ChatGPT_logo.svg/800px-ChatGPT_logo.svg.png', tags: ["#eduational", "#social", "#informational"] },
     ]
-    const websites = await Promise.all(websitesToCreate.map(createWebsite));
+    const websites = await Promise.all(websitesToCreate.map(websites => createWebsite(websites)));
 
     console.log('Websites created:');
     console.log(websites);
@@ -156,12 +156,12 @@ async function createInitialWebsites() {
 async function createInitialReviews() {
   console.log('Starting to create reviews...');
   
-  const [emily, liu, bella, mohammed, john, lily] = await getAllUsers();
-  console.log("authorId reviews", emily.id, liu.id, bella.id, mohammed.id, john.id, lily.id);
-
-  const [Netflix, Discord, Twitter, Slack, Reddit, Mimo, YouTube, ChatGPT] = await getAllWebsites();
-  console.log("websiteId reviews", Netflix.id, Reddit.id, Mimo.id, YouTube.id, Slack.id, Twitter.id);
   try {
+    const [emily, liu, bella, mohammed, john, lily] = await getAllUsers();
+    //console.log('authorid', emily, liu, bella, mohammed, john, lily);
+    //console.log("emily.id", emily.id);
+    const [Netflix, Discord, Twitter, Slack, Reddit, Mimo, YouTube, ChatGPT] = await getAllWebsites();
+    //console.log("websiteid", Netflix, Discord, Twitter, Slack, Reddit, Mimo, YouTube, ChatGPT);
 
     const reviewsToCreate = [
       { authorid: emily.id, websiteid: Netflix.id, name: 'Thorough review of Netflix', content: 'I love the clear layout of all the shows and movies. It is easy to navigate and find something to watch.', rating: 4, date: '2023-09-13' },
@@ -184,15 +184,42 @@ async function createInitialReviews() {
       { authorid: lily.id, websiteid: YouTube.id, name: 'Love YouTube', content: 'Watching videos is my favorite way to end the day.', rating: 5, date: '2023-08-30' },
     ]
     const reviews = await Promise.all(reviewsToCreate.map(review => createReview(review)));
-
-    console.log('Reviews created:');
-    console.log(reviews);
+    console.log('Reviews created:', reviews);
     console.log('Finished creating reviews!');
   } catch (error) {
     console.error('Error creating reviews!');
     throw error;
   }
 }
+
+/*async function createInitialReviews() {
+  try {
+    const [emily, liu] = await getAllUsers();
+    const [Netflix, YouTube] = await getAllWebsites();
+
+    console.log('Starting to create reviews...');
+    await createReview({
+      authorid: emily.id,
+      websiteid: Netflix.id,
+      name: 'Thorough Review of Netflix',
+      content: 'I love the clear layout of all the shows and movies. It is easy to navigate and find something to watch.',
+      rating: 4,
+      date: '09-24-2023'
+    });
+
+    await createReview({
+      authorid: liu.id,
+      websiteid: YouTube.id,
+      name: 'Thorough Review of Netflix',
+      content: 'I love the clear layout of all the shows and movies. It is easy to navigate and find something to watch.',
+      rating: 4,
+      date: '09-24-2023'
+    });
+    console.log('Finished creating reviews!');
+  } catch (error) {
+    console.log('Error creating reviews!')
+  }
+}*/
 
 const seedDatabase = async () => {
     try {
