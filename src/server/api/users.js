@@ -35,7 +35,7 @@ usersRouter.get('/:id', async(req, res, next) => {
 
 usersRouter.post('/login', async(req, res, next) => {
     const { username, password } = req.body;
-
+    console.log("inside api", username, password)
     if(!username || !password) {
         next({
             name: 'MissingCredentialsError',

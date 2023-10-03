@@ -73,46 +73,34 @@ export async function registerUser(username, password) {
 
 }
 
-// export async function userLogin(username, password) {
-//     const sendData = {
-//         user: {username: username, password: password}
-//     };
-
-//     try {
-//         const response = await fetch(`${BASE_URL}/users/login`, {
-//             method: 'POST',
-//             headers: getHeaders(),
-//             body: JSON.stringify(sendData)
-//         });
-//         const result = await response.json();
-//         const token = result;
-//         localStorage.setItem('user-token', token);
-//         localStorage.setItem('username', username);
-//         return result;
-//     } catch (error) {
-//       console.error('Count not login', error);
-//     }
-// }
-
 export async function userLogin(username, password) {
   const sendData = {
-      user: { username: username, password: password },
+    user: { username: username, password: password },
   };
 
   console.log(sendData);
 
   try {
-      const response = await fetch(`${BASE_URL}/users/login`, {
-          method: 'POST',
-          headers: getHeaders(), // Use the updated getHeaders function
-          body: JSON.stringify(sendData),
-      });
-      const result = await response.json();
-      return result; // No need to store the token in localStorage here
+    const response = await fetch(`${BASE_URL}/users/login`, {
+      method: 'POST',
+      // headers: getHeaders(), // Use the updated getHeaders function
+      body: JSON.stringify(sendData),
+    });
+
+    if (!response.ok) {
+      // Handle non-2xx status codes (e.g., 400 Bad Request, 401 Unauthorized)
+      const errorMessage = await response.text();
+      throw new Error(`Failed to log in: ${errorMessage}`);
+    }
+
+    const result = await response.json();
+    return result; // No need to store the token in localStorage here
   } catch (error) {
-      console.error('Could not login', error);
+    console.error('Could not login', error);
+    throw error; // Re-throw the error to handle it further up the call stack if needed
   }
 }
+
 
 export async function adminLogin(username, password, secret) {
   const sendData = {
@@ -122,7 +110,7 @@ export async function adminLogin(username, password, secret) {
   try {
     const response = await fetch(`${BASE_URL}/admin/login`, {
         method: 'POST',
-        headers: getHeaders(),
+        // headers: getHeaders(),
         body: JSON.stringify(sendData)
     });
     const result = await response.json();
@@ -138,7 +126,7 @@ export async function adminLogin(username, password, secret) {
 export async function fetchAllWebsites() {
     try {
       const response = await fetch(`${BASE_URL}/websites`, {
-        headers: getHeaders(),
+        // headers: getHeaders(),
       });
       const result = await response.json();
       return result;
@@ -150,7 +138,7 @@ export async function fetchAllWebsites() {
 export async function fetchSingleWebsite(websiteId) {
   try {
     const response = await fetch(`${BASE_URL}/websites/${websiteId}`, {
-      headers: getHeaders(),
+      // headers: getHeaders(),
     });
     const result = await response.json();
     return result;
@@ -233,6 +221,16 @@ export async function fetchSingleReview(reviewId) {
     console.error('Trouble fetching the review!', error);
   }
 };
+
+export async function fetchReviewsForWebsite(websiteId) {
+  try {
+      const response = await fetch(`${BASE_URL}/reviews/${websiteId}`);
+      const result = await response.json();
+      return result.reviews;
+  } catch (error) {
+      console.error('Trouble fetching reviews for website:', error);
+  }
+}
 
 export async function createReview(name, content, rating, date) {
   const sendData = {

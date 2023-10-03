@@ -122,13 +122,12 @@ websitesRouter.delete('/:websiteId', requireUser, async (req, res, next) => {
 });
 
 // Define a route that allows posting reviews for a specific website by its ID.
-websitesRouter.post('/:id/review', requireUser, requiredNotSent({ requiredParams: ['name', 'content', 'rating', 'date'] }), async (req, res, next) => {
+websitesRouter.post('/:id', requireUser, requiredNotSent({ requiredParams: ['name', 'content', 'rating', 'date'] }), async (req, res, next) => {
   try {
       const { name, content, rating, date } = req.body;
       const websiteId = req.params.id; // Retrieve the website ID from the URL parameter.
 
-      // Assuming you have user authentication in place, get the user's ID from the authentication data.
-      const authorId = req.user.id; // Replace with the actual way you get the user's ID.
+      const authorId = req.user.id;
 
       // Create the review with the retrieved authorid and websiteid.
       const createdReview = await createReview({ authorid: authorId, websiteid: websiteId, name, content, rating, date });

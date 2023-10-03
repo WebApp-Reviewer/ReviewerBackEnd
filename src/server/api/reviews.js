@@ -120,6 +120,9 @@ reviewsRouter.patch('/:reviewId', requireUser, requiredNotSent({requiredParams: 
         name: 'NotFound',
         message: `No review by ID ${reviewId}`
       })
+
+      console.log(reviewId);
+
     } else if(req.user.id !== reviewToUpdate.authorid) {
       res.status(403);
       next({
@@ -127,7 +130,7 @@ reviewsRouter.patch('/:reviewId', requireUser, requiredNotSent({requiredParams: 
         message: "You must be the same user who created this review to perform this action"
       });
     } else {
-      const updatedReview = await updateReview({reviewId, authorid: req.user.id, websiteid: req.website.id, name, content, rating, date});
+      const updatedReview = await updateReview({reviewId, authorid: req.user.id, name, content, rating, date});
       if(updatedReview) {
         res.send(updatedReview);
       } else {
