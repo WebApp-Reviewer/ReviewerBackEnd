@@ -162,8 +162,18 @@ async function createInitialReviews() {
   console.log("websiteId reviews", Netflix.id, Reddit.id, Mimo.id, YouTube.id, Slack.id, Twitter.id);
   try {
 
+    console.log("emily.id:", emily.id);
+    console.log("Netflix:id", Netflix.id);
+
     const reviewsToCreate = [
-      { authorid: emily.id, websiteid: Netflix.id, name: 'Thorough review of Netflix', content: 'I love the clear layout of all the shows and movies. It is easy to navigate and find something to watch.', rating: 4, date: '2023-09-13' },
+      { 
+        authorid: emily.id, 
+        websiteid: Netflix.id, 
+        name: 'Thorough review of Netflix', 
+        content: 'I love the clear layout of all the shows and movies. It is easy to navigate and find something to watch.', 
+        rating: 4, 
+        date: '2023-09-13' 
+      },
       { authorid: emily.id, websiteid: Reddit.id, name: 'How I feel about Reddit', content: 'I never understood how Reddit really worked, but I think it is a nice platform to talk about anything.', rating: 4, date: '2023-09-14' },
       { authorid: emily.id, websiteid: Mimo.id, name: 'Try Mimo!', content: 'I love Mimo. It is a nice way to learn the basics of web development and helped me a lot.', rating: 5, date: '2023-09-15' },
       { authorid: liu.id, websiteid: YouTube.id, name: 'YouTube', content: 'YouTube is just a classic platform and app. Love it.', rating: 5, date: '2023-09-25' },
@@ -181,7 +191,7 @@ async function createInitialReviews() {
       { authorid: lily.id, websiteid: Mimo.id, name: 'Mimo helped me a lot!', content: 'Anyone who is learning web development should check out Mimo. Fun way to learn!', rating: 5, date: '2023-07-16' },
       { authorid: lily.id, websiteid: Discord.id, name: 'Discord', content: 'I use Discord for a lot of things, playing games, school, talking to friends. Check it out!', rating: 5, date: '2023-08-25' },
       { authorid: lily.id, websiteid: YouTube.id, name: 'Love YouTube', content: 'Watching videos is my favorite way to end the day.', rating: 5, date: '2023-08-30' },
-    ]
+    ];
     const reviews = await Promise.all(reviewsToCreate.map(review => createReview(review)));
 
     console.log('Reviews created:');

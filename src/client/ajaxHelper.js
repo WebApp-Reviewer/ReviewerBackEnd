@@ -1,14 +1,31 @@
 const BASE_URL = "http://localhost:3000/api";
 
 
+// function getHeaders() {
+//     const headers ={
+//         'Content-Type': 'application/json'
+// };
+// const currentToken = localStorage.getItem('user token');
+// if (currentToken !== null) {
+//     headers['Authorization'] = 'Bearer' + currentToken;
+// } return headers;
+// }
+
 function getHeaders() {
-    const headers ={
-        'Content-Type': 'application/json'
-};
-const currentToken = localStorage.getItem('user token');
-if (currentToken !== null) {
-    headers['Authorization'] = 'Bearer' + currentToken;
-} return headers;
+  const headers = {
+      'Content-Type': 'application/json',
+  };
+
+  const userToken = localStorage.getItem('user-token');
+  const adminToken = localStorage.getItem('admin-token');
+
+  if (userToken) {
+      headers['Authorization'] = `Bearer ${userToken}`;
+  } else if (adminToken) {
+      headers['Authorization'] = `Bearer ${adminToken}`;
+  }
+
+  return headers;
 }
 
 export async function fetchAllUsers() {
@@ -56,25 +73,45 @@ export async function registerUser(username, password) {
 
 }
 
-export async function userLogin(username, password) {
-    const sendData = {
-        user: {username: username, password: password}
-    };
+// export async function userLogin(username, password) {
+//     const sendData = {
+//         user: {username: username, password: password}
+//     };
 
-    try {
-        const response = await fetch(`${BASE_URL}/users/login`, {
-            method: 'POST',
-            headers: getHeaders(),
-            body: JSON.stringify(sendData)
-        });
-        const result = await response.json();
-        const token = result;
-        localStorage.setItem('user-token', token);
-        localStorage.setItem('username', username);
-        return result;
-    } catch (error) {
-      console.error('Count not login', error);
-    }
+//     try {
+//         const response = await fetch(`${BASE_URL}/users/login`, {
+//             method: 'POST',
+//             headers: getHeaders(),
+//             body: JSON.stringify(sendData)
+//         });
+//         const result = await response.json();
+//         const token = result;
+//         localStorage.setItem('user-token', token);
+//         localStorage.setItem('username', username);
+//         return result;
+//     } catch (error) {
+//       console.error('Count not login', error);
+//     }
+// }
+
+export async function userLogin(username, password) {
+  const sendData = {
+      user: { username: username, password: password },
+  };
+
+  console.log(sendData);
+
+  try {
+      const response = await fetch(`${BASE_URL}/users/login`, {
+          method: 'POST',
+          headers: getHeaders(), // Use the updated getHeaders function
+          body: JSON.stringify(sendData),
+      });
+      const result = await response.json();
+      return result; // No need to store the token in localStorage here
+  } catch (error) {
+      console.error('Could not login', error);
+  }
 }
 
 export async function adminLogin(username, password, secret) {

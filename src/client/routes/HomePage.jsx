@@ -1,6 +1,6 @@
 import React from "react";
-import ClientGreeting from "../components/ClientGreeting";
-import GuestGreeting from "../components/GuestGreeting";
+// import ClientGreeting from "../components/ClientGreeting";
+// import GuestGreeting from "../components/GuestGreeting";
 import WebsitesList from "../components/WebsitesList";
 import { useOutletContext } from "react-router-dom";
 
