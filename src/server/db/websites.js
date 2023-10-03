@@ -1,5 +1,5 @@
 const db = require('./client');
-//const util = require('./utils');
+const util = require('./utils');
 
 //database functions 
 async function getAllWebsites() {
@@ -55,7 +55,9 @@ async function updateWebsite({id, ...fields}){
   try {
     const toUpdate = {}
     for(let column in fields) {
-      if(fields[column] !== undefined) toUpdate[column] = fields[column];
+      if(fields[column] !== undefined) {
+      toUpdate[column] = fields[column];
+      }
     }
     let website;
     if (util.dbFields(toUpdate).insert.length > 0) {

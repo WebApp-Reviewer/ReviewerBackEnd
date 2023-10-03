@@ -50,7 +50,7 @@ async function createReview({ authorid, websiteid, name, content, rating, date }
     }
 }
 
-async function updateReview({reviewId, ...fields}){
+async function updateReview({id, ...fields}){
     try {
       const toUpdate = {}
       for(let column in fields) {
@@ -59,18 +59,18 @@ async function updateReview({reviewId, ...fields}){
         }
       }
       let review;
-      if (util.dbFields(toUpdate).insert.length > 0) {
+      if (util.dbFields(fields).insert.length > 0) {
         const {rows} = await client.query(`
           UPDATE reviews
           SET ${ util.dbFields(toUpdate).insert }
-          WHERE id=${ reviewId }
+          WHERE id=${ id }
           RETURNING *;
         `, Object.values(toUpdate));
         review = rows[0];
+        return review;
       }
-      return review;
     } catch (error) {
-      throw error
+      console.log("Updating review error", error);
     }
 }
 

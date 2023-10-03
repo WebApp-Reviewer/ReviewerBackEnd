@@ -51,7 +51,8 @@ websitesRouter.get('/name', async(req, res, next) => {
 websitesRouter.post('/', requireUser, requiredNotSent({requiredParams: ['name', 'url', 'description', 'image']}), async (req, res, next) => {
   try {
     const {name, url, description, image} = req.body;
-    const existingWebsite = await getActivityByName(name);
+    const existingWebsite = await getWebsiteByName(name);
+
     if(existingWebsite) {
       next({
         name: 'NotFound',
@@ -84,7 +85,7 @@ websitesRouter.patch('/:websiteId', requireUser, requiredNotSent({requiredParams
         message: `No website by ID ${websiteId}`
       })
     } else {
-      const updatedWebsite = await updateWebsite({websiteId, name, description, url, image});
+      const updatedWebsite = await updateWebsite({id: websiteId, name, description, url, image});
       if(updatedWebsite) {
         res.send(updatedWebsite);
       } else {
