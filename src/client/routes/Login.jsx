@@ -14,25 +14,23 @@ const Login = () => {
 
     async function submitLogin(e) {
         e.preventDefault();
-        console.log({submitLogin});
 
         const user = {
-            user: {
                 username,
                 password,
-            }
         };
+        console.log(user);
 
         const response = await userLogin(user);
 
         if (response.error) {
-            console.log(error)
+            console.log(error, 'Message')
             setPasswordErrorMessage("Username or password incorrect. Please try again");
         } else {
             localStorage.setItem('token', response.token);
             setIsLoggedIn(true);
         }
-        navigate('/WebsiteListings');
+        navigate('/');
     }
 
     return (

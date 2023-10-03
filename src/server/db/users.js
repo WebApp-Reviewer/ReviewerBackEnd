@@ -17,7 +17,7 @@ const createUser = async({ name='first last', username, password }) => {
     }
 }
 
-const getUser = async({username, password}) => {
+const getUser = async(username, password) => {
     if(!username || !password) {
         return;
     }
@@ -30,13 +30,13 @@ const getUser = async({username, password}) => {
         delete user.password;
         return user;
     } catch (err) {
-        throw err;
+        console.log(err)
     }
 }
 
 const getUserByUsername = async(username) => {
     try {
-        const { rows: [ user ] } = await db.query(`
+        const { rows: [user] } = await db.query(`
         SELECT * 
         FROM users
         WHERE username=$1
@@ -48,9 +48,10 @@ const getUserByUsername = async(username) => {
                 message: "A user with that username does not exist."
             }
         }
+        // console.log('Lookin for error', user)
         return user;
     } catch (err) {
-        throw err;
+        console.log(err)
     }
 }
 

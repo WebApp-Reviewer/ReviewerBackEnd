@@ -1,16 +1,23 @@
 @import url("https://fonts.googleapis.com/css2?family=Merriweather:wght@300&family=Phudu:wght@300&display=swap");
+@import "react-alice-carousel/lib/alice-carousel.css";
 
 .Root{
     font-family: "Merriweather", serif;
 }
 
 .webName{
+    position: absolute;
     color: rgb(0, 0, 0);
-    font-size: 4rem;
-    margin-top: 12rem;
-    margin-bottom: 2rem;
-    text-align: center;
-
+    font-size: 3rem;
+    margin-top: auto;
+    margin-left: 35%;
+    margin-right: 35%;
+    top: 10%;
+    left: 400;
+    right: 0;
+    text-align: right;
+    z-index: 1;
+    background-color: rgb(234, 235, 191);
 }
 
 .Logo{
@@ -18,75 +25,18 @@
   top: 0;
   left: 0;
   max-width: 15%;
-  max-height: 15%
+  max-height: 15%;
+  z-index: 1;
 }
 
-Navigation Bar Styling
 
-.headerLink {
-    top: 0;
-    position:fixed;
-    background-color: rgb(148, 148, 148);
-    border: rgb(73, 73, 73);
-    border-style: double;
-    border-radius: 30px;
-    border-width: 10px;
-}
-
-nav{
-    width: 100%;
-    height: 15%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    align-content: center;
-    background-color: #1b2430;
-    padding: 25px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.06);
-}
-
-nav:hover{
-
-}
-.navbar{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-left: 20%;
-}
-
-.navbar text {
-    text-decoration: none;
-    font-size: 4.0rem;
-    font-weight: 600;
-    position:relative;
-    text-align: center;
-    margin-left: 35%;
-}
-
-.linkStyle {
-  color: rgb(234, 235, 191);
-  margin: 0;
-  display: flex;
-  flex-direction: row;
-  font-family: "Merriweather", serif;
-  padding: 0 45px;
-  height: 200%;
+.ImageGallery{
+  position: relative;
+  object-fit: fill;
   justify-content: center;
-  cursor: pointer;
-}
-
-.linkStyle:hover{
-  transform: scale(1.3);
-}
-
-.linkStyle:hover {
-  filter: invert(3) hue-rotate(40.4deg) brightness(4);
-  transition-duration: 0.5s;
-}
-
-.adminLink{
-  font-size: 1.3rem;
-  font-weight: 600;
-  color: black;
+  align-items: center;
+  top: 0;
+  width: 100%;
+  height: 54rem;
+  z-index: 0;
 }

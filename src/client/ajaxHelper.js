@@ -57,15 +57,11 @@ export async function registerUser(username, password) {
 }
 
 export async function userLogin(username, password) {
-    const sendData = {
-        user: {username: username, password: password}
-    };
-
     try {
         const response = await fetch(`${BASE_URL}/users/login`, {
             method: 'POST',
             headers: getHeaders(),
-            body: JSON.stringify(sendData)
+            body: JSON.stringify(username, password)
         });
         const result = await response.json();
         const token = result;
@@ -73,7 +69,7 @@ export async function userLogin(username, password) {
         localStorage.setItem('username', username);
         return result;
     } catch (error) {
-      console.error('Count not login', error);
+      console.log('Count not login', error);
     }
 }
 

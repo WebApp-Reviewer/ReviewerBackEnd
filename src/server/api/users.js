@@ -35,7 +35,6 @@ usersRouter.get('/:id', async(req, res, next) => {
 
 usersRouter.post('/login', async(req, res, next) => {
     const { username, password } = req.body;
-
     if(!username || !password) {
         next({
             name: 'MissingCredentialsError',
@@ -43,7 +42,7 @@ usersRouter.post('/login', async(req, res, next) => {
         });
     }
     try {
-        const user = await getUser({username, password});
+        const user = await getUser(username, password);
         if(!user) {
             next({
                 name: 'IncorrectCredentialsError',
