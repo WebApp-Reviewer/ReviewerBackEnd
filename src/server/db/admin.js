@@ -2,7 +2,7 @@ const db = require('./client');
 const bcrypt = require('bcrypt');
 const SALT_COUNT = 10;
 
-const createAdmin = async({ name='first last', username, password, secret }) => {
+const createAdmin = async({ name, username, password, secret }) => {
     const hashedPassword = await bcrypt.hash(password, SALT_COUNT);
     try {
         const { rows: [admin] } = await db.query(`
