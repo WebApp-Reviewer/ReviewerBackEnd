@@ -1,16 +1,5 @@
 const BASE_URL = "http://localhost:3000/api";
 
-
-// function getHeaders() {
-//     const headers ={
-//         'Content-Type': 'application/json'
-// };
-// const currentToken = localStorage.getItem('user token');
-// if (currentToken !== null) {
-//     headers['Authorization'] = 'Bearer' + currentToken;
-// } return headers;
-// }
-
 function getHeaders() {
   const headers = {
       'Content-Type': 'application/json',
@@ -110,7 +99,7 @@ export async function adminLogin(username, password, secret) {
   try {
     const response = await fetch(`${BASE_URL}/admin/login`, {
         method: 'POST',
-        // headers: getHeaders(),
+        headers: getHeaders(),
         body: JSON.stringify(sendData)
     });
     const result = await response.json();
@@ -201,14 +190,21 @@ export async function editWebsite(name, description, url, image) {
 export async function fetchAllReviews() {
   try {
     const response = await fetch(`${BASE_URL}/reviews`, {
-      headers: getHeaders(),
+      // headers: getHeaders(),
     });
+    
+    if (!response.ok) {
+      throw new Error(`Failed to fetch reviews: ${response.status}`);
+    }
+
     const result = await response.json();
+    console.log("Fetched reviews:", result); // Log the reviews to the console
     return result;
   } catch (error) {
-    console.error('Trouble fetching reviews!', error);
+    console.error('Trouble fetching reviews:', error);
   }
 }
+
 
 export async function fetchSingleReview(reviewId) {
   try {
@@ -222,13 +218,39 @@ export async function fetchSingleReview(reviewId) {
   }
 };
 
-export async function fetchReviewsForWebsite(websiteId) {
+export async function fetchWebsiteReviews(websiteId) {
   try {
-      const response = await fetch(`${BASE_URL}/reviews/${websiteId}`);
-      const result = await response.json();
-      return result.reviews;
+    const response = await fetch(`${BASE_URL}/reviews/${websiteId}`);
+    
+    if (!response.ok) {
+      throw new Error(`Failed to fetch reviews: ${response.status}`);
+    }
+    
+    const reviews = await response.json();
+    return reviews;
   } catch (error) {
-      console.error('Trouble fetching reviews for website:', error);
+    console.error("Error fetching website reviews:", error);
+    throw error;
+  }
+}
+
+export async function fetchUserReview(websiteId) {
+  try {
+    const response = await fetch(`${BASE_URL}/reviews/user-review?websiteId=${websiteId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch user's review: ${response.status}`);
+    }
+
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    throw new Error(`Error fetching user's review: ${error.message}`);
   }
 }
 

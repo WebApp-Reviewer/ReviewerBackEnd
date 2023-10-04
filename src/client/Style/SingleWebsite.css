@@ -1,21 +1,18 @@
-/* SingleWebsite.css */
+.website-icon-container {
+  display: flex;
+  justify-content: center; /* Horizontally center the content */
+  align-items: center; /* Vertically center the content */
+  width: 200px; /* Set the width of the container to match the icon */
+  height: 200px; /* Set the height of the container to match the icon */
+}
 
-/* Container for the entire content */
-.single-website-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 20px;
-  }
-  
-  /* Styling for the website icon */
-  .website-icon {
-    width: 200px;
-    height: 200px;
-    object-fit: cover; /* Maintain aspect ratio for images */
-    border-radius: 50%; /* Creates a circular shape for the icon */
-  }
+.website-icon {
+  width: 100px;
+  height: 100px;
+  object-fit: cover; /* Maintain aspect ratio for images */
+  border-radius: 50%; /* Creates a circular shape for the icon */
+}
+
   
   /* Styling for the website name */
   h1 {
@@ -40,4 +37,43 @@
   .website-url:hover {
     text-decoration: underline; /* Underline on hover */
   }
+
+  /* CSS for SingleWebsiteReviews component */
+.reviews {
+  margin-top: 20px;
+}
+
+.reviews h2 {
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.reviews ul {
+  list-style: none;
+  padding: 0;
+}
+
+.reviews li {
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  padding: 10px;
+  background-color: #f9f9f9;
+}
+
+.reviews h3 {
+  font-size: 1.2rem;
+  color: #555;
+  margin: 0;
+}
+
+.reviews p {
+  margin: 5px 0;
+}
+
+/* Style for "No reviews available" message */
+p.no-reviews {
+  font-style: italic;
+  color: #777;
+}
+
   

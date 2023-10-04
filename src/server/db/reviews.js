@@ -36,6 +36,18 @@ async function getReviewByName(name) {
     }
 }
 
+async function getReviewsByWebsiteId(websiteId) {
+    try {
+        const { rows } = await client.query(`
+        SELECT * FROM reviews
+        WHERE websiteid = $1;
+        `, [websiteId]);
+        return rows;
+    } catch (error) {
+        throw error;
+    }
+}
+
 async function createReview({ authorid, websiteid, name, content, rating, date }) {
     try {
         const {rows: [review]} = await client.query(`
@@ -90,5 +102,6 @@ module.exports = {
     getReviewByName,
     createReview,
     updateReview,
-    deleteReview
+    deleteReview,
+    getReviewsByWebsiteId
 }

@@ -6,7 +6,7 @@ import WebsiteListings from './routes/WebsiteListings.jsx';
 import Profile from './routes/Profile.jsx';
 import Register from "./routes/Register.jsx"; 
 import Login from "./routes/Login.jsx"; 
-import SingleWebsite from './components/SingleWebsite.jsx';
+import SingleWebsite from './routes/SingleWebsite.jsx';
 import AdminLogin from './routes/adminLogin.jsx';
 import ReviewList from './routes/Reviews.jsx';
 
@@ -26,6 +26,17 @@ const router = createBrowserRouter([
       {
         path: "websites/:id", // Updated path
         element: <SingleWebsite />,
+        // children: [
+        //   // Add routes for posting and editing reviews here
+        //   {
+        //     path: "post-review",
+        //     element: <PostReviewForm />,
+        //   },
+        //   {
+        //     path: "edit-review",
+        //     element: <EditReviewForm />,
+        //   },
+        // ],
       },
       {
         path: "Profile",
