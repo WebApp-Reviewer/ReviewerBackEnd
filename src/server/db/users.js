@@ -17,7 +17,7 @@ const createUser = async({ name='first last', username, password }) => {
     }
 }
 
-const getUser = async({username, password}) => {
+const getUser = async(username, password) => {
     if(!username || !password) {
         return;
     }
@@ -30,7 +30,7 @@ const getUser = async({username, password}) => {
         delete user.password;
         return user;
     } catch (err) {
-        throw err;
+        console.log(err);
     }
 }
 

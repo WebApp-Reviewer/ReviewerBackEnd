@@ -28,8 +28,9 @@ async function getAllAdmin() {
     }
 }
 
-const getAdmin = async({username, password}) => {
-    if(!username || !password) {
+const getAdmin = async({username, password, secret}) => {
+    console.log("inside getAdmin", username);
+    if(!username || !password || !secret) {
         return;
     }
     try {
@@ -40,7 +41,24 @@ const getAdmin = async({username, password}) => {
         if(!passwordsMatch) return;
         delete admin.password;
         return admin;
+    } catch (error) {
+        console.log("Getting admin error!", error);
+    }
+}
+
+const getAdminById = async(id) => {
+    try {
+        const { rows: [ admin ] } = await db.query(`
+        SELECT * 
+        FROM admin
+        WHERE id=$1;`, [ id ]);
+
+        if(!admin) {
+            return;
+        }
+        return admin;
     } catch (err) {
+        console.log(err);
         throw err;
     }
 }
@@ -58,6 +76,7 @@ const getAdminByUsername = async(username) => {
                 message: "An Admin with that username does not exist."
             }
         }
+        console.log("inside getadminbyusername", admin);
         return admin;
     } catch (err) {
         throw err;
@@ -69,5 +88,6 @@ module.exports = {
     createAdmin,
     getAdmin,
     getAdminByUsername,
-    getAllAdmin
+    getAllAdmin,
+    getAdminById
 };

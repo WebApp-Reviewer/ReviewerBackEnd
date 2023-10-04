@@ -1,6 +1,7 @@
 const express = require('express');
 const apiRouter = express.Router();
 const { getUserById } = require('../db/users');
+const {getAdminById} = require('../db/admin');
 const jwt = require('jsonwebtoken');
 
 const { JWT_SECRET = 'secretpass123' } = process.env;
@@ -25,9 +26,11 @@ apiRouter.use(async (req, res, next) => {
       const id = parsedToken && parsedToken.id
       if (id) {
         req.user = await getUserById(id);
+        req.admin = await getAdminById(id);
         next();
       }
     } catch (error) {
+      console.log("api router", error);
       next(error);
     }
   } 

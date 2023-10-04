@@ -1,14 +1,32 @@
-const BASE_URL = "http://localhost3000/api";
+const BASE_URL = "http://localhost:3000/api";
 
 
-function getHeaders() {
+function getAdminHeaders() {
     const headers ={
         'Content-Type': 'application/json'
-};
-const currentToken = localStorage.getItem('user token');
-if (currentToken !== null) {
+    };
+  const currentToken = localStorage.getItem('user-token');
+
+  console.log("current token", currentToken);
+
+  if (currentToken === null) {
     headers['Authorization'] = 'Bearer' + currentToken;
-} return headers;
+  } 
+  return headers;
+}
+
+function getHeaders() {
+  const headers ={
+      'Content-Type': 'application/json'
+  };
+  const currentToken = localStorage.getItem('user-token');
+
+  console.log("current token", currentToken);
+
+  if (currentToken !== null) {
+    headers['Authorization'] = 'Bearer' + currentToken;
+  } 
+  return headers;
 }
 
 export async function fetchAllUsers() {
@@ -35,18 +53,14 @@ export async function fetchMyData() {
 }
 
 export async function registerUser(username, password) {
-    const sendData = {
-        user: {username: username, password: password},
-    };
-
     try {
         const response = await fetch(`${BASE_URL}/users/register`, {
             method: 'POST',
             headers: getHeaders(),
-            body: JSON.stringify(sendData)
+            body: JSON.stringify(username, password)
         });
         const result = await response.json();
-        const token = result.data.token;
+        const token = result;
         localStorage.setItem('user-token', token);
         localStorage.setItem('username', username);
         return result;
@@ -57,18 +71,14 @@ export async function registerUser(username, password) {
 }
 
 export async function userLogin(username, password) {
-    const sendData = {
-        user: {username: username, password: password}
-    };
-
     try {
         const response = await fetch(`${BASE_URL}/users/login`, {
             method: 'POST',
             headers: getHeaders(),
-            body: JSON.stringify(sendData)
+            body: JSON.stringify(username, password)
         });
         const result = await response.json();
-        const token = result.token;
+        const token = result;
         localStorage.setItem('user-token', token);
         localStorage.setItem('username', username);
         return result;
@@ -77,20 +87,18 @@ export async function userLogin(username, password) {
     }
 }
 
-export async function adminLogin(username, password, secret) {
-  const sendData = {
-    admin: {username: username, password: password, secret: secret}
-  };
-
+export async function adminLogin({username, password, secret}) {
+  console.log("admin ajax", username, password, secret);
   try {
     const response = await fetch(`${BASE_URL}/admin/login`, {
         method: 'POST',
-        headers: getHeaders(),
-        body: JSON.stringify(sendData)
+        headers: getAdminHeaders(),
+        body: JSON.stringify({username, password, secret})
     });
     const result = await response.json();
-    const token = result.data.token;
-    localStorage.setItem('admin-token', token);
+    console.log("admin result", result);
+    const token = result.token;
+    localStorage.setItem('user-token', token);
     localStorage.setItem('username', username);
     return result;
   } catch (error) {
@@ -108,6 +116,19 @@ export async function fetchAllWebsites() {
     } catch (error) {
       console.error('Trouble fetching websites!', error);
     }
+};
+
+export async function fetchAllAdminWebsites() {
+  try {
+    const response = await fetch(`${BASE_URL}/admin/websites`, {
+      headers: getHeaders(),
+    });
+    const result = await response.json();
+    console.log("admin websites", response);
+    return result;
+  } catch (error) {
+    console.error('Trouble fetching websites!', error);
+  }
 };
 
 export async function fetchSingleWebsite(websiteId) {
@@ -128,7 +149,7 @@ export async function createWebsite(name, url, description, image, tags) {
   }
 
   try {
-    const response = await fetch(`${BASE_URL}/websites`, {
+    const response = await fetch(`${BASE_URL}/admin/websites`, {
       headers: getHeaders(),
       method: 'POST',
       body: JSON.stringify(sendData)

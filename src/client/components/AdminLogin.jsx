@@ -2,72 +2,75 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { adminLogin } from '../API/ajaxHelpers'
 
-export default function LogInForm({ setLoggedIn, setUser }) {
+export default function LogInForm({ setAdminLoggedIn, setUser, adminLoggedIn }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [secret, setSecret] = useState('');
+    const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
     const navigate = useNavigate();
 
     async function handleSubmit(event) {
         event.preventDefault();
         console.log('handle submit');
 
-        try {
-            const token = await adminLogin(username, password, secret);
-            setLoggedIn(token);
-            setUser(token);
-            console.log("token", token);
-        } catch (error) {
-            console.log(error);
-        }
-        navigate('/websites')
+        const admin = {
+            username,
+            password,
+            secret,
+        };
+        console.log("admin", admin);
+
+        const response = await adminLogin(admin);
+        console.log("response", response);
+
+        if(response.error) {
+            console.log("Message: ", error);
+            setPasswordErrorMessage("Username, password, or secret key incorrect. Please try again.");
+        } else {
+            localStorage.setItem('token', response.token);
+            setAdminLoggedIn(true);
+            setUser(true);
+        } navigate("/websites");
+
     }
 
+
     return (
-        <div className="login-user">
-            <h1 className='login-header'>Login!</h1>
-            <form className="login-form" onSubmit={handleSubmit}>
-                <label className='login-label'>
-                    Username: {' '}
-                    <input
-                    className='login-input'
-                    type="text"
-                    name="username"
-                    placeholder="Username"
-                    required={true}
-                    minLength={3}
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    />
-                </label>
-                <label className='login-label'>
-                    Password: {' '}
-                    <input
-                    className='login-input'
-                    type="password"
-                    name="password"
-                    placeholder="Password"
-                    required={true}
-                    minLength={7}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    />
-                </label>
-                <label className='login-label'>
-                    Secret Key: {' '}
-                    <input
-                    className='login-input'
-                    type="password"
-                    name="password"
-                    placeholder="Secret Key"
-                    required={true}
-                    minLength={7}
-                    value={secret}
-                    onChange={(e) => setSecret(e.target.value)}
-                    />
-                </label>
-                <button className="login-button">Login</button>
-            </form>
+        <div className="panel" id="Center">
+            {adminLoggedIn ? (
+                <h1>Welcome Back!</h1>
+            ) : (
+                <>
+                    <h1 className='Header' id="CenterText">Log In</h1>
+                    <form className='LoginBox' onSubmit={handleSubmit}>
+                        <input
+                            type="text"
+                            value={username}
+                            placeholder="Username"
+                            onChange={(e) => setUsername(e.target.value)}
+                        />
+                        <input
+                            type="password"
+                            value={password}
+                            placeholder="Password"
+                            onChange={(e) => {
+                                setPassword(e.target.value);
+                                setPasswordErrorMessage('');
+                            }}
+                        />
+                        <input
+                            type="password"
+                            value={secret}
+                            placeholder="Secret Key"
+                            onChange={(e) => {
+                                setSecret(e.target.value);
+                            }}
+                        />
+                        {passwordErrorMessage && <p>{passwordErrorMessage}</p>}
+                        <button type="submit" className="submitButton">Log In</button>
+                    </form>
+                </>
+            )}
         </div>
-    )
-}
+    );
+};

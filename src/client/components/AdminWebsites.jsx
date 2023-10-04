@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { deleteWebsite, fetchAllWebsites } from "../API/ajaxHelpers"
+import { deleteWebsite, fetchAllAdminWebsites } from "../API/ajaxHelpers"
 
 export default function Websites() {
     const [websites, setWebsites] = useState([]);
@@ -21,7 +21,7 @@ export default function Websites() {
 
     useEffect(() => {
         async function allWebsitesHandler() {
-            const result = await fetchAllWebsites();
+            const result = await fetchAllAdminWebsites();
             setWebsites(result.websites);
             console.log("websites", result.websites);
         } allWebsitesHandler();
@@ -30,7 +30,7 @@ export default function Websites() {
     async function handleDelete(websiteId) {
         try {
             await deleteWebsite(websiteId);
-            const updatedWebsites = await fetchAllWebsites();
+            const updatedWebsites = await fetchAllAdminWebsites();
             setWebsites(updatedWebsites.websites);
         } catch (error) {
             console.error(error);

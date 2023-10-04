@@ -75,6 +75,7 @@ export default function AdminCreateWebsite({ adminLoggedIn }) {
                     type="text"
                     name="image"
                     placeholder="Image URL"
+                    required={true}
                     value={image}
                     onChange={(e) => setImage(e.target.value)}
                     />
