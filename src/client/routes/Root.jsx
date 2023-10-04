@@ -10,11 +10,13 @@ import WebWatchers from '../assets/webwatchers-logo.png'
 import Youtube from '../assets/Youtube.jpg'
 import AliceCarousel from 'react-alice-carousel';
 import 'react-alice-carousel/lib/alice-carousel.css';
+import { debounce } from '../Util/debounce';
 
 export default function Root() {
     const [token, setToken] = useState(localStorage.getItem('token'));
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [fix, setFix] = useState(false);
+    const [prevScrollPos, setPrevScrollPos] = useState(0);
+    const [visible, setVisible] = useState(true);
 
     useEffect(() => {
         setToken(localStorage.getItem('token'));
@@ -60,16 +62,36 @@ export default function Root() {
             items={items} />
         );
         }
-
-    function setFixed(){
-        if(window.scrollY >=392) {
-            setFix(true);
-        } else {
-            setFix(false);
-        }
-    }
-
-    window.addEventListener('scroll', setFixed)
+        
+          const handleScroll = debounce(() => {
+            const currentScrollPos = window.scrollY;
+        
+            setVisible((prevScrollPos > currentScrollPos && prevScrollPos - currentScrollPos > 70) || currentScrollPos < 10);
+        
+            setPrevScrollPos(currentScrollPos);
+          }, 100);
+        
+          useEffect(() => {
+            window.addEventListener('scroll', handleScroll);
+        
+            return () => window.removeEventListener('scroll', handleScroll);
+        
+          }, [prevScrollPos, visible, handleScroll]);
+        
+          const navbarStyles = {
+            position: 'fixed',
+            height: '60px',
+            width: '100%',
+            textAlign: 'center',
+            alignItems: 'center',
+            justifyContent: 'center',
+            transition: 'top 0.6s',
+            paddingTop: '15px',
+            marginLeft: '-42px',
+            display: 'inline-block',
+            backgroundColor: '#1b2430',
+          }
+        
 
     return (
         <div>
@@ -81,6 +103,7 @@ export default function Root() {
                 <Gallery/>
                 </div>
                 <nav className="headerLink">
+                <div style={{ ...navbarStyles, top: visible ? '0' : '-60px' }}>
                 <div className='navbar'>
                     <Link to="WebsiteListings" className="linkStyle">Homepage</Link>
                     <Link to="Reviews" className="linkStyle">Reviews</Link>
@@ -92,6 +115,7 @@ export default function Root() {
                         </>
                     )}
                     {token && <button onClick={logout} className="linkStyle">Log Out</button>}
+                </div>
                 </div>
                 </nav>
             </header>

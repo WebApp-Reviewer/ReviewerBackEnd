@@ -1,8 +1,6 @@
 Navigation Bar Styling
 
 .headerLink {
-    top: 0;
-    position:fixed;
     background-color: rgb(148, 148, 148);
     border: rgb(73, 73, 73);
     border-style: double;
@@ -18,18 +16,15 @@ nav{
     align-items: center;
     align-content: center;
     background-color: #1b2430;
-    padding: 25px;
+    padding: 42px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.06);
+    transition: 0.3s;
 }
 
-.sticky{
-
-}
 .navbar{
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-left: 20%;
 }
 
 .navbar text {
