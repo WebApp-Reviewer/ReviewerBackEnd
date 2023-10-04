@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import { deleteWebsite, fetchAllAdminWebsites } from "../API/ajaxHelpers"
 
-export default function Websites() {
+export default function AdminWebsites(adminLoggedIn) {
     const [websites, setWebsites] = useState([]);
 
     function renderAllWebsites() {
@@ -22,10 +22,10 @@ export default function Websites() {
     useEffect(() => {
         async function allWebsitesHandler() {
             const result = await fetchAllAdminWebsites();
-            setWebsites(result.websites);
-            console.log("websites", result.websites);
+            setWebsites(result.admin);
+            console.log("websites handler", result.admin);
         } allWebsitesHandler();
-    })
+    }, [])
 
     async function handleDelete(websiteId) {
         try {
@@ -38,8 +38,10 @@ export default function Websites() {
     }
 
     return (
-        <div>
-            {renderAllWebsites()}
-        </div>
+        <>
+        {adminLoggedIn ? (
+            <div>{renderAllWebsites()}</div>
+        ) : (<h1>Please Login!</h1>)}
+        </>
     )
 }

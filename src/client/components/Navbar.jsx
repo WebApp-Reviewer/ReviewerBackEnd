@@ -32,6 +32,7 @@ export default function Navbar({loggedIn, setUser, setLoggedIn, adminLoggedIn, s
                 </>
             ) : (
                 <>
+                {/*if a user is not logged in*/}
                 <Link className="navbar-link" to="/websites">Websites</Link>
                 <Link className="navbar-link" to="/reviews">Reviews</Link>
                 <Link className="navbar-link" to="/login">Login</Link>

@@ -11,17 +11,14 @@ export default function LogInForm({ setAdminLoggedIn, setUser, adminLoggedIn }) 
 
     async function handleSubmit(event) {
         event.preventDefault();
-        console.log('handle submit');
 
         const admin = {
             username,
             password,
             secret,
         };
-        console.log("admin", admin);
 
         const response = await adminLogin(admin);
-        console.log("response", response);
 
         if(response.error) {
             console.log("Message: ", error);
@@ -30,8 +27,7 @@ export default function LogInForm({ setAdminLoggedIn, setUser, adminLoggedIn }) 
             localStorage.setItem('token', response.token);
             setAdminLoggedIn(true);
             setUser(true);
-        } navigate("/websites");
-
+        } navigate("/admin/websites");
     }
 
 

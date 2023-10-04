@@ -2,6 +2,31 @@ const db = require('./client');
 const bcrypt = require('bcrypt');
 const SALT_COUNT = 10;
 
+async function getAllWebsites() {
+    try {
+        const {rows} = await db.query(`
+        SELECT * FROM websites;
+        `);
+        return rows;
+    } catch (error) {
+        throw error;
+    }
+}
+
+async function createWebsite({ authorid, name, url, description, image }) {
+    try {
+     const {rows: [website]} = await db.query(`
+       INSERT INTO websites(authorid, name, url, description, image) 
+       VALUES ($1, $2, $3, $4, $5)
+       ON CONFLICT (name) DO NOTHING
+       RETURNING *
+     `, [authorid, name, url, description, image])
+     return website;
+    } catch (error) {
+     console.log("Error creating website!", error);
+    }
+   }
+
 const createAdmin = async({ name, username, password, secret }) => {
     const hashedPassword = await bcrypt.hash(password, SALT_COUNT);
     try {
@@ -89,5 +114,7 @@ module.exports = {
     getAdmin,
     getAdminByUsername,
     getAllAdmin,
-    getAdminById
+    getAdminById,
+    getAllWebsites, 
+    createWebsite,
 };

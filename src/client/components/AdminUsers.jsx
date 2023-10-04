@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import { fetchAllUsers } from "../API/ajaxHelpers"
 
-export default function Websites() {
+export default function Websites(adminLoggedIn) {
     const [users, setUsers] = useState([]);
 
     function renderAllUsers() {
@@ -10,7 +10,7 @@ export default function Websites() {
                 <div key={user?.id}>
                     <h1>{user?.name}</h1>
                     <h2>{user?.username}</h2>
-                    {/*add in smt to count the number*/}
+                    {/*add in smt to count the number of reviews each user has*/}
                 </div>
             )
         })
@@ -22,11 +22,13 @@ export default function Websites() {
             setUsers(result.users);
             console.log("websites", result.users);
         } allUsersHandler();
-    })
+    }, [])
 
     return (
-        <div>
-            {renderAllUsers()}
-        </div>
+        <>
+        {adminLoggedIn ? (
+            <div>{renderAllUsers()}</div>
+        ) : (<h1>Please Login!</h1>)}
+        </>
     )
 }

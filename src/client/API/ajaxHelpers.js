@@ -39,6 +39,17 @@ export async function fetchAllUsers() {
     }
 } 
 
+export async function fetchAllAdminUsers() {
+  try {
+     const response = await fetch(`${BASE_URL}/admin/users`);
+     const users = await response.json();
+     console.log("ajax users", users);
+     return users;
+  } catch (error) {
+      console.error('Trouble fetching users!', error);
+  }
+}
+
 export async function fetchMyData() {
   try {
       const response = await fetch(`${BASE_URL}/users/:id`, {
@@ -121,10 +132,10 @@ export async function fetchAllWebsites() {
 export async function fetchAllAdminWebsites() {
   try {
     const response = await fetch(`${BASE_URL}/admin/websites`, {
-      headers: getHeaders(),
+      headers: getAdminHeaders(),
     });
     const result = await response.json();
-    console.log("admin websites", response);
+    console.log("admin websites", result);
     return result;
   } catch (error) {
     console.error('Trouble fetching websites!', error);
