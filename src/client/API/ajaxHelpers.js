@@ -160,13 +160,13 @@ export async function fetchSingleWebsite(websiteId) {
   }
 };
 
-export async function createWebsite(authorid, name, url, description, image) {
+export async function createWebsite(name, url, description, image) {
   console.log("website details", name, url, description, image);
   try {
     const response = await fetch(`${BASE_URL}/admin/websites`, {
       headers: getAdminHeaders(),
       method: 'POST',
-      body: JSON.stringify(authorid, name, url, description, image)
+      body: JSON.stringify({name, url, description, image})
     });
     console.log("ajax create website", response);
     const result = await response.json();

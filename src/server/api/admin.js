@@ -58,10 +58,10 @@ adminRouter.get('/websites', async( req, res, next) => {
 
 adminRouter.post('/websites', async (req, res, next) => {
   try {
-      const {authorid, name, url, description, image} = req.body;
+      const {name, url, description, image} = req.body;
       console.log("req body", req.body);
       const existingWebsite = await getWebsiteByName(name);
-      const createdWebsite = await createWebsite({authorid, name, url, description, image});
+      const createdWebsite = await createWebsite({name, url, description, image});
       if(existingWebsite) {
         next({
           name: 'NotFound',

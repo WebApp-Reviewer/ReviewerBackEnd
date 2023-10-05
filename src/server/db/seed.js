@@ -45,7 +45,6 @@ const createTables = async () => {
       await db.query(`
       CREATE TABLE websites(
           id SERIAL PRIMARY KEY,
-          authorid INTEGER REFERENCES admin(id),
           name VARCHAR(255) UNIQUE NOT NULL,
           url VARCHAR(225) NOT NULL,
           description VARCHAR(225) NOT NULL,
@@ -114,16 +113,15 @@ async function createInitialWebsites() {
   console.log('Starting to create websites...');
   
   try {
-    const [admin] = await getAllAdmin();
     const websitesToCreate = [
-      { authorid: admin.id, name: 'Netflix', url: 'https://www.netflix.com/', description: 'Streaming platform to watch movies and shows online.', image: 'https://yt3.googleusercontent.com/ytc/AOPolaSbaST1JBNd9phht_n7tFN-VHx0FlvKPHeSDnmu4Q=s900-c-k-c0x00ffffff-no-rj' },
-      { authorid: admin.id, name: 'Discord', url: 'https://discord.com/', description: 'Your place to talk and hangout.', image: 'https://play-lh.googleusercontent.com/0oO5sAneb9lJP6l8c6DH4aj6f85qNpplQVHmPmbbBxAukDnlO7DarDW0b-kEIHa8SQ', },
-      { authorid: admin.id, name: 'Twitter', url: 'https://discord.com/', description: 'From breaking news and entertainment to sports and politics, get the full story with all the live commentary.', image: 'https://cdn-icons-png.flaticon.com/512/124/124021.png', },
-      { authorid: admin.id, name: 'Slack', url: 'https://discord.com/', description: 'Work more easily with everyone.', image: 'https://yt3.googleusercontent.com/ytc/AOPolaTCsMhpgrJldSw0eABzVJ9JEc1pYyTST4CJ7JzN1Q=s900-c-k-c0x00ffffff-no-rj', },
-      { authorid: admin.id, name: 'Reddit', url: 'https://www.reddit.com/', description: 'Dive into anything.', image: 'https://pbs.twimg.com/profile_images/1684669052839473152/e_ATYqfK_400x400.jpg' },
-      { authorid: admin.id, name: 'Mimo', url: 'https://mimo.org/', description: 'Learn to Code with Mimo.', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKJht4SZsUHqZOR_zW_XJJOosG474aIAMRDQ&usqp=CAU' },
-      { authorid: admin.id, name: 'YouTube', url: 'https://youtube.com/', description: 'Share your videos with friends, family, and the world.', image: 'https://www.youtube.com/img/desktop/yt_1200.png' },
-      { authorid: admin.id, name: 'ChatGPT', url: 'https://chat.openai.com/', description: 'AI-powered language model developed by OpenAI, capable of generating human-like text based on context and past conversations.', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/ChatGPT_logo.svg/800px-ChatGPT_logo.svg.png' },
+      { name: 'Netflix', url: 'https://www.netflix.com/', description: 'Streaming platform to watch movies and shows online.', image: 'https://yt3.googleusercontent.com/ytc/AOPolaSbaST1JBNd9phht_n7tFN-VHx0FlvKPHeSDnmu4Q=s900-c-k-c0x00ffffff-no-rj' },
+      { name: 'Discord', url: 'https://discord.com/', description: 'Your place to talk and hangout.', image: 'https://play-lh.googleusercontent.com/0oO5sAneb9lJP6l8c6DH4aj6f85qNpplQVHmPmbbBxAukDnlO7DarDW0b-kEIHa8SQ', },
+      { name: 'Twitter', url: 'https://discord.com/', description: 'From breaking news and entertainment to sports and politics, get the full story with all the live commentary.', image: 'https://cdn-icons-png.flaticon.com/512/124/124021.png', },
+      { name: 'Slack', url: 'https://discord.com/', description: 'Work more easily with everyone.', image: 'https://yt3.googleusercontent.com/ytc/AOPolaTCsMhpgrJldSw0eABzVJ9JEc1pYyTST4CJ7JzN1Q=s900-c-k-c0x00ffffff-no-rj', },
+      { name: 'Reddit', url: 'https://www.reddit.com/', description: 'Dive into anything.', image: 'https://pbs.twimg.com/profile_images/1684669052839473152/e_ATYqfK_400x400.jpg' },
+      { name: 'Mimo', url: 'https://mimo.org/', description: 'Learn to Code with Mimo.', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKJht4SZsUHqZOR_zW_XJJOosG474aIAMRDQ&usqp=CAU' },
+      { name: 'YouTube', url: 'https://youtube.com/', description: 'Share your videos with friends, family, and the world.', image: 'https://www.youtube.com/img/desktop/yt_1200.png' },
+      { name: 'ChatGPT', url: 'https://chat.openai.com/', description: 'AI-powered language model developed by OpenAI, capable of generating human-like text based on context and past conversations.', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/ChatGPT_logo.svg/800px-ChatGPT_logo.svg.png' },
     ]
     const websites = await Promise.all(websitesToCreate.map(websites => createWebsite(websites)));
 

@@ -37,14 +37,14 @@ async function getWebsiteByName(name) {
     }
 }
 
-async function createWebsite({ authorid, name, url, description, image }) {
+async function createWebsite({ name, url, description, image }) {
  try {
   const {rows: [website]} = await db.query(`
-    INSERT INTO websites(authorid, name, url, description, image) 
-    VALUES ($1, $2, $3, $4, $5)
+    INSERT INTO websites(name, url, description, image) 
+    VALUES ($1, $2, $3, $4)
     ON CONFLICT (name) DO NOTHING
     RETURNING *
-  `, [authorid, name, url, description, image])
+  `, [name, url, description, image])
   console.log("db websites", website);
   return website;
  } catch (error) {

@@ -13,21 +13,21 @@ async function getAllWebsites() {
     }
 }
 
-async function createWebsite({ authorid, name, url, description, image }) {
+async function createWebsite({ name, url, description, image }) {
     try {
      const {rows: [website]} = await db.query(`
-       INSERT INTO websites(authorid, name, url, description, image) 
-       VALUES ($1, $2, $3, $4, $5)
+       INSERT INTO websites(name, url, description, image) 
+       VALUES ($1, $2, $3, $4)
        ON CONFLICT (name) DO NOTHING
        RETURNING *
-     `, [authorid, name, url, description, image])
+     `, [name, url, description, image])
      return website;
     } catch (error) {
      console.log("Error creating website!", error);
     }
 }
 
-/*const createAdmin = async({ name, username, password, secret }) => {
+const createAdmin = async({ name, username, password, secret }) => {
     const hashedPassword = await bcrypt.hash(password, SALT_COUNT);
     try {
         const { rows: [admin] } = await db.query(`
@@ -40,7 +40,7 @@ async function createWebsite({ authorid, name, url, description, image }) {
     } catch (err) {
         throw err;
     }
-}*/
+}
 
 async function getAllAdmin() {
     try {
@@ -110,7 +110,7 @@ const getAdminByUsername = async(username) => {
 
 
 module.exports = {
-    //createAdmin,
+    createAdmin,
     getAdmin,
     getAdminByUsername,
     getAllAdmin,
