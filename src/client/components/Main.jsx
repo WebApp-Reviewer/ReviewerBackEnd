@@ -45,15 +45,15 @@ export default function Main({ setLoggedIn, setUser, loggedIn, user, adminLogged
                 setUser={setUser} />} />
 
                 <Route path='/admin/users' element={<AdminUsers
-                setAdminLoggedIn={setAdminLoggedIn}
+                setAdminLoggedIn={adminLoggedIn}
                 setUser={setUser} />} />
 
                 <Route path='/admin/websites/create' element={<AdminCreateWebsite
-                setAdminLoggedIn={setAdminLoggedIn}
+                setAdminLoggedIn={adminLoggedIn}
                 setUser={setUser} />} />
 
                 <Route path='/admin/websites/edit' element={<AdminEditWebsite
-                setAdminLoggedIn={setAdminLoggedIn}
+                setAdminLoggedIn={adminLoggedIn}
                 setUser={setUser} />} />
             </Routes>
         </div>

@@ -108,6 +108,31 @@ const getAdminByUsername = async(username) => {
     }
 }
 
+async function deleteWebsite(id) {
+    try {
+        const {rows: [websites]} = await db.query(`
+        DELETE FROM websites
+        WHERE id = $1
+        RETURNING *;
+        `, [id]);
+        return websites;
+    } catch (error) {
+        throw error;
+    }
+}
+
+async function getWebsiteById(id) {
+    try {
+        const {rows: [website]} = await db.query(`
+        SELECT * from websites
+        WHERE id = $1
+        `, [id]);
+        return website;
+    } catch (error) {
+        throw error;
+    }
+}
+
 
 module.exports = {
     createAdmin,
@@ -117,4 +142,6 @@ module.exports = {
     getAdminById,
     getAllWebsites, 
     createWebsite,
+    deleteWebsite,
+    getWebsiteById
 };

@@ -23,7 +23,6 @@ export default function AdminWebsites(adminLoggedIn) {
         async function allWebsitesHandler() {
             const result = await fetchAllAdminWebsites();
             setWebsites(result.admin);
-            //console.log("websites handler", result.admin);
         } allWebsitesHandler();
     }, [])
 
@@ -31,7 +30,7 @@ export default function AdminWebsites(adminLoggedIn) {
         try {
             await deleteWebsite(websiteId);
             const updatedWebsites = await fetchAllAdminWebsites();
-            setWebsites(updatedWebsites.websites);
+            setWebsites(updatedWebsites.admin);
         } catch (error) {
             console.error(error);
         }

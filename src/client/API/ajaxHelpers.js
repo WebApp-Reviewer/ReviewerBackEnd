@@ -180,7 +180,9 @@ export async function deleteWebsite(websiteId) {
     try {
         const response = await fetch (`${BASE_URL}/websites/${websiteId}`, {
             method: 'DELETE',
-            headers: getHeaders(),
+            headers: {
+              'Content-Type': 'application/json'
+            },
         });
         const result = await response.json();
         return result;

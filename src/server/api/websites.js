@@ -1,6 +1,5 @@
 const express = require('express')
 const websitesRouter = express.Router();
-const { requireUser, requiredNotSent } = require('./utils')
 
 const {
     getAllWebsites,
@@ -48,7 +47,7 @@ websitesRouter.get('/name', async(req, res, next) => {
     }
 })
 
-websitesRouter.post('/', requireUser, requiredNotSent({requiredParams: ['name', 'url', 'description', 'image']}), async (req, res, next) => {
+websitesRouter.post('/', async (req, res, next) => {
   try {
     const {name, url, description, image} = req.body;
     const existingWebsite = await getWebsiteByName(name);
@@ -74,7 +73,7 @@ websitesRouter.post('/', requireUser, requiredNotSent({requiredParams: ['name', 
   }
 });
 
-websitesRouter.patch('/:websiteId', requireUser, requiredNotSent({requiredParams: ['name', 'description', 'url', 'image'], atLeastOne: true}), async (req, res, next) => {
+websitesRouter.patch('/:websiteId', async (req, res, next) => {
   try {
     const {name, description, url, image} = req.body;
     const {websiteId} = req.params;
@@ -101,7 +100,7 @@ websitesRouter.patch('/:websiteId', requireUser, requiredNotSent({requiredParams
   }
 });
 
-websitesRouter.delete('/:websiteId', requireUser, async (req, res, next) => {
+websitesRouter.delete('/:websiteId', async (req, res, next) => {
   try {
     const websiteToUpdate = await getWebsiteById(req.params.websiteId);
     if(!websiteToUpdate) {

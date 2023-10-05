@@ -1,7 +1,6 @@
 const express = require('express');
 const adminRouter = express.Router();
 const jwt = require('jsonwebtoken');
-const { requireUser, requiredNotSent } = require('./utils')
 const { JWT_SECRET = 'secretpass123' } = process.env;
 
 const {
@@ -82,7 +81,7 @@ adminRouter.post('/websites', async (req, res, next) => {
     }
 });
 
-adminRouter.patch('/websites/:websiteId', requireUser, requiredNotSent({requiredParams: ['name', 'description', 'url', 'image'], atLeastOne: true}), async (req, res, next) => {
+adminRouter.patch('/websites/:websiteId', async (req, res, next) => {
     try {
       const {name, description, url, image} = req.body;
       const {websiteId} = req.params;
@@ -109,16 +108,17 @@ adminRouter.patch('/websites/:websiteId', requireUser, requiredNotSent({required
     }
 });
 
-adminRouter.delete('/websites/:websiteId', requireUser, async (req, res, next) => {
+adminRouter.delete('/websites/:websiteId', async (req, res, next) => {
   try {
-    const websiteToUpdate = await getWebsiteById(req.params.websiteId);
+    const {websiteId} = req.params;
+    const websiteToUpdate = await getWebsiteById(websiteId);
     if(!websiteToUpdate) {
       next({
         name: 'NotFound',
         message: `No website by ID ${websiteId}`
       })
     } else {
-      const deletedWebsite = await deleteWebsite(req.params.websiteId)
+      const deletedWebsite = await deleteWebsite(websiteId)
       res.send({success: true, ...deletedWebsite});
     }
   } catch (error) {
