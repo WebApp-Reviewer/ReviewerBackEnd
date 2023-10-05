@@ -45,6 +45,7 @@ async function createWebsite({ authorid, name, url, description, image }) {
     ON CONFLICT (name) DO NOTHING
     RETURNING *
   `, [authorid, name, url, description, image])
+  console.log("db websites", website);
   return website;
  } catch (error) {
   console.log("Error creating website!", error);

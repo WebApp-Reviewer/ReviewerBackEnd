@@ -7,11 +7,11 @@ function getAdminHeaders() {
     };
   const currentToken = localStorage.getItem('user-token');
 
-  console.log("current token", currentToken);
+  //console.log("current token", currentToken);
 
   if (currentToken === null) {
     headers['Authorization'] = 'Bearer' + currentToken;
-  } 
+  }
   return headers;
 }
 
@@ -21,7 +21,7 @@ function getHeaders() {
   };
   const currentToken = localStorage.getItem('user-token');
 
-  console.log("current token", currentToken);
+  //console.log("current token", currentToken);
 
   if (currentToken !== null) {
     headers['Authorization'] = 'Bearer' + currentToken;
@@ -67,7 +67,9 @@ export async function registerUser(username, password) {
     try {
         const response = await fetch(`${BASE_URL}/users/register`, {
             method: 'POST',
-            headers: getHeaders(),
+            headers: {
+              'Content-Type': 'application/json'
+            },
             body: JSON.stringify(username, password)
         });
         const result = await response.json();
@@ -85,7 +87,9 @@ export async function userLogin(username, password) {
     try {
         const response = await fetch(`${BASE_URL}/users/login`, {
             method: 'POST',
-            headers: getHeaders(),
+            headers: {
+              'Content-Type': 'application/json'
+            },
             body: JSON.stringify(username, password)
         });
         const result = await response.json();
@@ -103,7 +107,9 @@ export async function adminLogin({username, password, secret}) {
   try {
     const response = await fetch(`${BASE_URL}/admin/login`, {
         method: 'POST',
-        headers: getAdminHeaders(),
+        headers: {
+          'Content-Type': 'application/json'
+        },
         body: JSON.stringify({username, password, secret})
     });
     const result = await response.json();
@@ -154,17 +160,15 @@ export async function fetchSingleWebsite(websiteId) {
   }
 };
 
-export async function createWebsite(name, url, description, image, tags) {
-  const sendData = {
-    website: {name: name, url: url, description: description, image: image, tags: tags}
-  }
-
+export async function createWebsite(authorid, name, url, description, image) {
+  console.log("website details", name, url, description, image);
   try {
     const response = await fetch(`${BASE_URL}/admin/websites`, {
-      headers: getHeaders(),
+      headers: getAdminHeaders(),
       method: 'POST',
-      body: JSON.stringify(sendData)
+      body: JSON.stringify(authorid, name, url, description, image)
     });
+    console.log("ajax create website", response);
     const result = await response.json();
     return result;
   } catch (error) {
@@ -172,7 +176,6 @@ export async function createWebsite(name, url, description, image, tags) {
   }
 }
 
-// needs to also have an authorid param with websiteId
 export async function deleteWebsite(websiteId) {
     try {
         const response = await fetch (`${BASE_URL}/websites/${websiteId}`, {

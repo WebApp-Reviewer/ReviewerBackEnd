@@ -25,9 +25,9 @@ async function createWebsite({ authorid, name, url, description, image }) {
     } catch (error) {
      console.log("Error creating website!", error);
     }
-   }
+}
 
-const createAdmin = async({ name, username, password, secret }) => {
+/*const createAdmin = async({ name, username, password, secret }) => {
     const hashedPassword = await bcrypt.hash(password, SALT_COUNT);
     try {
         const { rows: [admin] } = await db.query(`
@@ -40,7 +40,7 @@ const createAdmin = async({ name, username, password, secret }) => {
     } catch (err) {
         throw err;
     }
-}
+}*/
 
 async function getAllAdmin() {
     try {
@@ -54,7 +54,7 @@ async function getAllAdmin() {
 }
 
 const getAdmin = async({username, password, secret}) => {
-    console.log("inside getAdmin", username);
+    //console.log("inside getAdmin", username);
     if(!username || !password || !secret) {
         return;
     }
@@ -110,7 +110,7 @@ const getAdminByUsername = async(username) => {
 
 
 module.exports = {
-    createAdmin,
+    //createAdmin,
     getAdmin,
     getAdminByUsername,
     getAllAdmin,

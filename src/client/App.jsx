@@ -27,7 +27,9 @@ function App() {
       <Navbar 
       loggedIn={loggedIn} 
       setLoggedIn={setLoggedIn}
-      setUser={setUser} />
+      setUser={setUser} 
+      adminLoggedIn={adminLoggedIn}
+      setAdminLoggedIn={setAdminLoggedIn} />
       <Main 
       isLoading={isLoading}
       user={user}

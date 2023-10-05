@@ -23,7 +23,7 @@ export default function AdminWebsites(adminLoggedIn) {
         async function allWebsitesHandler() {
             const result = await fetchAllAdminWebsites();
             setWebsites(result.admin);
-            console.log("websites handler", result.admin);
+            //console.log("websites handler", result.admin);
         } allWebsitesHandler();
     }, [])
 

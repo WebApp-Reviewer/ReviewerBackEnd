@@ -56,18 +56,18 @@ adminRouter.get('/websites', async( req, res, next) => {
     }
 });
 
-adminRouter.post('/websites', requireUser, requiredNotSent({requiredParams: ['name', 'url', 'description', 'image']}), async (req, res, next) => {
-    try {
-      const {name, url, description, image} = req.body;
+adminRouter.post('/websites', async (req, res, next) => {
+  try {
+      const {authorid, name, url, description, image} = req.body;
+      console.log("req body", req.body);
       const existingWebsite = await getWebsiteByName(name);
-  
+      const createdWebsite = await createWebsite({authorid, name, url, description, image});
       if(existingWebsite) {
         next({
           name: 'NotFound',
           message: `A website with name ${name} already exists`
         });
       } else {
-        const createdWebsite = await createWebsite({name, url, description, image});
         if(createdWebsite) {
           res.send(createdWebsite);
         } else {

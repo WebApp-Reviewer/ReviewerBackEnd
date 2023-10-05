@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { createWebsite } from '../API/ajaxHelpers'
 import { useNavigate } from 'react-router-dom'
 
-export default function AdminCreateWebsite({ adminLoggedIn }) {
+export default function AdminCreateWebsite(adminLoggedIn) {
     const [name, setName] = useState('');
     const [url, setUrl] = useState('');
     const [description, setDescription] = useState('');
@@ -23,7 +23,7 @@ export default function AdminCreateWebsite({ adminLoggedIn }) {
         } catch (error) {
             console.error('Could not make website', error);
         }
-        navigate('/websites');
+        navigate('/admin/websites');
     }
 
     return (
