@@ -211,7 +211,9 @@ export async function editWebsite(name, description, url, image) {
 export async function fetchAllReviews() {
   try {
     const response = await fetch(`${BASE_URL}/reviews`, {
-      headers: getHeaders(),
+      headers: {
+        'Content-Type': 'application/json'
+      }
     });
     const result = await response.json();
     return result;
