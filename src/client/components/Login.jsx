@@ -53,7 +53,7 @@ export default function LogInForm({ setLoggedIn, setUser }) {
                     onChange={(e) => setPassword(e.target.value)}
                     />
                 </label>
-                <Link className="register-link" to="/users/register">Do Not Have An Account?</Link>
+                <Link className="register-link" to="/register">Do Not Have An Account?</Link>
                 <Link className='admin-link' to="/admin/login">Sign in as Admin</Link>
                 <button className="login-button">Login</button>
             </form>

@@ -56,21 +56,20 @@ export async function fetchMyData() {
           headers: getHeaders(),
       });
       const result = await response.json();
-      console.log("my data", result);
       return result;
   } catch (error) {
       console.error("Uh oh, trouble fetching your data", error);
   }
 }
 
-export async function registerUser(username, password) {
+export async function registerUser(name, username, password) {
     try {
         const response = await fetch(`${BASE_URL}/users/register`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify(username, password)
+            body: JSON.stringify(name, username, password)
         });
         const result = await response.json();
         const token = result;
@@ -85,7 +84,7 @@ export async function registerUser(username, password) {
 
 export async function userLogin(username, password) {
     try {
-        const response = await fetch(`${BASE_URL}/users/login`, {
+        const response = await fetch(`${BASE_URL}/user/login`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
@@ -191,7 +190,6 @@ export async function deleteWebsite(websiteId) {
     }
 }
 
-// emily, I tried passing the authorId param here, I'm not sure if I structured it correctly but wanted to know your thoughts. 
 export async function editWebsite(name, description, url, image) {
     const sendData = {
       website: {name: name, description: description, url: url, image: image},

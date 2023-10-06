@@ -22,7 +22,6 @@ export default function Navbar({loggedIn, setUser, setLoggedIn, adminLoggedIn, s
                 <Link className="navbar-link" to="/admin/websites">Websites</Link>
                 <Link className="navbar-link" to="/admin/users">Users</Link>
                 <Link className="navbar-link" to="/admin/websites/create">Create Website</Link>
-                <Link className="navbar-link" to="/admin/websites/edit">Edit Website</Link>
                 <Link className="navbar-link" to="/search">Search</Link>
                 <Link className="navbar-link" to="/" onClick={() => {
                     localStorage.removeItem('user token')

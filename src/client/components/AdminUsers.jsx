@@ -1,16 +1,25 @@
 import { useState, useEffect } from "react"
+import { useParams } from "react-router-dom"
 import { fetchAllUsers } from "../API/ajaxHelpers"
 
 export default function Websites(adminLoggedIn) {
     const [users, setUsers] = useState([]);
+    const [userReviews, setUserReviews] = useState([]);
+
+
 
     function renderAllUsers() {
         return users.map((user) => {
             return (
                 <div key={user?.id}>
-                    <h1>{user?.name}</h1>
-                    <h2>{user?.username}</h2>
+                    <h1> Name: {user?.name}</h1>
+                    <h2> Username: {user?.username}</h2>
                     {/*add in smt to count the number of reviews each user has*/}
+                    <ul>
+                        {userReviews.map((review, index) => (
+                        <li key={index}>{review}</li>))}
+                    </ul>
+                    <p>Total Reviews: {userReviews.length}</p>
                 </div>
             )
         })
