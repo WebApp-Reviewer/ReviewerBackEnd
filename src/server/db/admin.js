@@ -54,7 +54,6 @@ async function getAllAdmin() {
 }
 
 const getAdmin = async({username, password, secret}) => {
-    //console.log("inside getAdmin", username);
     if(!username || !password || !secret) {
         return;
     }
@@ -101,7 +100,6 @@ const getAdminByUsername = async(username) => {
                 message: "An Admin with that username does not exist."
             }
         }
-        console.log("inside getadminbyusername", admin);
         return admin;
     } catch (err) {
         throw err;

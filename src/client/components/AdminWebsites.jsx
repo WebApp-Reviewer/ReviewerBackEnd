@@ -3,6 +3,7 @@ import { deleteWebsite, fetchAllAdminWebsites } from "../API/ajaxHelpers"
 
 export default function AdminWebsites(adminLoggedIn) {
     const [websites, setWebsites] = useState([]);
+    const [isEditing, setIsEditing] = useState(false);
 
     function renderAllWebsites() {
         return websites.map((website) => {
@@ -12,7 +13,7 @@ export default function AdminWebsites(adminLoggedIn) {
                     <h2>{website?.description}</h2>
                     <h2>{website?.url}</h2>
                     <h2>{website?.image}</h2>
-                    <button>Edit</button>
+                    <button onClick={() => handleEditClick(website.id)}>Edit</button>
                     <button onClick={() => handleDelete(website.id)}>Delete</button>
                 </div>
             )
@@ -36,10 +37,39 @@ export default function AdminWebsites(adminLoggedIn) {
         }
     }
 
+    const handleEditClick = () => {
+        setIsEditing(true);
+    }
+
+    const handleSaveClick = () => {
+        //save edited content to db
+        console.log("Edited content:", websites);
+        //Exit editing mode
+        setIsEditing(false);
+    }
+
     return (
         <>
         {adminLoggedIn ? (
-            <div>{renderAllWebsites()}</div>
+            <div>
+                {renderAllWebsites()}
+                <div>
+                    {isEditing ? (
+                        <div>
+                            <textarea 
+                            value={websites}
+                            onChange={(e) => setWebsites(e.target.value)}/>
+                            <button onClick={handleSaveClick}>Save</button>
+                        </div>
+                        
+                    ) : (
+                        <div>
+                            <p>{websites}</p>
+                            <button onClick={handleEditClick}>Edit</button>
+                        </div>
+                    )}
+                </div>
+            </div>
         ) : (<h1>Please Login!</h1>)}
         </>
     )
