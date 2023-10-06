@@ -1,14 +1,32 @@
 const BASE_URL = "http://localhost:3000/api";
 
 
-function getHeaders() {
+function getAdminHeaders() {
     const headers ={
         'Content-Type': 'application/json'
-};
-const currentToken = localStorage.getItem('user token');
-if (currentToken !== null) {
+    };
+  const currentToken = localStorage.getItem('user-token');
+
+  //console.log("current token", currentToken);
+
+  if (currentToken === null) {
     headers['Authorization'] = 'Bearer' + currentToken;
-} return headers;
+  }
+  return headers;
+}
+
+function getHeaders() {
+  const headers ={
+      'Content-Type': 'application/json'
+  };
+  const currentToken = localStorage.getItem('user-token');
+
+  //console.log("current token", currentToken);
+
+  if (currentToken !== null) {
+    headers['Authorization'] = 'Bearer' + currentToken;
+  } 
+  return headers;
 }
 
 export async function fetchAllUsers() {
@@ -20,6 +38,17 @@ export async function fetchAllUsers() {
         console.error('Trouble fetching users!', error);
     }
 } 
+
+export async function fetchAllAdminUsers() {
+  try {
+     const response = await fetch(`${BASE_URL}/admin/users`);
+     const users = await response.json();
+     console.log("ajax users", users);
+     return users;
+  } catch (error) {
+      console.error('Trouble fetching users!', error);
+  }
+}
 
 export async function fetchMyData() {
   try {
@@ -35,18 +64,16 @@ export async function fetchMyData() {
 }
 
 export async function registerUser(username, password) {
-    const sendData = {
-        user: {username: username, password: password},
-    };
-
     try {
         const response = await fetch(`${BASE_URL}/users/register`, {
             method: 'POST',
-            headers: getHeaders(),
-            body: JSON.stringify(sendData)
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(username, password)
         });
         const result = await response.json();
-        const token = result.data.token;
+        const token = result;
         localStorage.setItem('user-token', token);
         localStorage.setItem('username', username);
         return result;
@@ -60,7 +87,9 @@ export async function userLogin(username, password) {
     try {
         const response = await fetch(`${BASE_URL}/users/login`, {
             method: 'POST',
-            headers: getHeaders(),
+            headers: {
+              'Content-Type': 'application/json'
+            },
             body: JSON.stringify(username, password)
         });
         const result = await response.json();
@@ -69,24 +98,24 @@ export async function userLogin(username, password) {
         localStorage.setItem('username', username);
         return result;
     } catch (error) {
-      console.log('Count not login', error);
+      console.error('Count not login', error);
     }
 }
 
-export async function adminLogin(username, password, secret) {
-  const sendData = {
-    admin: {username: username, password: password, secret: secret}
-  };
-
+export async function adminLogin({username, password, secret}) {
+  console.log("admin ajax", username, password, secret);
   try {
     const response = await fetch(`${BASE_URL}/admin/login`, {
         method: 'POST',
-        headers: getHeaders(),
-        body: JSON.stringify(sendData)
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({username, password, secret})
     });
     const result = await response.json();
-    const token = result.data.token;
-    localStorage.setItem('admin-token', token);
+    console.log("admin result", result);
+    const token = result.token;
+    localStorage.setItem('user-token', token);
     localStorage.setItem('username', username);
     return result;
   } catch (error) {
@@ -106,6 +135,19 @@ export async function fetchAllWebsites() {
     }
 };
 
+export async function fetchAllAdminWebsites() {
+  try {
+    const response = await fetch(`${BASE_URL}/admin/websites`, {
+      headers: getAdminHeaders(),
+    });
+    const result = await response.json();
+    console.log("admin websites", result);
+    return result;
+  } catch (error) {
+    console.error('Trouble fetching websites!', error);
+  }
+};
+
 export async function fetchSingleWebsite(websiteId) {
   try {
     const response = await fetch(`${BASE_URL}/websites/${websiteId}`, {
@@ -119,16 +161,14 @@ export async function fetchSingleWebsite(websiteId) {
 };
 
 export async function createWebsite(name, url, description, image) {
-  const sendData = {
-    website: {name: name, url: url, description: description, image: image}
-  }
-
+  console.log("website details", name, url, description, image);
   try {
-    const response = await fetch(`${BASE_URL}/websites`, {
-      headers: getHeaders(),
+    const response = await fetch(`${BASE_URL}/admin/websites`, {
+      headers: getAdminHeaders(),
       method: 'POST',
-      body: JSON.stringify(sendData)
+      body: JSON.stringify({name, url, description, image})
     });
+    console.log("ajax create website", response);
     const result = await response.json();
     return result;
   } catch (error) {
@@ -136,12 +176,13 @@ export async function createWebsite(name, url, description, image) {
   }
 }
 
-// needs to also have an authorid param with websiteId
 export async function deleteWebsite(websiteId) {
     try {
         const response = await fetch (`${BASE_URL}/websites/${websiteId}`, {
             method: 'DELETE',
-            headers: getHeaders(),
+            headers: {
+              'Content-Type': 'application/json'
+            },
         });
         const result = await response.json();
         return result;
@@ -172,7 +213,9 @@ export async function editWebsite(name, description, url, image) {
 export async function fetchAllReviews() {
   try {
     const response = await fetch(`${BASE_URL}/reviews`, {
-      headers: getHeaders(),
+      headers:{
+        'Content-Type': 'application/json'
+    }
     });
     const result = await response.json();
     return result;

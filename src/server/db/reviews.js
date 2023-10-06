@@ -37,20 +37,20 @@ async function getReviewByName(name) {
     }
 }
 
-async function createReview({ name, content, rating, date }) {
+async function createReview({ authorid, websiteid, name, content, rating, date }) {
     try {
         const {rows: [review]} = await client.query(`
-        INSERT INTO reviews(name, content, rating, date) VALUES ($1, $2, $3, $4)
+        INSERT INTO reviews(authorid, websiteid, name, content, rating, date) VALUES ($1, $2, $3, $4, $5, $6)
         ON CONFLICT (name) DO NOTHING
         RETURNING *
-        `, [name, content, rating, date]);
+        `, [authorid, websiteid, name, content, rating, date]);
         return review;
     } catch (error) {
         throw error;
     }
 }
 
-async function updateReview({reviewId, ...fields}){
+async function updateReview({id, ...fields}){
     try {
       const toUpdate = {}
       for(let column in fields) {
@@ -59,18 +59,18 @@ async function updateReview({reviewId, ...fields}){
         }
       }
       let review;
-      if (util.dbFields(toUpdate).insert.length > 0) {
+      if (util.dbFields(fields).insert.length > 0) {
         const {rows} = await client.query(`
           UPDATE reviews
           SET ${ util.dbFields(toUpdate).insert }
-          WHERE id=${ reviewId }
+          WHERE id=${ id }
           RETURNING *;
         `, Object.values(toUpdate));
         review = rows[0];
+        return review;
       }
-      return review;
     } catch (error) {
-      throw error
+      console.log("Updating review error", error);
     }
 }
 

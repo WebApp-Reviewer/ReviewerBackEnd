@@ -19,7 +19,6 @@ const Login = () => {
                 username,
                 password,
         };
-        console.log(user);
 
         const response = await userLogin(user);
 
