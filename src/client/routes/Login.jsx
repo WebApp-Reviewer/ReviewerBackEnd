@@ -29,7 +29,6 @@ const Login = () => {
             localStorage.setItem('token', response.token);
             setIsLoggedIn(true);
         }
-        navigate('/');
     }
 
     return (

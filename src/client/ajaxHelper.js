@@ -126,7 +126,7 @@ export async function adminLogin({username, password, secret}) {
 export async function fetchAllWebsites() {
     try {
       const response = await fetch(`${BASE_URL}/websites`, {
-        headers: getHeaders(),
+        headers: {'Content-Type': 'application/json'}
       });
       const result = await response.json();
       return result;
@@ -138,7 +138,7 @@ export async function fetchAllWebsites() {
 export async function fetchAllAdminWebsites() {
   try {
     const response = await fetch(`${BASE_URL}/admin/websites`, {
-      headers: getAdminHeaders(),
+      headers: {'Content-Type': 'application/json'}
     });
     const result = await response.json();
     console.log("admin websites", result);

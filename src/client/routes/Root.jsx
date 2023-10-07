@@ -91,7 +91,6 @@ export default function Root() {
             display: 'inline-block',
             backgroundColor: '#1b2430',
           }
-        
 
     return (
         <div>
