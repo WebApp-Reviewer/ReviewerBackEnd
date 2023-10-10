@@ -9,7 +9,7 @@ import Websites from './Websites'
 import Reviews from './Reviews'
 import Register from './Register'
 import AdminCreateWebsite from './AdminCreateWebsite'
-import AdminEditWebsite from './AdminEditWebsite'
+
 
 export default function Main({ setLoggedIn, setUser, loggedIn, user, adminLoggedIn, setAdminLoggedIn }) {
     return (
@@ -44,10 +44,6 @@ export default function Main({ setLoggedIn, setUser, loggedIn, user, adminLogged
                 setUser={setUser} />} />
 
                 <Route path='/admin/websites/create' element={<AdminCreateWebsite
-                setAdminLoggedIn={adminLoggedIn}
-                setUser={setUser} />} />
-
-                <Route path='/admin/websites/edit' element={<AdminEditWebsite
                 setAdminLoggedIn={adminLoggedIn}
                 setUser={setUser} />} />
             </Routes>
