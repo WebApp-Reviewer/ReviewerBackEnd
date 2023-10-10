@@ -1,30 +1,66 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect } from "react";
 import { fetchAllReviews, deleteReview } from "../API/ajaxHelpers";
 
 export default function Reviews() {
     const [reviews, setReviews] = useState([]);
-
-    function renderAllReviews() {
-        return reviews.map((review) => {
-            return (
-                <div key={review?.id} className="reviews">
-                    <h1 className="review-name">{review?.name}</h1>
-                    <h3 className="review-content">{review?.content}</h3>
-                    <h3 className="review-rating">{review?.rating}</h3>
-                    <h3 className="review-date">{review?.date}</h3>
-                    <button className="review-button" onClick={() => handleDelete(review.id)}>Delete</button>
-                </div>
-            )
-        })
-    }
+    const [thumbsUp, setThumbsUp] = useState({});
+    const [thumbsDown, setThumbsDown] = useState({});
 
     useEffect(() => {
         async function allReviewsHandler() {
-            const result = await fetchAllReviews();
-            console.log({result});
-            setReviews(result.reviews);
-        } allReviewsHandler();
-    }, [])
+            try {
+                const result = await fetchAllReviews();
+                setReviews(result.reviews);
+
+                // Initialize the thumbs up and thumbs down state for each review
+                const initialThumbsUpState = {};
+                const initialThumbsDownState = {};
+
+                result.reviews.forEach((review) => {
+                    initialThumbsUpState[review.id] = 0;
+                    initialThumbsDownState[review.id] = 0;
+                });
+
+                setThumbsUp(initialThumbsUpState);
+                setThumbsDown(initialThumbsDownState);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        allReviewsHandler();
+    }, []);
+
+    const handleThumbsUp = (reviewId) => {
+        setThumbsUp((prevThumbsUp) => ({
+            ...prevThumbsUp,
+            [reviewId]: prevThumbsUp[reviewId] + 1,
+        }));
+    };
+
+    const handleThumbsDown = (reviewId) => {
+        setThumbsDown((prevThumbsDown) => ({
+            ...prevThumbsDown,
+            [reviewId]: prevThumbsDown[reviewId] + 1,
+        }));
+    };
+
+    const renderAllReviews = () => {
+        return reviews.map((review) => (
+            <li key={review.id}>
+                <h4>{review.title}</h4>
+                <p>{review.content}</p>
+                <div>
+                    <button onClick={() => handleThumbsUp(review.id)}>
+                        Thumbs Up ({thumbsUp[review.id]})
+                    </button>
+                    <button onClick={() => handleThumbsDown(review.id)}>
+                        Thumbs Down ({thumbsDown[review.id]})
+                    </button>
+                    <button onClick={() => handleDelete(review.id)}>Delete</button>
+                </div>
+            </li>
+        ));
+    };
 
     async function handleDelete(reviewId) {
         try {
@@ -38,7 +74,7 @@ export default function Reviews() {
 
     return (
         <div className="all-reviews">
-            {renderAllReviews()}
+            <ul>{renderAllReviews()}</ul>
         </div>
-    )
+    );
 }
