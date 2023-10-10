@@ -1,6 +1,24 @@
+.ListingHeader{
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    font-size: 32px;
+    padding-top: 5px;
+}
+
+.all-websites {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 20px;
+  }
+  
 .website-container {
+    width: 300px;
+    margin: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add box shadow for a card-like effect */
     border: 1px solid #ccc;
-    padding: 10px;
+    padding: 15px;
     margin-bottom: 10px;
     background-color: #f7f7f7;
 }
@@ -21,6 +39,30 @@
 }
 
 .website-image {
+    display: flex;
     width: 75px; 
     height: 75; 
 }
+
+.smaller-container {
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border: 1px transparent transparent;
+    border-radius: 5px;
+    width: 50%;
+    height: 50%;
+  }
+
+.singleWebsite-container {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.Website_List {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }

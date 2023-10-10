@@ -151,7 +151,7 @@ export async function fetchAllAdminWebsites() {
 export async function fetchSingleWebsite(websiteId) {
   try {
     const response = await fetch(`${BASE_URL}/websites/${websiteId}`, {
-      headers: getHeaders(),
+      headers: {'Content-Type': 'application/json'}
     });
     const result = await response.json();
     return result;

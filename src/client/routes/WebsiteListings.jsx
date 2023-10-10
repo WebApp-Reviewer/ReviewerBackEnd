@@ -1,14 +1,16 @@
 import React from "react";
 import WebsitesList from "../components/WebsitesList";
-import WebsiteSearch from "../components/WebsiteSearch";
+import '../Style/WebsitesList.css'
+import '../Style/Searchbar.css'
 
 const WebsiteListings = () => {
     return (
+        <>
         <div>
-            <h2> Welcome to the Website List</h2>
-            <WebsiteSearch/>
+            <h2 className="ListingHeader"> Welcome to the Website List</h2>
             <WebsitesList/>
         </div>
+        </>
     );
 };
 
