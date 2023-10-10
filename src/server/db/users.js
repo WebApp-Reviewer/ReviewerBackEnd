@@ -1,28 +1,28 @@
-const db = require('./client')
+const db = require('./client');
 const bcrypt = require('bcrypt');
 const SALT_COUNT = 10;
 
-const createUser = async({ name='first last', email, password }) => {
+const createUser = async({ name='first last', username, password }) => {
     const hashedPassword = await bcrypt.hash(password, SALT_COUNT);
     try {
-        const { rows: [user ] } = await db.query(`
-        INSERT INTO users(name, email, password)
+        const { rows: [user] } = await db.query(`
+        INSERT INTO users(name, username, password)
         VALUES($1, $2, $3)
-        ON CONFLICT (email) DO NOTHING
-        RETURNING *`, [name, email, hashedPassword]);
-
+        ON CONFLICT (username) DO NOTHING
+        RETURNING name, username
+        `, [name, username, hashedPassword]);
         return user;
     } catch (err) {
         throw err;
     }
 }
 
-const getUser = async({email, password}) => {
-    if(!email || !password) {
+const getUser = async({username, password}) => {
+    if(!username || !password) {
         return;
     }
     try {
-        const user = await getUserByEmail(email);
+        const user = await getUserByUsername(username);
         if(!user) return;
         const hashedPassword = user.password;
         const passwordsMatch = await bcrypt.compare(password, hashedPassword);
@@ -34,12 +34,32 @@ const getUser = async({email, password}) => {
     }
 }
 
-const getUserByEmail = async(email) => {
+const getUserByUsername = async(username) => {
     try {
         const { rows: [ user ] } = await db.query(`
         SELECT * 
         FROM users
-        WHERE email=$1;`, [ email ]);
+        WHERE username=$1
+        `, [ username ]);
+
+        if(!user) {
+            throw {
+                name: "UserNotFoundError",
+                message: "A user with that username does not exist."
+            }
+        }
+        return user;
+    } catch (err) {
+        throw err;
+    }
+}
+
+const getUserById = async(id) => {
+    try {
+        const { rows: [ user ] } = await db.query(`
+        SELECT * 
+        FROM users
+        WHERE id=$1;`, [ id ]);
 
         if(!user) {
             return;
@@ -50,8 +70,22 @@ const getUserByEmail = async(email) => {
     }
 }
 
+async function getAllUsers() {
+    try {
+        const {rows} = await db.query(`
+        SELECT * FROM users;
+        `);
+        return rows;
+    } catch (error) {
+        throw error;
+    }
+}
+
+
 module.exports = {
     createUser,
     getUser,
-    getUserByEmail
+    getUserByUsername,
+    getUserById,
+    getAllUsers,
 };
