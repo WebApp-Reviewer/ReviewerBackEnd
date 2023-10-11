@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import '../style/Nav.css'
 
 export default function Navbar({loggedIn, setUser, setLoggedIn, adminLoggedIn, setAdminLoggedIn}) {
     return (

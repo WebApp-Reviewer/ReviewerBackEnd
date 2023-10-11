@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { userLogin } from '../API/ajaxHelpers'
 import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
+import '../style/Login.css'
 
 export default function Login({ setLoggedIn, setUser }) {
     const [username, setUsername] = useState('');
