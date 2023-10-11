@@ -34,28 +34,28 @@ usersRouter.get('/:id', async(req, res, next) => {
 })
 
 usersRouter.post('/login', async(req, res, next) => {
-    const { username, password } = req.body;
+  const { username, password } = req.body;
 
-    if(!username || !password) {
-        next({
-            name: 'MissingCredentialsError',
-            message: 'Please supply both an username and password'
-        });
-    }
-    try {
-        const user = await getUser({username, password});
-        if(!user) {
-            next({
-                name: 'IncorrectCredentialsError',
-                message: 'Username or password is incorrect',
-            })
-        } else {
-            const token = jwt.sign({id: user.id, username: user.username}, JWT_SECRET, { expiresIn: '1w'});
-            res.send({ user, message: "You're logged in!", token});
-        }
-    } catch(err) {
-        next(err);
-    }
+  if(!username || !password) {
+      next({
+          name: 'MissingCredentialsError',
+          message: 'Please supply both an username and password'
+      });
+  }
+  try {
+      const user = await getUser(username, password);
+      if(!user) {
+          next({
+              name: 'IncorrectCredentialsError',
+              message: 'Username or password is incorrect',
+          })
+      } else {
+          const token = jwt.sign({id: user.id, username: user.username}, JWT_SECRET, { expiresIn: '1w'});
+          res.send({ user, message: "You're logged in!", token});
+      }
+  } catch(err) {
+      next(err);
+  }
 });
 
   

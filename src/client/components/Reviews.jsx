@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { fetchAllReviews, deleteReview } from "../API/ajaxHelpers";
 
-export default function Reviews(setLoggedIn) {
+export default function Reviews({ user, setLoggedIn }) {
     const [reviews, setReviews] = useState([]);
     const [thumbsUp, setThumbsUp] = useState({});
     const [thumbsDown, setThumbsDown] = useState({});
@@ -17,7 +17,7 @@ export default function Reviews(setLoggedIn) {
                 const initialThumbsUpState = {};
                 const initialThumbsDownState = {};
 
-                result.forEach((review) => {
+                result.reviews.forEach((review) => {
                     initialThumbsUpState[review.id] = 0;
                     initialThumbsDownState[review.id] = 0;
                 });
@@ -77,7 +77,7 @@ export default function Reviews(setLoggedIn) {
 
     // Helper functions to check and record user votes
     function hasUserVoted(userId, reviewId, voteType) {
-        // Retrieve the user's votes from local storage
+        // Retrieve the user's votes from local storage or your preferred data source
         const userVotes = JSON.parse(localStorage.getItem("userVotes")) || {};
 
         // Check if the user has voted for the specified review and vote type
@@ -89,7 +89,7 @@ export default function Reviews(setLoggedIn) {
     }
 
     function markUserVoted(userId, reviewId, voteType) {
-        // Retrieve the user's votes from local storage
+        // Retrieve the user's votes from local storage or your preferred data source
         const userVotes = JSON.parse(localStorage.getItem("userVotes")) || {};
 
         // Create a new vote entry for the user if it doesn't exist
@@ -100,7 +100,7 @@ export default function Reviews(setLoggedIn) {
         // Mark that the user has voted for the specified review and vote type
         userVotes[userId][reviewId] = voteType;
 
-        // Store the updated user votes in local storage
+        // Store the updated user votes in local storage or your preferred data source
         localStorage.setItem("userVotes", JSON.stringify(userVotes));
     }
 
