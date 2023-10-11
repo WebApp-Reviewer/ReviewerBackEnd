@@ -27,7 +27,7 @@ export default function Reviews() {
         <div key={review?.id} className="reviews-container">
           <h1 className="review-name">{review?.name}</h1>
           <h3 className="review-content">{review?.content}</h3>
-          <h3 className="review-rating">{review?.rating}</h3>
+          <h3 className="review-rating">Rating: {review?.rating}</h3>
           <h3 className="review-date">{review?.date}</h3>
         </div>
       );
@@ -53,7 +53,7 @@ export default function Reviews() {
         onChange={handleSearchInputChange}
       />
       </div>
-      {renderAllReviews()}
+      <div className="Review_List">{renderAllReviews()}</div>
     </div>
     
   );

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { fetchAllUsers } from "../API/ajaxHelpers"
+import { fetchAllUsers } from "../ajaxHelper.js"
 
 export default function Websites(adminLoggedIn) {
     const [users, setUsers] = useState([]);

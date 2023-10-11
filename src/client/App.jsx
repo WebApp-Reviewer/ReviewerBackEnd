@@ -1,7 +1,6 @@
 // import './App.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Root from "./routes/Root.jsx";
-import HomePage from './routes/HomePage.jsx'; 
 import WebsiteListings from './routes/WebsiteListings.jsx';
 import Profile from './routes/Profile.jsx';
 import Register from "./routes/Register.jsx"; 
@@ -9,16 +8,13 @@ import Login from "./routes/Login.jsx";
 import SingleWebsite from './components/SingleWebsite.jsx';
 import AdminLogin from './routes/adminLogin.jsx';
 import ReviewList from './routes/Reviews.jsx';
+import AdminWebsiteListings from './routes/AdminWebsites.jsx';
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Root />,
     children: [
-      {
-        path: "HomePage",
-        element: <HomePage />,
-      },
       {
         path: "WebsiteListings", // Updated path
         element: <WebsiteListings />,
@@ -46,6 +42,10 @@ const router = createBrowserRouter([
       {
         path: "AdminLogin",
         element: <AdminLogin />,
+      },
+            {
+        path: "AdminWebsiteListings", // Updated path
+        element: <AdminWebsiteListings />,
       },
     ],
   },

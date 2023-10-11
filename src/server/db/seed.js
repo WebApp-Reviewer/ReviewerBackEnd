@@ -116,8 +116,8 @@ async function createInitialWebsites() {
     const websitesToCreate = [
       { name: 'Netflix', url: 'https://www.netflix.com/', description: 'Streaming platform to watch movies and shows online.', image: 'https://yt3.googleusercontent.com/ytc/AOPolaSbaST1JBNd9phht_n7tFN-VHx0FlvKPHeSDnmu4Q=s900-c-k-c0x00ffffff-no-rj' },
       { name: 'Discord', url: 'https://discord.com/', description: 'Your place to talk and hangout.', image: 'https://play-lh.googleusercontent.com/0oO5sAneb9lJP6l8c6DH4aj6f85qNpplQVHmPmbbBxAukDnlO7DarDW0b-kEIHa8SQ', },
-      { name: 'Twitter', url: 'https://discord.com/', description: 'From breaking news and entertainment to sports and politics, get the full story with all the live commentary.', image: 'https://cdn-icons-png.flaticon.com/512/124/124021.png', },
-      { name: 'Slack', url: 'https://discord.com/', description: 'Work more easily with everyone.', image: 'https://yt3.googleusercontent.com/ytc/AOPolaTCsMhpgrJldSw0eABzVJ9JEc1pYyTST4CJ7JzN1Q=s900-c-k-c0x00ffffff-no-rj', },
+      { name: 'Twitter', url: 'https://twitter.com/', description: 'From breaking news and entertainment to sports and politics, get the full story with all the live commentary.', image: 'https://cdn-icons-png.flaticon.com/512/124/124021.png', },
+      { name: 'Slack', url: 'https://slack.com/', description: 'Work more easily with everyone.', image: 'https://yt3.googleusercontent.com/ytc/AOPolaTCsMhpgrJldSw0eABzVJ9JEc1pYyTST4CJ7JzN1Q=s900-c-k-c0x00ffffff-no-rj', },
       { name: 'Reddit', url: 'https://www.reddit.com/', description: 'Dive into anything.', image: 'https://pbs.twimg.com/profile_images/1684669052839473152/e_ATYqfK_400x400.jpg' },
       { name: 'Mimo', url: 'https://mimo.org/', description: 'Learn to Code with Mimo.', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKJht4SZsUHqZOR_zW_XJJOosG474aIAMRDQ&usqp=CAU' },
       { name: 'YouTube', url: 'https://youtube.com/', description: 'Share your videos with friends, family, and the world.', image: 'https://www.youtube.com/img/desktop/yt_1200.png' },

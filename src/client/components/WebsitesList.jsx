@@ -48,7 +48,7 @@ export default function WebsitesList() {
               <img
                 src={urlLink}
                 alt={website?.name}
-                className="website-image"
+                className="website-image-2"
               />
             </a>
           </div>
@@ -77,9 +77,7 @@ export default function WebsitesList() {
           className="search-input"
         />
       </div>
-      <div className="Website_List">
-      {renderAllWebsites()}
-      </div>
+      <div className="Website_List">{renderAllWebsites()}</div>
     </div>
   );
 }

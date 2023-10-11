@@ -51,6 +51,8 @@ export default function Register() {
             Register
           </h1>
           <form className="LoginBox" onSubmit={submitRegistration}>
+          <label className="login-label">
+              Name:{" "}
             <input
               type="name"
               name="name"
@@ -60,6 +62,9 @@ export default function Register() {
               minLength={4}
               onChange={(e) => setName(e.target.value)}
             />
+            </label>
+            <label className="login-label">
+              Username:{" "}
             <input
               type="text"
               name="username"
@@ -69,6 +74,9 @@ export default function Register() {
               minLength={4}
               onChange={(e) => setUsername(e.target.value)}
             />
+            </label>
+            <label className="login-label">
+              Password:{" "}
             <input
               type="password"
               name="password"
@@ -81,6 +89,9 @@ export default function Register() {
                 setPasswordErrorMessage("");
               }}
             />
+            </label>
+            <label className="login-label">
+              Confirm:{" "}
             <input
               type="password"
               name="confirm password"
@@ -93,6 +104,7 @@ export default function Register() {
                 setPasswordErrorMessage("");
               }}
             />
+            </label>
             {passwordErrorMessage && <p>{passwordErrorMessage}</p>}
             <button type="submit" className="submitButton">
               Register

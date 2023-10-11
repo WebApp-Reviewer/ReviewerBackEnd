@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { createWebsite } from '../API/ajaxHelpers'
+import { createWebsite } from '../ajaxHelper.js'
 import { useNavigate } from 'react-router-dom'
 
 export default function AdminCreateWebsite(adminLoggedIn) {

@@ -102,7 +102,7 @@ export async function userLogin(username, password) {
     }
 }
 
-export async function adminLogin({username, password, secret}) {
+export async function adminLogin(username, password, secret) {
   console.log("admin ajax", username, password, secret);
   try {
     const response = await fetch(`${BASE_URL}/admin/login`, {
@@ -110,7 +110,7 @@ export async function adminLogin({username, password, secret}) {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({username, password, secret})
+        body: JSON.stringify(username, password, secret)
     });
     const result = await response.json();
     console.log("admin result", result);
