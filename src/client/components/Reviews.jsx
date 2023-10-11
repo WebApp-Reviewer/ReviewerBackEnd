@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
-import { fetchAllReviews, deleteReview } from "../API/ajaxHelpers";
+import React, { useState, useEffect } from "react";
+import { fetchAllReviews, deleteReview } from "../API/ajaxHelper";
 
-export default function Reviews() {
+export default function Reviews(setLoggedIn) {
     const [reviews, setReviews] = useState([]);
     const [thumbsUp, setThumbsUp] = useState({});
     const [thumbsDown, setThumbsDown] = useState({});
+    const [searchQuery, setSearchQuery] = useState("");
 
     useEffect(() => {
         async function allReviewsHandler() {
@@ -16,7 +17,7 @@ export default function Reviews() {
                 const initialThumbsUpState = {};
                 const initialThumbsDownState = {};
 
-                result.reviews.forEach((review) => {
+                result.forEach((review) => {
                     initialThumbsUpState[review.id] = 0;
                     initialThumbsDownState[review.id] = 0;
                 });
@@ -31,25 +32,90 @@ export default function Reviews() {
     }, []);
 
     const handleThumbsUp = (reviewId) => {
+        if (!setLoggedIn) {
+            // User not logged in, show a message or prevent voting
+            alert("You must be logged in to vote.");
+            return;
+        }
+
+        if (hasUserVoted(user.id, reviewId, "thumbsUp")) {
+            // User has already voted, show a message or prevent voting
+            alert("You have already voted on this review.");
+            return;
+        }
+
         setThumbsUp((prevThumbsUp) => ({
             ...prevThumbsUp,
             [reviewId]: prevThumbsUp[reviewId] + 1,
         }));
+
+        // Remember that the user has voted on this review
+        markUserVoted(user.id, reviewId, "thumbsUp");
     };
 
     const handleThumbsDown = (reviewId) => {
+        if (!setLoggedIn) {
+            // User not logged in, show a message or prevent voting
+            alert("You must be logged in to vote.");
+            return;
+        }
+
+        if (hasUserVoted(user.id, reviewId, "thumbsDown")) {
+            // User has already voted, show a message or prevent voting
+            alert("You have already voted on this review.");
+            return;
+        }
+
         setThumbsDown((prevThumbsDown) => ({
             ...prevThumbsDown,
             [reviewId]: prevThumbsDown[reviewId] + 1,
         }));
+
+        // Remember that the user has voted on this review
+        markUserVoted(user.id, reviewId, "thumbsDown");
     };
 
+    // Helper functions to check and record user votes
+    function hasUserVoted(userId, reviewId, voteType) {
+        // Retrieve the user's votes from local storage
+        const userVotes = JSON.parse(localStorage.getItem("userVotes")) || {};
+
+        // Check if the user has voted for the specified review and vote type
+        if (userVotes[userId] && userVotes[userId][reviewId]) {
+            return userVotes[userId][reviewId] === voteType;
+        }
+
+        return false;
+    }
+
+    function markUserVoted(userId, reviewId, voteType) {
+        // Retrieve the user's votes from local storage
+        const userVotes = JSON.parse(localStorage.getItem("userVotes")) || {};
+
+        // Create a new vote entry for the user if it doesn't exist
+        if (!userVotes[userId]) {
+            userVotes[userId] = {};
+        }
+
+        // Mark that the user has voted for the specified review and vote type
+        userVotes[userId][reviewId] = voteType;
+
+        // Store the updated user votes in local storage
+        localStorage.setItem("userVotes", JSON.stringify(userVotes));
+    }
+
     const renderAllReviews = () => {
-        return reviews.map((review) => (
-            <li key={review.id}>
-                <h4>{review.title}</h4>
-                <p>{review.content}</p>
-                <div>
+        const filteredReviews = reviews.filter((review) =>
+            review.name.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+
+        return filteredReviews.map((review) => (
+            <div key={review.id} className="review">
+                <h1 className="review-name">{review.name}</h1>
+                <h3 className="review-content">{review.content}</h3>
+                <h3 className="review-rating">{review.rating}</h3>
+                <h3 className="review-date">{review.date}</h3>
+                <div className="review-actions">
                     <button onClick={() => handleThumbsUp(review.id)}>
                         Thumbs Up ({thumbsUp[review.id]})
                     </button>
@@ -58,7 +124,7 @@ export default function Reviews() {
                     </button>
                     <button onClick={() => handleDelete(review.id)}>Delete</button>
                 </div>
-            </li>
+            </div>
         ));
     };
 
@@ -66,7 +132,7 @@ export default function Reviews() {
         try {
             await deleteReview(reviewId);
             const updatedReviews = await fetchAllReviews();
-            setReviews(updatedReviews.reviews);
+            setReviews(updatedReviews);
         } catch (error) {
             console.error(error);
         }
@@ -74,7 +140,13 @@ export default function Reviews() {
 
     return (
         <div className="all-reviews">
-            <ul>{renderAllReviews()}</ul>
+            <input
+                type="text"
+                placeholder="Search reviews"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            {renderAllReviews()}
         </div>
     );
 }

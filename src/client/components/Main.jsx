@@ -29,7 +29,9 @@ export default function Main({ setLoggedIn, setUser, loggedIn, user, adminLogged
 
                 <Route path='/websites' element={<Websites />} />
 
-                <Route path='/reviews' element={<Reviews />} />
+                <Route path='/reviews' element={<Reviews 
+                setLoggedIn={setLoggedIn}
+                setUser={setUser} />} />
                 
                 <Route path='/admin/login' element={<AdminLogin
                 setAdminLoggedIn={setAdminLoggedIn}
