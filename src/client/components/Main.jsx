@@ -1,23 +1,24 @@
 import { Routes, Route } from 'react-router-dom'
-import Home from './Home'
-import Search from './Search'
 import Login from './Login'
 import AdminLogin from './AdminLogin'
 import AdminWebsites from './AdminWebsites'
 import AdminUsers from './AdminUsers'
-import Websites from './Websites'
+import WebsiteListings from './WebsiteListings'
 import Reviews from './Reviews'
 import Register from './Register'
 import AdminCreateWebsite from './AdminCreateWebsite'
+import Profile from './Profile'
+import SingleWebsite from './SingleWebsite'
 
 
 export default function Main({ setLoggedIn, setUser, loggedIn, user, adminLoggedIn, setAdminLoggedIn }) {
     return (
         <div>
             <Routes>
-                <Route path='/' element={<Home />} />
 
-                <Route path='/search' element={<Search />} />
+                <Route path='/profile' element={<Profile 
+                loggedIn={loggedIn} 
+                user={user} />} />
 
                 <Route path='/login' element={<Login 
                 setLoggedIn={setLoggedIn}
@@ -27,7 +28,9 @@ export default function Main({ setLoggedIn, setUser, loggedIn, user, adminLogged
                 setLoggedIn={setLoggedIn}
                 setUser={setUser} />} />
 
-                <Route path='/websites' element={<Websites />} />
+                <Route path='/websites' element={<WebsiteListings />} />
+
+                <Route path='/websites/:id' element={<SingleWebsite />} />
 
                 <Route path='/reviews' element={<Reviews 
                 setLoggedIn={setLoggedIn}

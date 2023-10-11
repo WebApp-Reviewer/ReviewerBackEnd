@@ -3,24 +3,31 @@ import { userLogin } from '../API/ajaxHelpers'
 import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 
-export default function LogInForm({ setLoggedIn, setUser }) {
+export default function Login({ setLoggedIn, setUser }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
     const navigate = useNavigate();
 
     async function handleSubmit(event) {
         event.preventDefault();
         console.log('handle submit');
 
-        try {
-            const token = await userLogin(username, password);
-            setLoggedIn(token);
-            setUser(token);
-            console.log("token", token);
-        } catch (error) {
-            console.log(error);
-        }
-        navigate('/websites')
+        const user = {
+            username,
+            password
+        };
+
+        const response = await userLogin(user);
+
+        if(response.error) {
+            console.log("Message: ", error);
+            setPasswordErrorMessage("Username or password is incorrect.");
+        } else {
+            localStorage.setItem('token', response.token);
+            setLoggedIn(true);
+            setUser(true);
+        } navigate("/websites");
     }
 
     return (
@@ -53,6 +60,7 @@ export default function LogInForm({ setLoggedIn, setUser }) {
                     onChange={(e) => setPassword(e.target.value)}
                     />
                 </label>
+                {passwordErrorMessage && <p>{passwordErrorMessage}</p>}
                 <Link className="register-link" to="/register">Do Not Have An Account?</Link>
                 <Link className='admin-link' to="/admin/login">Sign in as Admin</Link>
                 <button className="login-button">Login</button>

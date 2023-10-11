@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { fetchAllReviews, deleteReview } from "../API/ajaxHelper";
+import { fetchAllReviews, deleteReview } from "../API/ajaxHelpers";
 
 export default function Reviews(setLoggedIn) {
     const [reviews, setReviews] = useState([]);

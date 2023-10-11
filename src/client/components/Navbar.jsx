@@ -9,7 +9,6 @@ export default function Navbar({loggedIn, setUser, setLoggedIn, adminLoggedIn, s
                 <Link className="navbar-link" to="/reviews">Reviews</Link>
                 <Link className="navbar-link" to="/reviews/create">Write a Review</Link>
                 <Link className="navbar-link" to="/profile">Profile</Link>
-                <Link className="navbar-link" to="/search">Search</Link>
                 <Link className="navbar-link" to="/" onClick={() => {
                     localStorage.removeItem('user token')
                     setUser('')
@@ -22,7 +21,6 @@ export default function Navbar({loggedIn, setUser, setLoggedIn, adminLoggedIn, s
                 <Link className="navbar-link" to="/admin/websites">Websites</Link>
                 <Link className="navbar-link" to="/admin/users">Users</Link>
                 <Link className="navbar-link" to="/admin/websites/create">Create Website</Link>
-                <Link className="navbar-link" to="/search">Search</Link>
                 <Link className="navbar-link" to="/" onClick={() => {
                     localStorage.removeItem('user token')
                     setUser('')

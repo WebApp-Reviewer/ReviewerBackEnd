@@ -1,89 +1,97 @@
-import { useState } from 'react'
-import { registerUser } from '../API/ajaxHelpers'
-import { useNavigate } from 'react-router-dom'
+//import "../Style/Login.css";
+import { useState } from "react";
+import { registerUser } from "../API/ajaxHelpers";
+import { useNavigate } from "react-router-dom";
 
-export default function RegisterForm({ setLoggedIn, setUser }) {
-    const [name, setName] = useState('');
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const navigate = useNavigate();
+export default function Register({ setLoggedIn, setUser }) {
+  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
 
-    async function handleSubmit(event) {
-        event.preventDefault();
-        if (password !== confirmPassword) {
-            setError({message: "Passwords aren't identical"});
-        }
+  const navigate = useNavigate();
 
-        try {
-            const token = await registerUser(username, password);
-            setLoggedIn(token);
-            setUser(token);
-        } catch (error) {
-            setError(error);
-        }
-        navigate('/websites');
+  async function submitRegistration(e) {
+    e.preventDefault();
+    console.log(submitRegistration);
+
+    if (password !== confirmPassword) {
+      console.log(passwordErrorMessage);
     }
-        
+    const user = {
+      name,
+      username,
+      password,
+    };
 
-    return (
-        <div className="register-user">
-            <h1 className='register-header'>Register!</h1>
-            <form className="register-form" onSubmit={handleSubmit}>
-            <label className='register-label'>
-                    Name: {' '}
-                    <input
-                    className='register-input'
-                    type="text"
-                    name="name"
-                    placeholder="Name"
-                    required={true}
-                    minLength={2}
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    />
-                </label>
-                <label className='register-label'>
-                    Username: {' '}
-                    <input
-                    className='register-input'
-                    type="text"
-                    name="username"
-                    placeholder="Username"
-                    required={true}
-                    minLength={3}
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    />
-                </label>
-                <label className='register-label'>
-                    Password: {' '}
-                    <input
-                    className='register-input'
-                    type="password"
-                    name="password"
-                    placeholder="Password"
-                    required={true}
-                    minLength={7}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    />
-                </label>
-                <label className='register-label'>
-                    Confirm Password: {' '}
-                    <input
-                    className='register-input'
-                    type="password"
-                    name="password"
-                    placeholder="Password"
-                    required={true}
-                    minLength={7}
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    />
-                </label>
-                <button className="register-button">Register</button>
-            </form>
-        </div>
-    )
+    const response = await registerUser(user);
+    console.log(registerUser)
+
+    if (response.error) {
+      console.log(error, "Message");
+      setPasswordErrorMessage("Username or password incorrect. Please try again");
+    } else {
+      localStorage.setItem("token", response.token);
+      setLoggedIn(true);
+      setUser(true);
+    }
+    navigate("/websites");
+  }
+
+  return (
+    <div className="panel" id="Center">
+      <h1 className="Header" id="CenterText">
+          Register
+      </h1>
+      <form className="LoginBox" onSubmit={submitRegistration}>
+        <input
+          type="name"
+          name="name"
+          value={name}
+          placeholder="Name"
+          required={true}
+          minLength={4}
+          onChange={(e) => setName(e.target.value)}
+        />
+        <input
+          type="text"
+          name="username"
+          value={username}
+          placeholder="Username"
+          required={true}
+          minLength={4}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+        <input
+          type="password"
+          name="password"
+          value={password}
+          placeholder="Password"
+          required={true}
+          minLength={7}
+          onChange={(e) => {
+            setPassword(e.target.value);
+            setPasswordErrorMessage("");
+          }}
+        />
+        <input
+          type="password"
+          name="confirm password"
+          value={confirmPassword}
+          placeholder="Confirm Password"
+          required={true}
+          minLength={7}
+          onChange={(e) => {
+            setConfirmPassword(e.target.value);
+            setPasswordErrorMessage("");
+          }}
+        />
+        {passwordErrorMessage && <p>{passwordErrorMessage}</p>}
+        <button type="submit" className="submitButton">
+          Register
+        </button>
+      </form>
+    </div>
+  );
 }

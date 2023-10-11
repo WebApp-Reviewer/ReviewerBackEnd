@@ -62,43 +62,42 @@ export async function fetchMyData() {
   }
 }
 
-export async function registerUser(name, username, password) {
-    try {
-        const response = await fetch(`${BASE_URL}/users/register`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(name, username, password)
-        });
-        const result = await response.json();
-        const token = result;
-        localStorage.setItem('user-token', token);
-        localStorage.setItem('username', username);
-        return result;
-    } catch (error) {
-        console.error('Could not register', error);
-    }
-
+export async function registerUser(username, password) {
+  try {
+      const response = await fetch(`${BASE_URL}/users/register`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(username, password)
+      });
+      const result = await response.json();
+      const token = result;
+      localStorage.setItem('user-token', token);
+      localStorage.setItem('username', username);
+      return result;
+  } catch (error) {
+      console.error('Could not register', error);
+  }
 }
 
 export async function userLogin(username, password) {
-    try {
-        const response = await fetch(`${BASE_URL}/user/login`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(username, password)
-        });
-        const result = await response.json();
-        const token = result;
-        localStorage.setItem('user-token', token);
-        localStorage.setItem('username', username);
-        return result;
-    } catch (error) {
-      console.error('Count not login', error);
-    }
+  try {
+      const response = await fetch(`${BASE_URL}/users/login`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(username, password)
+      });
+      const result = await response.json();
+      const token = result;
+      localStorage.setItem('user-token', token);
+      localStorage.setItem('username', username);
+      return result;
+  } catch (error) {
+    console.error('Count not login', error);
+  }
 }
 
 export async function adminLogin({username, password, secret}) {
@@ -125,7 +124,7 @@ export async function adminLogin({username, password, secret}) {
 export async function fetchAllWebsites() {
     try {
       const response = await fetch(`${BASE_URL}/websites`, {
-        headers: getHeaders(),
+        //headers: getHeaders(),
       });
       const result = await response.json();
       return result;
