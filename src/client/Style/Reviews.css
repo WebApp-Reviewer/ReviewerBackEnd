@@ -77,3 +77,46 @@
 .save-button:hover {
     background-color: #0077A2;
 }
+
+.image-container {
+    display: flex;
+    gap: 1px; 
+    margin-top: 10px; 
+    margin-bottom: 5px;
+}
+
+.Thumbs,
+.handle-button {
+    padding: 8px 12px;
+    margin: 5px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.handle-button {
+    margin-top: 5px;
+}
+
+.UpvoteNumber {
+    display: flex;
+    align-items: center;
+    margin-right: 1vw;
+    top: 0;
+}
+
+.handle-button {
+    background-color: #4caf50;
+    color: #f7f7f7;
+}
+
+.Thumbs {
+    background-color: #4caf50;
+    color: #f7f7f7;
+}
+
+.handle-button:hover,
+.Thumbs:hover {
+    background-color: #45a049;
+}

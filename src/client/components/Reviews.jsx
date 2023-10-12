@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { fetchAllReviews, deleteReview } from "../ajaxHelper";
+import Upvote from '../assets/ThumbsUp.svg';
+import Downvote from '../assets/ThumbsDown.svg';
 
 export default function Reviews({ user, setLoggedIn }) {
     const [reviews, setReviews] = useState([]);
@@ -72,10 +74,26 @@ export default function Reviews({ user, setLoggedIn }) {
                             <h2 className="review-content">{review?.content}</h2>
                             <h2 className="review-rating">{review?.rating}</h2>
                             <h2 className="review-date">{review?.date}</h2>
-                            <button onClick={() => handleThumbsUp(review.id)}>Thumbs Up ({thumbsUp[review.id]})</button>
-                            <button onClick={() => handleThumbsDown(review.id)}>Thumbs Down ({thumbsDown[review.id]})</button>
-                            <button onClick={() => handleEditClick(review.id)}>Edit</button>
-                            <button onClick={() => handleDelete(review.id)}>Delete</button>
+                            <div className="image-container">
+                            <button onClick={() => handleThumbsUp(review.id)}>
+                                <img
+                                    src={Upvote}
+                                    alt="Thumbs Up"
+                                    className="Thumbs"
+                                />
+                            </button>
+                            <div className="UpvoteNumber"><p>({thumbsUp[review.id]})</p></div>
+                            <button onClick={() => handleThumbsDown(review.id)}>
+                                <img
+                                    src={Downvote}
+                                    alt="Thumbs Down"
+                                    className="Thumbs"
+                                />
+                            </button>
+                            <div className="UpvoteNumber"><p>({thumbsDown[review.id]})</p></div>
+                            </div>
+                            <button onClick={() => handleEditClick(review.id)} className="handle-button">Edit</button>
+                            <button onClick={() => handleDelete(review.id)} className="handle-button">Delete</button>
                           </div>  
                         </>
                     )}

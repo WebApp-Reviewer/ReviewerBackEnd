@@ -32,6 +32,11 @@
     font-size: 1.2rem;
 }
 
+.user-card p {
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+}
+
 .PleaseLogin {
     color: red;
     text-align: center;
