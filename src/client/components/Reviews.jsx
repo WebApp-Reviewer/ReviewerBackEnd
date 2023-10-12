@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { fetchAllReviews, deleteReview } from "../API/ajaxHelpers";
 import '../style/Reviews.css'
 
+
 export default function Reviews({ user, setLoggedIn }) {
     const [reviews, setReviews] = useState([]);
     const [isEditing, setIsEditing] = useState(false);

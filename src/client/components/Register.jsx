@@ -1,4 +1,4 @@
-//import "../Style/Login.css";
+import "../style/Login.css";
 import { useState } from "react";
 import { registerUser } from "../API/ajaxHelpers";
 import { useNavigate } from "react-router-dom";

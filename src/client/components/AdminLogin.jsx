@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { adminLogin } from '../API/ajaxHelpers'
+import "../style/Login.css"
 
 export default function LogInForm({ setAdminLoggedIn, setUser, adminLoggedIn }) {
     const [username, setUsername] = useState('');

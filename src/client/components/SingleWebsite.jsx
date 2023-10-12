@@ -4,7 +4,7 @@ import SingleWebsiteDetails from "./SingleWebsitesDetails";
 import SingleWebsiteReviews from "./SingleWebsiteReviews"; // Import the component for reviews
 // import ReviewButton from "../components/ReviewOrEditButton";
 import { fetchSingleWebsite } from "../API/ajaxHelpers";
-//import "../Style/SingleWebsite.css";
+import "../style/SingleWebsite.css";
 
 const SingleWebsitePage = () => {
   const { id } = useParams();

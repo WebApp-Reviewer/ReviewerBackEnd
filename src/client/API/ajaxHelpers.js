@@ -234,15 +234,13 @@ export async function fetchSingleReview(reviewId) {
 };
 
 export async function createReview(name, content, rating, date) {
-  const sendData = {
-    review: {name: name, content: content, rating: rating, date: date}
-  }
-
   try {
     const response = await fetch(`${BASE_URL}/reviews`, {
-      headers: getHeaders(),
+      headers: {
+        'Content-Type': 'application/json'
+      },
       method: 'POST',
-      body: JSON.stringify(sendData)
+      body: JSON.stringify({name, content, rating, date})
     });
     const result = await response.json();
     return result;

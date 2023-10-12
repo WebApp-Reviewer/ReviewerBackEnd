@@ -1,5 +1,7 @@
 import React from "react";
 import WebsitesList from "./WebsitesList";
+import "../style/WebsitesList.css"
+import "../style/SearchBar.css"
 
 
 const WebsiteListings = () => {

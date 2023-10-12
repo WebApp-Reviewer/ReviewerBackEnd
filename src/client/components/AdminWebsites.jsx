@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react"
 import { deleteWebsite, fetchAllAdminWebsites } from "../API/ajaxHelpers"
+import "../style/WebsitesList.css"
+import "../style/SearchBar.css"
 
 export default function AdminWebsites(adminLoggedIn) {
     const [websites, setWebsites] = useState([]);

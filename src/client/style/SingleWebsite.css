@@ -1,0 +1,84 @@
+/* SingleWebsite.css */
+
+/* Container for the entire content */
+.single-website-container {
+    display: block;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2%;
+    margin: auto;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    background-color: #f7f7f7;
+    max-width: 40%;
+    max-height: 40%;
+    border: 1px transparent;
+    border-radius: 15px;
+    box-shadow: 3px 3px 3px 3px;
+  }
+
+  /* will help align the images onto their positions*/
+  .website-info{
+    display: flex;
+    align-items: center;
+  }
+  
+  /* Styling for the website icon */
+  .website-icon-1,
+  .website-icon-2 {
+    width: 10vw;
+    height: 10vw; 
+    object-fit: cover;
+    border-radius: 50%;
+  }
+  
+  /* Styling for the website name */
+  h1{
+    text-align: center;
+    font-size: 1vw; 
+    margin-top: 1vw; 
+  }
+ /* Styling for the website description */
+  .website-description {
+    text-align: center;
+    font-size: 1vw; 
+    margin-top: 0.5vw; 
+  }
+  
+  /* Styling for the clickable "URL" link */
+  .website-url {
+    margin-top: 2vw;
+    text-decoration: none;
+    color: #007bff;
+  }
+  
+  /* Hover effect for the clickable "URL" link */
+  .website-url:hover {
+    text-decoration: underline; 
+    font-size: 1.2vw;
+    transition: 0.5s;
+  }
+
+  /*Styling for the return button*/
+  .back-button {
+    font-size: 24px;
+    position: absolute;
+    right: 10vw; 
+    z-index: 100;
+    text-decoration: none;
+    color: #f7f7f7;
+    background-color: #4caf50;
+    padding: 10px; 
+    width: 100px;
+    height: 100px;
+    border: 1px transparent;
+    border-radius: 15px;
+  }
+
+  .back-button:hover {
+    background-color: #45a049;
+    transition: 0.2s;
+    transform: scale(1.3);
+  }

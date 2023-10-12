@@ -12,7 +12,6 @@ export default function AdminUsers(adminLoggedIn) {
                 <div key={user?.id}>
                     <h1> Name: {user?.name}</h1>
                     <h2> Username: {user?.username}</h2>
-                    {/*add in smt to count the number of reviews each user has*/}
                     <p>Total Reviews: {userReviewCounts[user.id] || 0}</p>
                 </div>
             )

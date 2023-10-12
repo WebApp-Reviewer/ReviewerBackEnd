@@ -48,7 +48,7 @@ reviewsRouter.get('/name', async(req, res, next) => {
     }
 })
 
-reviewsRouter.post('/', requireUser, requiredNotSent({requiredParams: ['name', 'content', 'rating', 'date']}), async (req, res, next) => {
+reviewsRouter.post('/', async (req, res, next) => {
     try {
       const {name, content, rating, date} = req.body;
       const {reviewId} = req.params;
