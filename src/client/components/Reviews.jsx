@@ -3,7 +3,7 @@ import { fetchAllReviews, deleteReview } from "../API/ajaxHelpers";
 import '../style/Reviews.css'
 
 
-export default function Reviews({ user, setLoggedIn }) {
+export default function Reviews({ user, loggedIn }) {
     const [reviews, setReviews] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
     const [editedReview, setEditedReview] = useState({});
@@ -19,7 +19,7 @@ export default function Reviews({ user, setLoggedIn }) {
         return filteredReviews.map((review) => {
             return (
                 <div key={review?.id}>
-                    {isEditing && editedReview.id == review.id ? (
+                    {loggedIn && isEditing && editedReview.id == review.id ? (
                         <div>
                             <input 
                                 type="text"
