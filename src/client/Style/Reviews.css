@@ -41,3 +41,39 @@
     flex-wrap: wrap;
     justify-content: space-around;
 }
+
+.edit-container {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    background-color: #f7f7f7;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.edit-container div {
+    margin-right: 10px;
+    margin-bottom: 15px;
+}
+  
+.edit-container input {
+    width: 90%;
+    padding: 8px;
+    box-sizing: border-box;
+    margin-top: 5px;
+}
+  
+.save-button {
+    padding: 8px 12px;
+    margin: 5px;
+    background-color: #008CBA;
+    color: #f7f7f7;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+  
+.save-button:hover {
+    background-color: #0077A2;
+}

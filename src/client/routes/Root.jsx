@@ -181,8 +181,14 @@ export default function Root() {
               )}
               {adminToken && (
                 <>
+                  <Link to="AdminCreateWebsites" className="linkStyle">
+                    Create Websites
+                  </Link>
                   <Link to="AdminWebsiteListings" className="linkStyle">
-                    Admin Websites
+                    Edit Websites
+                  </Link>
+                  <Link to="AdminUserList" className="linkStyle">
+                    User List
                   </Link>
                   <Link onClick={adminLogout} to="/" className="linkStyle" >
                     Log Out

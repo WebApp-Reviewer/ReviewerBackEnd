@@ -23,14 +23,13 @@ export default function AdminCreateWebsite(adminLoggedIn) {
         } catch (error) {
             console.error('Could not make website', error);
         }
-        navigate('/admin/websites');
+        navigate('/AdminWebsiteListings');
     }
 
     return (
         <>
         {adminLoggedIn ? (
             <div className='create-post'>
-            <h1 className='create-header'>Create new website</h1>
             <form className="create-form" onSubmit={handleSubmit}>
                 <label className='create-label'>
                     Name: {' '}
@@ -83,7 +82,7 @@ export default function AdminCreateWebsite(adminLoggedIn) {
                 <button className="post-button">Create Website</button>
             </form>
         </div>
-        ): (<h1>Please Login!</h1>)}
+        ): (<h1 className='PleaseLogin'>Please Login!</h1>)}
         </>     
     )
 }

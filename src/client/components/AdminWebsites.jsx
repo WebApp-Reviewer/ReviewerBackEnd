@@ -16,6 +16,7 @@ export default function AdminWebsites(adminLoggedIn) {
                             <input
                                 type="text"
                                 value={editedWebsite.name}
+                                placeholder="Website Name..."
                                 onChange={(e) =>
                                     setEditedWebsite({
                                         ...editedWebsite,
@@ -26,6 +27,7 @@ export default function AdminWebsites(adminLoggedIn) {
                             <input
                                 type="text"
                                 value={editedWebsite.description}
+                                placeholder="Description..."
                                 onChange={(e) =>
                                     setEditedWebsite({
                                         ...editedWebsite,
@@ -36,6 +38,7 @@ export default function AdminWebsites(adminLoggedIn) {
                             <input
                                 type="text"
                                 value={editedWebsite.url}
+                                placeholder="Website URL..."
                                 onChange={(e) =>
                                     setEditedWebsite({
                                         ...editedWebsite,
@@ -46,6 +49,7 @@ export default function AdminWebsites(adminLoggedIn) {
                             <input
                                 type="text"
                                 value={editedWebsite.image}
+                                placeholder="Image URL..."
                                 onChange={(e) =>
                                     setEditedWebsite({
                                         ...editedWebsite,

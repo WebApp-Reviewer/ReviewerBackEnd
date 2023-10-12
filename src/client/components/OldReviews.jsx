@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { fetchAllReviews, deleteReview } from "../ajaxHelper";
+import { fetchAllReviews, deleteReview } from "../API/ajaxHelpers";
+import '../style/Reviews.css'
 
 export default function Reviews({ user, setLoggedIn }) {
     const [reviews, setReviews] = useState([]);
@@ -18,11 +19,10 @@ export default function Reviews({ user, setLoggedIn }) {
             return (
                 <div key={review?.id}>
                     {isEditing && editedReview.id == review.id ? (
-                        <div className="edit-container">
+                        <div>
                             <input 
                                 type="text"
                                 value={editedReview.name}
-                                placeholder="Review Name"
                                 onChange={(e) => 
                                     setEditedReview({
                                         ...editedReview,
@@ -33,7 +33,6 @@ export default function Reviews({ user, setLoggedIn }) {
                             <input 
                                 type="text"
                                 value={editedReview.content}
-                                placeholder="Review Description"
                                 onChange={(e) => 
                                     setEditedReview({
                                         ...editedReview,
@@ -44,7 +43,6 @@ export default function Reviews({ user, setLoggedIn }) {
                             <input 
                                 type="text"
                                 value={editedReview.rating}
-                                placeholder="Rating"
                                 onChange={(e) => 
                                     setEditedReview({
                                         ...editedReview,
@@ -55,7 +53,6 @@ export default function Reviews({ user, setLoggedIn }) {
                             <input 
                                 type="text"
                                 value={editedReview.date}
-                                placeholder="Review Date"
                                 onChange={(e) => 
                                     setEditedReview({
                                         ...editedReview,
@@ -63,20 +60,18 @@ export default function Reviews({ user, setLoggedIn }) {
                                     })
                                 }
                             />
-                            <button onClick={() => handleSaveClick(review.id)} className="save-button">Save</button>
+                            <button onClick={() => handleSaveClick(review.id)}>Save</button>
                         </div>
                     ) : (
                         <>
-                          <div className="reviews-container">
-                            <h1  className="review-name">{review?.name}</h1>
-                            <h2 className="review-content">{review?.content}</h2>
-                            <h2 className="review-rating">{review?.rating}</h2>
-                            <h2 className="review-date">{review?.date}</h2>
+                            <h1>{review?.name}</h1>
+                            <h2>{review?.content}</h2>
+                            <h2>{review?.rating}</h2>
+                            <h2>{review?.date}</h2>
                             <button onClick={() => handleThumbsUp(review.id)}>Thumbs Up ({thumbsUp[review.id]})</button>
                             <button onClick={() => handleThumbsDown(review.id)}>Thumbs Down ({thumbsDown[review.id]})</button>
                             <button onClick={() => handleEditClick(review.id)}>Edit</button>
                             <button onClick={() => handleDelete(review.id)}>Delete</button>
-                          </div>  
                         </>
                     )}
                 </div>
@@ -214,15 +209,13 @@ export default function Reviews({ user, setLoggedIn }) {
 
     return (
         <div className="all-reviews">
-            <div className='search-container'>
             <input
-            type="text"
-            placeholder="Search reviews..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+                type="text"
+                placeholder="Search reviews"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
             />
-            </div>
-            <div className="Review_List">{renderAllReviews()}</div>
+            {renderAllReviews()}
         </div>
     );
 }

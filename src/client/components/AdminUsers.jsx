@@ -1,19 +1,17 @@
 import { useState, useEffect } from "react"
 import { fetchAllUsers } from "../ajaxHelper.js"
 
-export default function Websites(adminLoggedIn) {
+export default function AdminUsers( adminLoggedIn ) {
     const [users, setUsers] = useState([]);
 
     function renderAllUsers() {
-        return users.map((user) => {
-            return (
-                <div key={user?.id}>
-                    <h1>{user?.name}</h1>
-                    <h2>{user?.username}</h2>
-                    {/*add in smt to count the number of reviews each user has*/}
-                </div>
-            )
-        })
+        return users.map((user) => (
+            <div key={user?.id} className="user-card">
+                <h1>{user?.name}</h1>
+                <h2>Username: {user?.username}</h2>
+                {/* Add in smt to count the number of reviews each user has */}
+            </div>
+        ));
     }
 
     useEffect(() => {
@@ -21,14 +19,19 @@ export default function Websites(adminLoggedIn) {
             const result = await fetchAllUsers();
             setUsers(result.users);
             console.log("websites", result.users);
-        } allUsersHandler();
-    }, [])
+        }
+        allUsersHandler();
+    }, []);
 
     return (
         <>
-        {adminLoggedIn ? (
-            <div>{renderAllUsers()}</div>
-        ) : (<h1>Please Login!</h1>)}
+            {adminLoggedIn ? (
+                <div className="admin-users-container">
+                    {renderAllUsers()}
+                </div>
+            ) : (
+                <h1 className="PleaseLogin">Please Login!</h1>
+            )}
         </>
-    )
+    );
 }

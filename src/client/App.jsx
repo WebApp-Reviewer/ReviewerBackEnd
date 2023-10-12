@@ -9,6 +9,8 @@ import SingleWebsite from './components/SingleWebsite.jsx';
 import AdminLogin from './routes/adminLogin.jsx';
 import ReviewList from './routes/Reviews.jsx';
 import AdminWebsiteListings from './routes/AdminWebsites.jsx';
+import AdminCreateWebsites from './routes/AdminCreateWebsites.jsx'
+import AdminUserList from './routes/AdminUsers.jsx';
 
 const router = createBrowserRouter([
   {
@@ -43,9 +45,17 @@ const router = createBrowserRouter([
         path: "AdminLogin",
         element: <AdminLogin />,
       },
-            {
+      {
         path: "AdminWebsiteListings", // Updated path
         element: <AdminWebsiteListings />,
+      },
+      {
+        path: "AdminCreateWebsites", // Updated path
+        element: <AdminCreateWebsites />,
+      },
+      {
+        path: "AdminUserList", // Updated path
+        element: <AdminUserList />,
       },
     ],
   },
