@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import SingleWebsite from "../components/SingleWebsite"; // Import the component
-import { fetchSingleWebsite } from "../ajaxHelper"; // You may need to create this function
-import "../Style/SingleWebsite.css"; // Import your CSS stylesheet
+import SingleWebsiteDetails from "../components/SingleWebsiteDetails";
+import SingleWebsiteReviews from "../components/SingleWebsiteReviews"; // Import the component for reviews
+import PostReviewForm from "../components/PostReviewForm";
+import { fetchSingleWebsite } from "../API/ajaxHelper";
+import "../Style/SingleWebsite.css";
 
-const SingleWebsiteRoute = () => {
+const SingleWebsitePage = () => {
   const { id } = useParams();
-  const [singleWebsite, setSingleWebsite] = useState(null);
+  const [singleWebsiteDetails, setSingleWebsiteDetails] = useState(null);
+
 
   useEffect(() => {
     // Fetch website details based on the id
     async function fetchDetails() {
       try {
         const result = await fetchSingleWebsite(id);
-        setSingleWebsite(result.website);
+        setSingleWebsiteDetails(result.website);
       } catch (error) {
         console.error("Error fetching website details:", error);
         // Handle error or display a message to the user
@@ -24,7 +27,13 @@ const SingleWebsiteRoute = () => {
     fetchDetails();
   }, [id]);
 
-  return <SingleWebsite singleWebsite={singleWebsite} />;
-};
+  return (
+    <div>
+      <SingleWebsiteDetails singleWebsiteDetails={singleWebsiteDetails} />
+      <PostReviewForm/>
+      <SingleWebsiteReviews />
+    </div>
+  );
+}
 
-export default SingleWebsiteRoute;
+export default SingleWebsitePage;

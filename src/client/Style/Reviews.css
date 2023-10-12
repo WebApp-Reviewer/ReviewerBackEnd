@@ -85,7 +85,8 @@
     margin-bottom: 5px;
 }
 
-.Thumbs,
+.ThumbsUp,
+.ThumbsDown,
 .handle-button {
     padding: 8px 12px;
     margin: 5px;
@@ -111,8 +112,13 @@
     color: #f7f7f7;
 }
 
-.Thumbs {
+.ThumbsUp {
     background-color: #4caf50;
+    color: #f7f7f7;
+}
+
+.ThumbsDown {
+    background-color: #ce2121;
     color: #f7f7f7;
 }
 

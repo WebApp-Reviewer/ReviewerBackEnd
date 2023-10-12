@@ -5,12 +5,12 @@ function getAdminHeaders() {
     const headers ={
         'Content-Type': 'application/json'
     };
-  const currentToken = localStorage.getItem('user-token');
+  const currentToken = JSON.parse(localStorage.getItem('token'));
 
   //console.log("current token", currentToken);
 
   if (currentToken === null) {
-    headers['Authorization'] = 'Bearer' + currentToken;
+    headers['Authorization'] = 'Bearer ' + currentToken;
   }
   return headers;
 }
@@ -19,13 +19,14 @@ function getHeaders() {
   const headers ={
       'Content-Type': 'application/json'
   };
-  const currentToken = localStorage.getItem('user-token');
+  const currentToken = JSON.parse(localStorage.getItem('token'));
 
-  //console.log("current token", currentToken);
+  console.log("current token", currentToken);
 
   if (currentToken !== null) {
-    headers['Authorization'] = 'Bearer' + currentToken;
+    headers['Authorization'] = 'Bearer ' + currentToken;
   } 
+
   return headers;
 }
 
@@ -50,13 +51,25 @@ export async function fetchAllAdminUsers() {
   }
 }
 
+export async function fetchUserById(userId) {
+  try {
+    const response = await fetch(`${BASE_URL}/users/${userId}`);
+    if (!response.ok) {
+      throw new Error("Failed to fetch user");
+    }
+    const data = await response.json();
+    return data.user;
+  } catch (error) {
+    throw error;
+  }
+}
+
 export async function fetchMyData() {
   try {
       const response = await fetch(`${BASE_URL}/users/:id`, {
           headers: getHeaders(),
       });
       const result = await response.json();
-      console.log("my data", result);
       return result;
   } catch (error) {
       console.error("Uh oh, trouble fetching your data", error);
@@ -64,45 +77,44 @@ export async function fetchMyData() {
 }
 
 export async function registerUser(username, password) {
-    try {
-        const response = await fetch(`${BASE_URL}/users/register`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(username, password)
-        });
-        const result = await response.json();
-        const token = result;
-        localStorage.setItem('user-token', token);
-        localStorage.setItem('username', username);
-        return result;
-    } catch (error) {
-        console.error('Could not register', error);
-    }
-
+  try {
+      const response = await fetch(`${BASE_URL}/users/register`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(username, password)
+      });
+      const result = await response.json();
+      const token = result;
+      localStorage.setItem('user-token', token);
+      localStorage.setItem('username', username);
+      return result;
+  } catch (error) {
+      console.error('Could not register', error);
+  }
 }
 
 export async function userLogin(username, password) {
-    try {
-        const response = await fetch(`${BASE_URL}/users/login`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(username, password)
-        });
-        const result = await response.json();
-        const token = result;
-        localStorage.setItem('user-token', token);
-        localStorage.setItem('username', username);
-        return result;
-    } catch (error) {
-      console.error('Count not login', error);
-    }
+  try {
+      const response = await fetch(`${BASE_URL}/users/login`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(username, password)
+      });
+      const result = await response.json();
+      const token = result;
+      localStorage.setItem('user-token', token);
+      localStorage.setItem('username', username);
+      return result;
+  } catch (error) {
+    console.error('Count not login', error);
+  }
 }
 
-export async function adminLogin(username, password, secret) {
+export async function adminLogin({username, password, secret}) {
   console.log("admin ajax", username, password, secret);
   try {
     const response = await fetch(`${BASE_URL}/admin/login`, {
@@ -110,7 +122,7 @@ export async function adminLogin(username, password, secret) {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(username, password, secret)
+        body: JSON.stringify({username, password, secret})
     });
     const result = await response.json();
     console.log("admin result", result);
@@ -126,7 +138,7 @@ export async function adminLogin(username, password, secret) {
 export async function fetchAllWebsites() {
     try {
       const response = await fetch(`${BASE_URL}/websites`, {
-        headers: {'Content-Type': 'application/json'}
+        //headers: getHeaders(),
       });
       const result = await response.json();
       return result;
@@ -138,7 +150,7 @@ export async function fetchAllWebsites() {
 export async function fetchAllAdminWebsites() {
   try {
     const response = await fetch(`${BASE_URL}/admin/websites`, {
-      headers: {'Content-Type': 'application/json'}
+      headers: getAdminHeaders(),
     });
     const result = await response.json();
     console.log("admin websites", result);
@@ -148,10 +160,10 @@ export async function fetchAllAdminWebsites() {
   }
 };
 
-export async function fetchSingleWebsite(websiteId) {
+export async function fetchSingleWebsite(id) {
   try {
-    const response = await fetch(`${BASE_URL}/websites/${websiteId}`, {
-      headers: {'Content-Type': 'application/json'}
+    const response = await fetch(`${BASE_URL}/websites/${id}`, {
+      // headers: getHeaders(),
     });
     const result = await response.json();
     return result;
@@ -176,9 +188,9 @@ export async function createWebsite(name, url, description, image) {
   }
 }
 
-export async function deleteWebsite(websiteId) {
+export async function deleteWebsite(id) {
     try {
-        const response = await fetch (`${BASE_URL}/websites/${websiteId}`, {
+        const response = await fetch (`${BASE_URL}/websites/${id}`, {
             method: 'DELETE',
             headers: {
               'Content-Type': 'application/json'
@@ -191,7 +203,6 @@ export async function deleteWebsite(websiteId) {
     }
 }
 
-// emily, I tried passing the authorId param here, I'm not sure if I structured it correctly but wanted to know your thoughts. 
 export async function editWebsite(name, description, url, image) {
     const sendData = {
       website: {name: name, description: description, url: url, image: image},
@@ -213,9 +224,9 @@ export async function editWebsite(name, description, url, image) {
 export async function fetchAllReviews() {
   try {
     const response = await fetch(`${BASE_URL}/reviews`, {
-      headers:{
+      headers: {
         'Content-Type': 'application/json'
-    }
+      }
     });
     const result = await response.json();
     return result;
@@ -236,23 +247,37 @@ export async function fetchSingleReview(reviewId) {
   }
 };
 
-export async function createReview(name, content, rating, date) {
-  const sendData = {
-    review: {name: name, content: content, rating: rating, date: date}
+export async function fetchReviewsByAuthorId(authorId) {
+  try {
+      // Make a request to your API to fetch reviews by authorId
+      const response = await fetch(`${BASE_URL}/reviews?authorId=${authorId}`);
+      if (!response.ok) {
+          throw new Error("Failed to fetch reviews");
+      }
+      const data = await response.json();
+      return data.reviews;
+  } catch (error) {
+      throw error;
   }
+}
+
+export async function createReview(name, content, rating, websiteid, date = null) {
+  console.log("Review details", name, content, rating, websiteid, date);
+  console.log(getHeaders());
 
   try {
     const response = await fetch(`${BASE_URL}/reviews`, {
       headers: getHeaders(),
       method: 'POST',
-      body: JSON.stringify(sendData)
+      body: JSON.stringify({ name, content, rating, websiteid, date})
     });
     const result = await response.json();
     return result;
   } catch (error) {
-    console.error('Trouble creating review!', error);
+    console.log('Trouble creating review!', error);
   }
 }
+
 
 export async function deleteReview(reviewId) {
   try {
@@ -267,20 +292,37 @@ export async function deleteReview(reviewId) {
   }
 }
 
-export async function editReview(name, content, rating, date) {
-  const sendData = {
-    review: {name: name, content: content, rating: rating, date: date},
-  };
+export async function editReview(id, name, content, rating, date) {
+  console.log("Review details", name, content, rating, date);
+  console.log(getHeaders());
 
   try {
-    const response = await fetch(`${BASE_URL}/reviews/${websiteId}`, {
-      method: 'PATCH', 
+    const response = await fetch(`${BASE_URL}/reviews/${id}`, {
       headers: getHeaders(),
-      body: JSON.stringify(sendData),
+      method: 'PATCH',
+      body: JSON.stringify({ name, content, rating, date })
     });
     const result = await response.json();
     return result;
   } catch (error) {
-    console.error('Could not edit website', error);
+    console.log('Trouble editing review!', error);
   }
 }
+
+
+
+/* export async function createWebsite(name, url, description, image) {
+  console.log("website details", name, url, description, image);
+  try {
+    const response = await fetch(`${BASE_URL}/admin/websites`, {
+      headers: getAdminHeaders(),
+      method: 'POST',
+      body: JSON.stringify({name, url, description, image})
+    });
+    console.log("ajax create website", response);
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error('Trouble creating website!', error);
+  }
+} */

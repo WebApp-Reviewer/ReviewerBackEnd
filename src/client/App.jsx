@@ -2,9 +2,9 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Root from "./routes/Root.jsx";
 import WebsiteListings from './routes/WebsiteListings.jsx';
-import Profile from './routes/Profile.jsx';
+import ProfileHandler from './routes/Profile.jsx';
 import Register from "./routes/Register.jsx"; 
-import Login from "./routes/Login.jsx"; 
+import LoginHandler from "./routes/Login.jsx"; 
 import SingleWebsite from './components/SingleWebsite.jsx';
 import AdminLogin from './routes/adminLogin.jsx';
 import ReviewList from './routes/Reviews.jsx';
@@ -27,7 +27,7 @@ const router = createBrowserRouter([
       },
       {
         path: "Profile",
-        element: <Profile />,
+        element: <ProfileHandler />,
       }, 
       {
         path: "Register",
@@ -35,7 +35,7 @@ const router = createBrowserRouter([
       },
       {
         path: "Login",
-        element: <Login />,
+        element: <LoginHandler />,
       },
       {
         path: "Reviews",
