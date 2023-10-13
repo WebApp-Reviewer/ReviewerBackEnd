@@ -1,52 +1,83 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
+import { fetchAllWebsites } from "../ajaxHelper.js";
 import { Link } from "react-router-dom";
-import { fetchAllWebsites } from "../ajaxHelper";
-import "../Style/WebsitesList.css";
+import urlLink from "../assets/Export Icon.png";
 
 export default function WebsitesList() {
-    const [websites, setWebsites] = useState([]);
+  const [websites, setWebsites] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
-    useEffect(() => {
-        async function allWebsitesHandler() {
-            try {
-                const result = await fetchAllWebsites();
-                console.log(result); // Add this line to check the API response in the console.
-                if (result && result.websites) {
-                    setWebsites(result.websites);
-                }
-            } catch (error) {
-                console.error("Error fetching websites:", error);
-            }
-        }
-        allWebsitesHandler();
-    }, []);
+  // Function to handle changes in the search input
+  function handleSearchInputChange(event) {
+    setSearchTerm(event.target.value);
+  }
 
-    return (
-        <div className="websites-list">
-            {websites.map((website) => (
-                <div key={website?.id} className="website-container">
-                    {/* Wrap the name and image with a Link */}
-                    <Link to={`/websites/${website?.id}`}>
-                        <h1 className="website-name">{website?.name}</h1>
-                        <img
-                            className="website-image"
-                            src={website?.image}
-                            alt={`Image for ${website?.name}`}
-                        />
-                    </Link>
-                    <p className="website-description">{website?.description}</p>
-                    <a
-                        className="website-url"
-                        href={website?.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        {website?.url}
-                    </a>
-                </div>
-            ))}
+  // Function to render filtered websites
+  function renderAllWebsites() {
+    const filteredWebsites = websites.filter((website) => {
+      const lowercasedName = (website.name || "").toLowerCase();
+      const lowercasedContent = (website.content || "").toLowerCase();
+      const lowercasedSearchTerm = searchTerm.toLowerCase();
+      return (
+        lowercasedName.includes(lowercasedSearchTerm) ||
+        lowercasedContent.includes(lowercasedSearchTerm)
+      );
+    });
+
+    return filteredWebsites.map((website) => {
+      return (
+        <div key={website?.id} className="website-container">
+          <div className="singleWebsite-container">
+            <Link to={`/websites/${website?.id}`}>
+              <h1 className="website-name">{website?.name}</h1>
+              <img
+                src={website?.image}
+                alt={website?.name}
+                className="website-image"
+              />
+              <h2 className="website-description">{website?.description}</h2>
+            </Link>
+          </div>
+          <div className="smaller-container">
+            <a
+              href={website?.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="website-url"
+            >
+              <img
+                src={urlLink}
+                alt={website?.name}
+                className="website-image-2"
+              />
+            </a>
+          </div>
         </div>
-    );
+      );
+    });
+  }
+
+  useEffect(() => {
+    async function allWebsitesHandler() {
+      const result = await fetchAllWebsites();
+      console.log({ result });
+      setWebsites(result.websites);
+    }
+    allWebsitesHandler();
+  }, []);
+
+  return (
+    <div className="all-websites">
+      <div className="search-container">
+        <input
+          type="text"
+          placeholder="Search Websites..."
+          value={searchTerm}
+          onChange={handleSearchInputChange}
+          className="search-input"
+        />
+      </div>
+      <div className="Website_List">{renderAllWebsites()}</div>
+    </div>
+  );
 }
-
-

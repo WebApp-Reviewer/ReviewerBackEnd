@@ -1,6 +1,5 @@
 const express = require('express')
 const websitesRouter = express.Router();
-const { requireUser, requiredNotSent } = require('./utils')
 
 const {
     getAllWebsites,
@@ -9,7 +8,6 @@ const {
     createWebsite,
     deleteWebsite,
     updateWebsite,
-    createReview
 } = require('../db');
 
 
@@ -49,33 +47,33 @@ websitesRouter.get('/name', async(req, res, next) => {
     }
 })
 
-websitesRouter.post('/', requireUser, requiredNotSent({requiredParams: ['name', 'description', 'url', 'image']}), async (req, res, next) => {
-    try {
-      const {name, description, url, image} = req.body;
-      const existingWebsite = await getWebsiteByName(name);
-      if(existingWebsite) {
-        next({
-          name: 'NotFound',
-          message: `A website with name ${name} already exists`
-        });
+websitesRouter.post('/', async (req, res, next) => {
+  try {
+    const {name, url, description, image} = req.body;
+    const existingWebsite = await getWebsiteByName(name);
+
+    if(existingWebsite) {
+      next({
+        name: 'NotFound',
+        message: `A website with name ${name} already exists`
+      });
+    } else {
+      const createdWebsite = await createWebsite({name, url, description, image});
+      if(createdWebsite) {
+        res.send(createdWebsite);
       } else {
-        const createdWebsite = await createWebsite({name, description, url, image});
-        if(createdWebsite) {
-          res.send(createdWebsite);
-        } else {
-          next({
-            name: 'FailedToCreate',
-            message: 'There was an error creating your website'
-          })
-        }
+        next({
+          name: 'FailedToCreate',
+          message: 'There was an error creating your website'
+        })
       }
-    } catch (error) {
-      console.log("create website", error);
-      next(error);
     }
+  } catch (error) {
+    console.log("Error creating website!", error);
+  }
 });
 
-websitesRouter.patch('/:websiteId', requireUser, requiredNotSent({requiredParams: ['name', 'description', 'url', 'image'], atLeastOne: true}), async (req, res, next) => {
+websitesRouter.patch('/:websiteId', async (req, res, next) => {
   try {
     const {name, description, url, image} = req.body;
     const {websiteId} = req.params;
@@ -86,7 +84,7 @@ websitesRouter.patch('/:websiteId', requireUser, requiredNotSent({requiredParams
         message: `No website by ID ${websiteId}`
       })
     } else {
-      const updatedWebsite = await updateWebsite({websiteId, name, description, url, image});
+      const updatedWebsite = await updateWebsite({id: websiteId, name, description, url, image});
       if(updatedWebsite) {
         res.send(updatedWebsite);
       } else {
@@ -102,8 +100,7 @@ websitesRouter.patch('/:websiteId', requireUser, requiredNotSent({requiredParams
   }
 });
 
-
-websitesRouter.delete('/:websiteId', requireUser, async (req, res, next) => {
+websitesRouter.delete('/:websiteId', async (req, res, next) => {
   try {
     const websiteToUpdate = await getWebsiteById(req.params.websiteId);
     if(!websiteToUpdate) {
@@ -118,32 +115,6 @@ websitesRouter.delete('/:websiteId', requireUser, async (req, res, next) => {
   } catch (error) {
     console.log("delete website", error);
     next(error);
-  }
-});
-
-// Define a route that allows posting reviews for a specific website by its ID.
-websitesRouter.post('/:id', requireUser, requiredNotSent({ requiredParams: ['name', 'content', 'rating', 'date'] }), async (req, res, next) => {
-  try {
-      const { name, content, rating, date } = req.body;
-      const websiteId = req.params.id; // Retrieve the website ID from the URL parameter.
-
-      const authorId = req.user.id;
-
-      // Create the review with the retrieved authorid and websiteid.
-      const createdReview = await createReview({ authorid: authorId, websiteid: websiteId, name, content, rating, date });
-
-      if (createdReview) {
-          res.send(createdReview);
-      } else {
-          next({
-              name: 'FailedToCreate',
-              message: 'There was an error creating your review'
-          });
-      }
-  } catch (error) {
-      // Log the error to help diagnose any issues.
-      console.error(error);
-      next(error);
   }
 });
 

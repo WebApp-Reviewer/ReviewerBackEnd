@@ -1,79 +1,109 @@
-.website-icon-container {
-  display: flex;
-  justify-content: center; /* Horizontally center the content */
-  align-items: center; /* Vertically center the content */
-  width: 200px; /* Set the width of the container to match the icon */
-  height: 200px; /* Set the height of the container to match the icon */
-}
+/* SingleWebsite.css */
 
-.website-icon {
-  width: 100px;
-  height: 100px;
-  object-fit: cover; /* Maintain aspect ratio for images */
-  border-radius: 50%; /* Creates a circular shape for the icon */
-}
+/* Container for the entire content */
+.single-website-container {
+    display: block;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2%;
+    margin: auto;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    background-color: #f7f7f7;
+    max-width: 40%;
+    max-height: 40%;
+    border: 1px transparent;
+    border-radius: 15px;
+    box-shadow: 3px 3px 3px 3px;
+  }
 
-  
-  /* Styling for the website name */
-  h1 {
-    font-size: 24px;
-    margin-top: 10px;
+  /* will help align the images onto their positions*/
+  .website-info{
+    display: flex;
+    align-items: center;
   }
   
-  /* Styling for the website description */
+  /* Styling for the website icon */
+  .website-icon-1,
+  .website-icon-2 {
+    width: 10vw;
+    height: 10vw; 
+    object-fit: cover;
+    border-radius: 50%;
+  }
+  
+  /* Styling for the website name */
+  h1{
+    text-align: center;
+    font-size: 1vw; 
+    margin-top: 1vw; 
+  }
+ /* Styling for the website description */
   .website-description {
-    font-size: 16px;
-    margin-top: 10px;
+    text-align: center;
+    font-size: 1vw; 
+    margin-top: 0.5vw; 
   }
   
   /* Styling for the clickable "URL" link */
   .website-url {
-    margin-top: 20px;
+    margin-top: 2vw;
     text-decoration: none;
-    color: #007bff; /* Link color (blue) */
+    color: #007bff;
   }
   
   /* Hover effect for the clickable "URL" link */
   .website-url:hover {
-    text-decoration: underline; /* Underline on hover */
+    text-decoration: underline; 
+    font-size: 1.2vw;
+    transition: 0.5s;
   }
 
-  /* CSS for SingleWebsiteReviews component */
-.reviews {
-  margin-top: 20px;
+  /*Styling for the return button*/
+  .back-button {
+    font-size: 24px;
+    position: absolute;
+    right: 10vw; 
+    z-index: 100;
+    text-decoration: none;
+    color: #f7f7f7;
+    background-color: #4caf50;
+    padding: 10px; 
+    width: 100px;
+    height: 100px;
+    border: 1px transparent;
+    border-radius: 15px;
+  }
+
+  .back-button:hover {
+    background-color: #45a049;
+    transition: 0.2s;
+    transform: scale(1.3);
+  }
+
+  .website-info img {
+    width: 150px;
+  }
+
+  .website-info {
+    display: flex;
+    align-items: center;
+  }
+
+.Column {
+  flex-direction: column;
+}
+.website-details,
+.website-description {
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  margin-left: 20px;
 }
 
-.reviews h2 {
-  font-size: 1.5rem;
-  color: #333;
+.website-url {
+  display: block;
+  margin-top: 10px;
 }
-
-.reviews ul {
-  list-style: none;
-  padding: 0;
-}
-
-.reviews li {
-  margin-bottom: 20px;
-  border: 1px solid #ddd;
-  padding: 10px;
-  background-color: #f9f9f9;
-}
-
-.reviews h3 {
-  font-size: 1.2rem;
-  color: #555;
-  margin: 0;
-}
-
-.reviews p {
-  margin: 5px 0;
-}
-
-/* Style for "No reviews available" message */
-p.no-reviews {
-  font-style: italic;
-  color: #777;
-}
-
-  

@@ -30,12 +30,12 @@ export default function SingleWebsite() {
               alt={`Image for ${singleWebsite.name}`}
               className="website-icon"
             />
+            <div className="Column">
             <div className="website-details">
               <h1>{singleWebsite.name}</h1>
               <p className="website-description">{singleWebsite.description}</p>
             </div>
-          </div>
-          <a
+            <a
             href={singleWebsite.url}
             target="_blank"
             rel="noopener noreferrer"
@@ -43,6 +43,8 @@ export default function SingleWebsite() {
           >
             URL: {singleWebsite.url}
           </a>
+          </div>
+          </div>
         </div>
       );
     } else {

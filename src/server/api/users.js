@@ -35,7 +35,7 @@ usersRouter.get('/:id', async(req, res, next) => {
 
 usersRouter.post('/login', async(req, res, next) => {
     const { username, password } = req.body;
-    console.log("inside api", username, password)
+
     if(!username || !password) {
         next({
             name: 'MissingCredentialsError',
@@ -43,7 +43,7 @@ usersRouter.post('/login', async(req, res, next) => {
         });
     }
     try {
-        const user = await getUser({username, password});
+        const user = await getUser(username, password);
         if(!user) {
             next({
                 name: 'IncorrectCredentialsError',
@@ -62,7 +62,7 @@ usersRouter.post('/login', async(req, res, next) => {
 // POST /api/users/register
 usersRouter.post('/register', async (req, res, next) => {
     try {
-      const {username, password} = req.body;
+      const {name, username, password} = req.body;
       const queriedUser = await getUser(username);
       if (queriedUser) {
         res.status(401);
@@ -78,6 +78,7 @@ usersRouter.post('/register', async (req, res, next) => {
         });
       } else {
         const user = await createUser({
+            name,
             username,
             password
         });
@@ -87,7 +88,7 @@ usersRouter.post('/register', async (req, res, next) => {
             message: 'There was a problem registering you. Please try again.',
           });
         } else {
-          const token = jwt.sign({id: user.id, username: user.username}, JWT_SECRET, { expiresIn: '1w' });
+          const token = jwt.sign({id: user.id, name: user.name, username: user.username}, JWT_SECRET, { expiresIn: '1w' });
           res.send({ user, message: "You're signed up!", token });
         }
       }

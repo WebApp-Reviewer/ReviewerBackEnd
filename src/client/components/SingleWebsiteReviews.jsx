@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { fetchSingleWebsite } from "../ajaxHelper";
-import { fetchAllReviews } from "../ajaxHelper";
+import { fetchSingleWebsite, fetchAllReviews } from "../ajaxHelper";
 import "../Style/SingleWebsite.css";
 
 export default function SingleWebsiteReviews() {

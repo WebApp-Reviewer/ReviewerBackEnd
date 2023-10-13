@@ -1,46 +1,34 @@
 // import './App.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Root from "./routes/Root.jsx";
-import HomePage from './routes/HomePage.jsx'; 
 import WebsiteListings from './routes/WebsiteListings.jsx';
-import Profile from './routes/Profile.jsx';
+import ProfileHandler from './routes/Profile.jsx';
 import Register from "./routes/Register.jsx"; 
-import Login from "./routes/Login.jsx"; 
-import SingleWebsite from './routes/SingleWebsite.jsx';
+import LoginHandler from "./routes/Login.jsx"; 
+import SingleWebsite from './components/SingleWebsite.jsx';
 import AdminLogin from './routes/adminLogin.jsx';
 import ReviewList from './routes/Reviews.jsx';
+import AdminWebsiteListings from './routes/AdminWebsites.jsx';
+import AdminCreateWebsites from './routes/AdminCreateWebsites.jsx'
+import AdminUserList from './routes/AdminUsers.jsx';
+import SingleWebsitePage from './routes/SingleWebsite.jsx'
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Root />,
     children: [
-      // {
-      //   path: "HomePage",
-      //   element: <HomePage />,
-      // },
       {
         path: "WebsiteListings", // Updated path
         element: <WebsiteListings />,
       },
       {
         path: "websites/:id", // Updated path
-        element: <SingleWebsite />,
-        // children: [
-        //   // Add routes for posting and editing reviews here
-        //   {
-        //     path: "post-review",
-        //     element: <PostReviewForm />,
-        //   },
-        //   {
-        //     path: "edit-review",
-        //     element: <EditReviewForm />,
-        //   },
-        // ],
+        element: <SingleWebsitePage />,
       },
       {
         path: "Profile",
-        element: <Profile />,
+        element: <ProfileHandler />,
       }, 
       {
         path: "Register",
@@ -48,7 +36,7 @@ const router = createBrowserRouter([
       },
       {
         path: "Login",
-        element: <Login />,
+        element: <LoginHandler />,
       },
       {
         path: "Reviews",
@@ -57,6 +45,18 @@ const router = createBrowserRouter([
       {
         path: "AdminLogin",
         element: <AdminLogin />,
+      },
+      {
+        path: "AdminWebsiteListings", // Updated path
+        element: <AdminWebsiteListings />,
+      },
+      {
+        path: "AdminCreateWebsites", // Updated path
+        element: <AdminCreateWebsites />,
+      },
+      {
+        path: "AdminUserList", // Updated path
+        element: <AdminUserList />,
       },
     ],
   },

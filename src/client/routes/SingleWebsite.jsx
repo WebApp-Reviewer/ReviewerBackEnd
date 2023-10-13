@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import SingleWebsiteDetails from "../components/SingleWebsiteDetails";
 import SingleWebsiteReviews from "../components/SingleWebsiteReviews"; // Import the component for reviews
-import ReviewButton from "../components/ReviewOrEditButton";
+import PostReviewForm from "../components/PostReviewForm";
 import { fetchSingleWebsite } from "../ajaxHelper";
 import "../Style/SingleWebsite.css";
 
 const SingleWebsitePage = () => {
   const { id } = useParams();
   const [singleWebsiteDetails, setSingleWebsiteDetails] = useState(null);
+
 
   useEffect(() => {
     // Fetch website details based on the id
@@ -29,10 +30,10 @@ const SingleWebsitePage = () => {
   return (
     <div>
       <SingleWebsiteDetails singleWebsiteDetails={singleWebsiteDetails} />
-      <ReviewButton />
+      <PostReviewForm/>
       <SingleWebsiteReviews />
     </div>
   );
-};
+}
 
 export default SingleWebsitePage;

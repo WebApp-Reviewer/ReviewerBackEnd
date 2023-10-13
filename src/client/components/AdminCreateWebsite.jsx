@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import { createWebsite } from '../API/ajaxHelpers'
+import { createWebsite } from '../ajaxHelper.js'
 import { useNavigate } from 'react-router-dom'
 
-export default function AdminCreateWebsite({ adminLoggedIn }) {
+export default function AdminCreateWebsite(adminLoggedIn) {
     const [name, setName] = useState('');
     const [url, setUrl] = useState('');
     const [description, setDescription] = useState('');
@@ -23,14 +23,13 @@ export default function AdminCreateWebsite({ adminLoggedIn }) {
         } catch (error) {
             console.error('Could not make website', error);
         }
-        navigate('/websites');
+        navigate('/AdminWebsiteListings');
     }
 
     return (
         <>
         {adminLoggedIn ? (
             <div className='create-post'>
-            <h1 className='create-header'>Create new website</h1>
             <form className="create-form" onSubmit={handleSubmit}>
                 <label className='create-label'>
                     Name: {' '}
@@ -75,6 +74,7 @@ export default function AdminCreateWebsite({ adminLoggedIn }) {
                     type="text"
                     name="image"
                     placeholder="Image URL"
+                    required={true}
                     value={image}
                     onChange={(e) => setImage(e.target.value)}
                     />
@@ -82,7 +82,7 @@ export default function AdminCreateWebsite({ adminLoggedIn }) {
                 <button className="post-button">Create Website</button>
             </form>
         </div>
-        ): (<h1>Please Login!</h1>)}
+        ): (<h1 className='PleaseLogin'>Please Login!</h1>)}
         </>     
     )
 }

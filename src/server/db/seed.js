@@ -1,7 +1,7 @@
 const db = require('./client');
 const { createUser } = require('./');
-const { createAdmin } = require('./admin');
-const { createWebsite, getAllWebsites } = require('./websites');
+const { createAdmin, getAllAdmin } = require('./admin');
+const { getAllWebsites, createWebsite } = require('./websites');
 const { createReview } =  require('./reviews');
 const { getAllUsers } = require('./users')
 
@@ -11,8 +11,6 @@ const dropTables = async () => {
   try {
       await db.query(`
       DROP TABLE IF EXISTS reviews;
-      DROP TABLE IF EXISTS websites_tags;
-      DROP TABLE IF EXISTS tags;
       DROP TABLE IF EXISTS websites;
       DROP TABLE IF EXISTS admin;
       DROP TABLE IF EXISTS users;
@@ -51,21 +49,6 @@ const createTables = async () => {
           url VARCHAR(225) NOT NULL,
           description VARCHAR(225) NOT NULL,
           image VARCHAR(225) NOT NULL
-      );
-      `)
-
-      await db.query(`
-      CREATE TABLE tags (
-        id SERIAL PRIMARY KEY,
-        name varchar(255) UNIQUE NOT NULL
-      );
-      `)
-
-      await db.query(`
-      CREATE TABLE websites_tags (
-        websiteid INTEGER REFERENCES websites(id),
-        tagid INTEGER REFERENCES tags(id),
-        UNIQUE (websiteid, tagid)
       );
       `)
 
@@ -112,7 +95,6 @@ async function createInitialUsers() {
 async function createInitialAdmin() {
   console.log('Starting to create admin...');
   try {
-
     const adminToCreate = [
       { name: "WebAppAdmin", username: "webadmin", password: "adminpassword123", secret: "NoPublicAccess" },
     ]
@@ -132,16 +114,16 @@ async function createInitialWebsites() {
   
   try {
     const websitesToCreate = [
-      { name: 'Netflix', url: 'https://www.netflix.com/', description: 'Streaming platform to watch movies and shows online.', image: 'https://yt3.googleusercontent.com/ytc/AOPolaSbaST1JBNd9phht_n7tFN-VHx0FlvKPHeSDnmu4Q=s900-c-k-c0x00ffffff-no-rj', tags: ["#entertainment", "#movies", "#tv"] },
-      { name: 'Discord', url: 'https://discord.com/', description: 'Your place to talk and hangout.', image: 'https://play-lh.googleusercontent.com/0oO5sAneb9lJP6l8c6DH4aj6f85qNpplQVHmPmbbBxAukDnlO7DarDW0b-kEIHa8SQ', tags: ["#communication", "#messaging", "social"] },
-      { name: 'Twitter', url: 'https://discord.com/', description: 'From breaking news and entertainment to sports and politics, get the full story with all the live commentary.', image: 'https://cdn-icons-png.flaticon.com/512/124/124021.png', tags: ["#entertainment", "#social", "#news"] },
-      { name: 'Slack', url: 'https://discord.com/', description: 'Work more easily with everyone.', image: 'https://yt3.googleusercontent.com/ytc/AOPolaTCsMhpgrJldSw0eABzVJ9JEc1pYyTST4CJ7JzN1Q=s900-c-k-c0x00ffffff-no-rj', tags: ["#communication", "#work", "#business"] },
-      { name: 'Reddit', url: 'https://www.reddit.com/', description: 'Dive into anything.', image: 'https://pbs.twimg.com/profile_images/1684669052839473152/e_ATYqfK_400x400.jpg', tags: ["#entertainment", "#social", "#information"] },
-      { name: 'Mimo', url: 'https://mimo.org/', description: 'Learn to Code with Mimo.', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKJht4SZsUHqZOR_zW_XJJOosG474aIAMRDQ&usqp=CAU', tags: ["#educational", "#webdevelopment", "#learn"] },
-      { name: 'YouTube', url: 'https://youtube.com/', description: 'Share your videos with friends, family, and the world.', image: 'https://www.youtube.com/img/desktop/yt_1200.png', tags: ["#entertainment", "#videos", "#watch"] },
-      { name: 'ChatGPT', url: 'https://chat.openai.com/', description: 'AI-powered language model developed by OpenAI, capable of generating human-like text based on context and past conversations.', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/ChatGPT_logo.svg/800px-ChatGPT_logo.svg.png', tags: ["#eduational", "#social", "#informational"] },
+      { name: 'Netflix', url: 'https://www.netflix.com/', description: 'Streaming platform to watch movies and shows online.', image: 'https://yt3.googleusercontent.com/ytc/AOPolaSbaST1JBNd9phht_n7tFN-VHx0FlvKPHeSDnmu4Q=s900-c-k-c0x00ffffff-no-rj' },
+      { name: 'Discord', url: 'https://discord.com/', description: 'Your place to talk and hangout.', image: 'https://play-lh.googleusercontent.com/0oO5sAneb9lJP6l8c6DH4aj6f85qNpplQVHmPmbbBxAukDnlO7DarDW0b-kEIHa8SQ', },
+      { name: 'Twitter', url: 'https://twitter.com/', description: 'From breaking news and entertainment to sports and politics, get the full story with all the live commentary.', image: 'https://cdn-icons-png.flaticon.com/512/124/124021.png', },
+      { name: 'Slack', url: 'https://slack.com/', description: 'Work more easily with everyone.', image: 'https://yt3.googleusercontent.com/ytc/AOPolaTCsMhpgrJldSw0eABzVJ9JEc1pYyTST4CJ7JzN1Q=s900-c-k-c0x00ffffff-no-rj', },
+      { name: 'Reddit', url: 'https://www.reddit.com/', description: 'Dive into anything.', image: 'https://pbs.twimg.com/profile_images/1684669052839473152/e_ATYqfK_400x400.jpg' },
+      { name: 'Mimo', url: 'https://mimo.org/', description: 'Learn to Code with Mimo.', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKJht4SZsUHqZOR_zW_XJJOosG474aIAMRDQ&usqp=CAU' },
+      { name: 'YouTube', url: 'https://youtube.com/', description: 'Share your videos with friends, family, and the world.', image: 'https://www.youtube.com/img/desktop/yt_1200.png' },
+      { name: 'ChatGPT', url: 'https://chat.openai.com/', description: 'AI-powered language model developed by OpenAI, capable of generating human-like text based on context and past conversations.', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/ChatGPT_logo.svg/800px-ChatGPT_logo.svg.png' },
     ]
-    const websites = await Promise.all(websitesToCreate.map(createWebsite));
+    const websites = await Promise.all(websitesToCreate.map(websites => createWebsite(websites)));
 
     console.log('Websites created:');
     console.log(websites);
@@ -155,25 +137,15 @@ async function createInitialWebsites() {
 async function createInitialReviews() {
   console.log('Starting to create reviews...');
   
-  const [emily, liu, bella, mohammed, john, lily] = await getAllUsers();
-  console.log("authorId reviews", emily.id, liu.id, bella.id, mohammed.id, john.id, lily.id);
-
-  const [Netflix, Discord, Twitter, Slack, Reddit, Mimo, YouTube, ChatGPT] = await getAllWebsites();
-  console.log("websiteId reviews", Netflix.id, Reddit.id, Mimo.id, YouTube.id, Slack.id, Twitter.id);
   try {
-
-    console.log("emily.id:", emily.id);
-    console.log("Netflix:id", Netflix.id);
+    const [emily, liu, bella, mohammed, john, lily] = await getAllUsers();
+    //console.log('authorid', emily, liu, bella, mohammed, john, lily);
+    //console.log("emily.id", emily.id);
+    const [Netflix, Discord, Twitter, Slack, Reddit, Mimo, YouTube, ChatGPT] = await getAllWebsites();
+    //console.log("websiteid", Netflix, Discord, Twitter, Slack, Reddit, Mimo, YouTube, ChatGPT);
 
     const reviewsToCreate = [
-      { 
-        authorid: emily.id, 
-        websiteid: Netflix.id, 
-        name: 'Thorough review of Netflix', 
-        content: 'I love the clear layout of all the shows and movies. It is easy to navigate and find something to watch.', 
-        rating: 4, 
-        date: '2023-09-13' 
-      },
+      { authorid: emily.id, websiteid: Netflix.id, name: 'Thorough review of Netflix', content: 'I love the clear layout of all the shows and movies. It is easy to navigate and find something to watch.', rating: 4, date: '2023-09-13' },
       { authorid: emily.id, websiteid: Reddit.id, name: 'How I feel about Reddit', content: 'I never understood how Reddit really worked, but I think it is a nice platform to talk about anything.', rating: 4, date: '2023-09-14' },
       { authorid: emily.id, websiteid: Mimo.id, name: 'Try Mimo!', content: 'I love Mimo. It is a nice way to learn the basics of web development and helped me a lot.', rating: 5, date: '2023-09-15' },
       { authorid: liu.id, websiteid: YouTube.id, name: 'YouTube', content: 'YouTube is just a classic platform and app. Love it.', rating: 5, date: '2023-09-25' },
@@ -191,11 +163,9 @@ async function createInitialReviews() {
       { authorid: lily.id, websiteid: Mimo.id, name: 'Mimo helped me a lot!', content: 'Anyone who is learning web development should check out Mimo. Fun way to learn!', rating: 5, date: '2023-07-16' },
       { authorid: lily.id, websiteid: Discord.id, name: 'Discord', content: 'I use Discord for a lot of things, playing games, school, talking to friends. Check it out!', rating: 5, date: '2023-08-25' },
       { authorid: lily.id, websiteid: YouTube.id, name: 'Love YouTube', content: 'Watching videos is my favorite way to end the day.', rating: 5, date: '2023-08-30' },
-    ];
+    ]
     const reviews = await Promise.all(reviewsToCreate.map(review => createReview(review)));
-
-    console.log('Reviews created:');
-    console.log(reviews);
+    console.log('Reviews created:', reviews);
     console.log('Finished creating reviews!');
   } catch (error) {
     console.error('Error creating reviews!');
