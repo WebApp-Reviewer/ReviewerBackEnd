@@ -140,13 +140,13 @@ reviewsRouter.patch('/:id', requireUser, requiredNotSent({ requiredParams: ['nam
 
 reviewsRouter.delete('/:id', requireUser, async (req, res, next) => {
   try {
-    const reviewToUpdate = await getReviewById(req.params.reviewId);
+    const reviewToUpdate = await getReviewById(req.params.id);
     console.log('review to update', reviewToUpdate);
     console.log('req user id', req.user.id);
     if(!reviewToUpdate) {
       next({
         name: 'NotFound',
-        message: `No review by ID ${reviewId}`
+        message: `No review by ID ${req.params.id}`
       })
     } else if(req.user.id !== reviewToUpdate.authorid) {
       res.status(403);
@@ -155,7 +155,7 @@ reviewsRouter.delete('/:id', requireUser, async (req, res, next) => {
         message: "You must be the same user who created this review to perform this action"
       });
     } else {
-      const deletedReview = await deleteReview(req.params.reviewId)
+      const deletedReview = await deleteReview(req.params.id)
       res.send({success: true, ...deletedReview});
     }
   } catch (error) {

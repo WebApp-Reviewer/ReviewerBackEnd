@@ -35,7 +35,7 @@ export default function Register() {
         "Username or password incorrect. Please try again"
       );
     } else {
-      localStorage.setItem("token", response.token);
+      localStorage.setItem('token', JSON.stringify(response.token));
       setIsLoggedIn(true);
     }
     navigate("/");

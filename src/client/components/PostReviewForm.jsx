@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { createReview } from '../API/ajaxHelper';
+import { createReview } from '../ajaxHelper';
 import { useParams } from 'react-router-dom';
+import '../Style/CreateReview.css'
 
 
 const PostReviewForm = () => {
@@ -24,22 +25,24 @@ const PostReviewForm = () => {
   };
 
   return (
-    <div>
+    <div className='create-post'>
       <h2>Post a Review</h2>
-      <form onSubmit={handleSubmit}>
-        <label>
+      <form className="create-form" onSubmit={handleSubmit}>
+        <label className='create-label'>
           Name:
-          <input type="text" value={name} onChange={(e) => setName(e.target.value)} required />
+          <input placeholder='Name' type="text" value={name} onChange={(e) => setName(e.target.value)} required className='create-input'/>
         </label>
-        <label>
+        <div className='parent-container'>
+        <label className='create-box'>
           Content:
-          <textarea value={content} onChange={(e) => setContent(e.target.value)} required />
+          <textarea placeholder='Description' value={content} onChange={(e) => setContent(e.target.value)} required className='create-textarea'/>
         </label>
-        <label>
+        </div>
+        <label className='create-label'>
           Rating:
-          <input type="number" value={rating} onChange={(e) => setRating(e.target.value)} required />
+          <input placeholder='Rating' type="number" max={5} min={1} value={rating} onChange={(e) => setRating(e.target.value)} required className='create-rating'/>
         </label>
-        <button type="submit">Submit Review</button>
+        <button type="submit" className="post-button">Submit Review</button>
       </form>
     </div>
   );

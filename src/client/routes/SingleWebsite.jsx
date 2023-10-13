@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import SingleWebsiteDetails from "../components/SingleWebsiteDetails";
 import SingleWebsiteReviews from "../components/SingleWebsiteReviews"; // Import the component for reviews
 import PostReviewForm from "../components/PostReviewForm";
-import { fetchSingleWebsite } from "../API/ajaxHelper";
+import { fetchSingleWebsite } from "../ajaxHelper";
 import "../Style/SingleWebsite.css";
 
 const SingleWebsitePage = () => {

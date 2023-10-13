@@ -150,7 +150,7 @@ export async function fetchAllWebsites() {
 export async function fetchAllAdminWebsites() {
   try {
     const response = await fetch(`${BASE_URL}/admin/websites`, {
-      headers: getAdminHeaders(),
+      headers: {'Content-Type': 'application/json'}
     });
     const result = await response.json();
     console.log("admin websites", result);
@@ -160,10 +160,10 @@ export async function fetchAllAdminWebsites() {
   }
 };
 
-export async function fetchSingleWebsite(id) {
+export async function fetchSingleWebsite(websiteId) {
   try {
-    const response = await fetch(`${BASE_URL}/websites/${id}`, {
-      // headers: getHeaders(),
+    const response = await fetch(`${BASE_URL}/websites/${websiteId}`, {
+      headers: {'Content-Type': 'application/json'}
     });
     const result = await response.json();
     return result;
@@ -176,7 +176,7 @@ export async function createWebsite(name, url, description, image) {
   console.log("website details", name, url, description, image);
   try {
     const response = await fetch(`${BASE_URL}/admin/websites`, {
-      headers: getAdminHeaders(),
+      headers: {'Content-Type': 'application/json'},
       method: 'POST',
       body: JSON.stringify({name, url, description, image})
     });
@@ -279,9 +279,9 @@ export async function createReview(name, content, rating, websiteid, date = null
 }
 
 
-export async function deleteReview(reviewId) {
+export async function deleteReview(id) {
   try {
-      const response = await fetch (`$BASE_URL}/reviews/${reviewId}`, {
+      const response = await fetch (`${BASE_URL}/reviews/${id}`, {
           method: 'DELETE',
           headers: getHeaders(),
       });

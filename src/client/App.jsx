@@ -11,6 +11,7 @@ import ReviewList from './routes/Reviews.jsx';
 import AdminWebsiteListings from './routes/AdminWebsites.jsx';
 import AdminCreateWebsites from './routes/AdminCreateWebsites.jsx'
 import AdminUserList from './routes/AdminUsers.jsx';
+import SingleWebsitePage from './routes/SingleWebsite.jsx'
 
 const router = createBrowserRouter([
   {
@@ -23,7 +24,7 @@ const router = createBrowserRouter([
       },
       {
         path: "websites/:id", // Updated path
-        element: <SingleWebsite />,
+        element: <SingleWebsitePage />,
       },
       {
         path: "Profile",

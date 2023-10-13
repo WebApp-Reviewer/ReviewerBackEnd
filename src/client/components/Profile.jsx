@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { fetchAllReviews, editReview } from "../ajaxHelper";
+import { fetchAllReviews, editReview, deleteReview } from "../ajaxHelper";
 import jwt_decode from 'jwt-decode';
 
 export default function Profile() {
@@ -41,10 +41,10 @@ export default function Profile() {
   const handleSave = async (reviewId) => {
     try {
       const editedReview = editedReviews[reviewId];
-
+  
       // Send the edited review to the server
       await editReview(reviewId, editedReview.name, editedReview.content, editedReview.rating, editedReview.date);
-
+  
       // Update the state with the edited content
       const updatedReviews = reviews.map((review) => {
         if (review.id === reviewId) {
@@ -53,13 +53,27 @@ export default function Profile() {
         return review;
       });
       setReviews(updatedReviews);
-
+  
       // Reset the edit status for this review
-      setEditedReviews({ ...editedReviews, [reviewId]: false });
+      setEditedReviews({
+        ...editedReviews,
+        [reviewId]: {},
+      });
     } catch (error) {
       console.error("Error editing review:", error);
     }
   };
+
+  const handleDelete = async (reviewId) => {
+    try {
+      await deleteReview(reviewId);
+      const updatedReviews = reviews.filter((review) => 
+      review.id !== reviewId);
+      setReviews(updatedReviews);
+    } catch (error) {
+      console.error("Error deletinng reviews:", error);
+    }
+  }
 
   const renderReviews = () => {
     if (reviews.length > 0) {
@@ -113,6 +127,7 @@ export default function Profile() {
                     <p>Rating: {review.rating}</p>
                     <p>Date: {new Date(review.date).toLocaleDateString()}</p>
                     <button onClick={() => handleEdit(review.id)} className="Edit">Edit</button>
+                    <button onClick={() => handleDelete(review.id)} className="Edit">Delete</button>
                   </div>
                 )}
               </li>

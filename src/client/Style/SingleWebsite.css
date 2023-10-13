@@ -82,3 +82,28 @@
     transition: 0.2s;
     transform: scale(1.3);
   }
+
+  .website-info img {
+    width: 150px;
+  }
+
+  .website-info {
+    display: flex;
+    align-items: center;
+  }
+
+.Column {
+  flex-direction: column;
+}
+.website-details,
+.website-description {
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  margin-left: 20px;
+}
+
+.website-url {
+  display: block;
+  margin-top: 10px;
+}
